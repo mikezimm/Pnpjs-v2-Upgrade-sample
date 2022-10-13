@@ -252,7 +252,6 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
        *    this._performance.ops.fetch1 = this._updatePerformance( <=== Starts tracking perforamnce
        *    ... Stuff to do
        *    this._performance.ops.fetch1 = updatePerformanceEnd( <=== ENDS tracking performance
-       *    this._replacePanelHTML = refreshPanelHTML( <=== This updates the performance panel content
        */
 
       const updateThis = !this._performance.ops.fetch4 ? 'fetch4' : !this._performance.ops.fetch5 ? 'fetch5' : !this._performance.ops.fetch6 ? 'fetch6' : 'fetch7';
