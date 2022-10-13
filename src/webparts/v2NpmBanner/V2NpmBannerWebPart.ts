@@ -176,6 +176,7 @@
  
  require('@mikezimm/npmfunctions/dist/Services/PropPane/GrayPropPaneAccordions.css');
 
+ 
 export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBannerWebPartProps> {
 
   private _isDarkTheme: boolean = false;
