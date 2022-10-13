@@ -4,9 +4,9 @@
 // import { IRepoLinks, repoLink, } from '../../fpsReferences';
 // import { convertIssuesMarkdownStringToSpan } from '../../fpsReferences';
 
-export function advancedContent( ): null {
+export function advancedContent( ): undefined {
 
-    return null;
+    return undefined;
     
 }
   

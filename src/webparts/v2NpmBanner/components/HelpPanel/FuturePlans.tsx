@@ -10,9 +10,9 @@
  * @returns 
  */
 
-export function futureContent( ): null {
+export function futureContent( ): undefined {
 
-    return null;
+    return undefined;
 
 }
   

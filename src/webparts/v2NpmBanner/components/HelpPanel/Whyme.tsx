@@ -6,9 +6,9 @@
 // import { IRepoLinks, repoLink, } from '../../fpsReferences';
 // import { convertIssuesMarkdownStringToSpan } from '../../fpsReferences';
 
-export function whyContent( ): null {
+export function whyContent( ): undefined {
 
-    return null;
+    return undefined;
 
     // let table : IHelpTable  = {
     //     heading: 'Why use Pivot Tiles',
@@ -65,7 +65,7 @@ export function whyContent( ): null {
 
 }
   
-// function createWhyRow( webpart: any, comments: any, repoLinks: IRepoLinks | null ) {
+// function createWhyRow( webpart: any, comments: any, repoLinks: IRepoLinks | undefined ) {
 
 //     let fullFocus = convertIssuesMarkdownStringToSpan( comments, repoLinks );
 

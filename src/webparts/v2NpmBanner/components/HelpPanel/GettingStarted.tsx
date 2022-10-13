@@ -11,9 +11,9 @@
  * @param repoLinks 
  * @returns 
  */
-export function gettingStartedContent(  ) : null {
+export function gettingStartedContent(  ) : undefined {
 
-    return null;
+    return undefined;
     
 
 }
