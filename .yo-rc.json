@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.15.2",
+    "libraryName": "pnpjs-v-2-upgrade-sample",
+    "libraryId": "042615c4-2dbb-4d3c-a1d2-bde06736cae6",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "pnpjs-v-2-upgrade-sample",
+    "solutionShortDescription": "pnpjs-v-2-upgrade-sample description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "v-2-npm-banner-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/v2NpmBanner/V2NpmBannerWebPart.js",
+          "manifest": "./src/webparts/v2NpmBanner/V2NpmBannerWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "V2NpmBannerWebPartStrings": "lib/webparts/v2NpmBanner/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+  }
+}

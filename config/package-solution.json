@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "pnpjs-v-2-upgrade-sample-client-side-solution",
+    "id": "042615c4-2dbb-4d3c-a1d2-bde06736cae6",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.15.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "pnpjs-v-2-upgrade-sample description"
+      },
+      "longDescription": {
+        "default": "pnpjs-v-2-upgrade-sample description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "pnpjs-v-2-upgrade-sample Feature",
+        "description": "The feature that activates elements of the pnpjs-v-2-upgrade-sample solution.",
+        "id": "8d90a12e-34dd-4710-8856-11b404e381e4",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/pnpjs-v-2-upgrade-sample.sppkg"
+  }
+}
