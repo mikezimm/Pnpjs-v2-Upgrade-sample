@@ -144,7 +144,8 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const fetch4Any: any = fetch4 as any;
-          return <div>{key}: { fetch4Any[ key ] }</div>;
+
+          return <div className={ styles.performanceRow }><div>{key}</div> <div>{ fetch4Any[ key ] }</div></div>;
         })
       }
 

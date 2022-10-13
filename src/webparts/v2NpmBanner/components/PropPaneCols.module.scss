@@ -11,7 +11,20 @@
       text-align: center;
     }
   }
-  
+
+  .performanceRow {
+    display: inline-block;
+
+    div:nth-child(1) { //This is the fetchLabel
+      min-width: 100px;
+    }
+
+    div:nth-child(1) { //This is the fetchProp
+      color: 'darkblue';
+      font-weight: 600;
+    }
+  }
+
   .button {
     // Our button
     padding: 10px; //Added this to give padding around buttons
