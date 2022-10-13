@@ -10,6 +10,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { DisplayMode } from '@microsoft/sp-core-library';
 import ReactJson from "react-json-view";
+import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './PropPaneCols.module.scss';
 
@@ -153,7 +154,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     return (
 
-      <div className={ styles.propPaneCols } style ={{ padding:'20px 50px',background: 'lightblue'}}>
+      <div className={ styles.propPaneCols } >
         <div>
           <div className={ styles.button } onClick={ () => this._clickFetchFields() } >Fetch</div>
           <div style={{ margin: '20px' }}>{ status }</div>
@@ -163,7 +164,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         </div>
 
         <div>
-          <h3>Fields from { this.props.listTitle }</h3>
+          <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ this.props.listTitle }'` }</h3>
           <div style={{paddingBottom: '15px' }}>found on this site:  {  this.props.webURL }</div>
           <table>
             { fieldRows }
