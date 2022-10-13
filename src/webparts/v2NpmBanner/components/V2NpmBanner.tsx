@@ -24,6 +24,7 @@ import { ensureUserInfo } from '@mikezimm/npmfunctions/dist/Services/Users/userS
 import { IPinMeState } from '../fpsReferences';
 
 import { IUser } from '../fpsReferences';
+import FieldPanel from './PropPaneColsClass';
 
 //Use this to add more console.logs for this component
 const urlParams : URLSearchParams = new URLSearchParams( window.location.search );
@@ -83,7 +84,17 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
      private _fetchWeb: string = this.props.webURL ? this.props.webURL : '';  //Caching fetch Id and Web as soon as possible to prevent race
      private _sourceUser: IUser = null;
 
-     private async _presetDrillListUser( webURL: string, email: string ) {
+     /**  _remoteListUserInfo
+      * 
+      * The purpose of this function is as follows:
+      * If the list's web is the same as the context web, then the user info comes from pageContext (via bannerProps object)
+      * If the list's web is on another site, then it has to get user Info (like Id) from a remote site collection.
+      * 
+      * @param webURL 
+      * @param email 
+      * @returns 
+      */
+     private async _remoteListUserInfo( webURL: string, email: string ) {  //Sample From Drilldown webpart:  _presetDrillListUser
       const webURLOnCurrentCollection = !webURL || webURL.toLowerCase().indexOf(this.props.context.pageContext.site.serverRelativeUrl.toLowerCase()) > -1 ? true : false;
       console.log('xxxxxxxxxx');
       if ( !webURL || ( !this._sourceUser && webURLOnCurrentCollection === true ) ) {
@@ -243,7 +254,13 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
     }
 
 
-    // public async _updatePerformance () {
+    /** _updatePerformanceOnClick
+     * 
+     * This sample function would simulate an async function when clicking the button.
+     * In this case the button only updates performance object.
+     * 
+     * 
+     */
     private _updatePerformanceOnClick( ): boolean {
 
       /**
@@ -315,6 +332,8 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
       );
     }
 
+    //  Placeholder sample in case it is needed in the future.
+    //  ======================================================
     // const FPSUser : IFPSUser = this.props.bannerProps.FPSUser;
     // const showSpecial = FPSUser.manageWeb === true || FPSUser.managePermissions === true || FPSUser.manageLists === true ? true : false;
     // const Special : ISpecialMessage = showSpecial === true ? specialUpgrade( 'warn', '/sites/TheSharePointHub/SitePages/DrillDown-WebPart-Upgrade---v2.aspx', ) : undefined;
@@ -337,7 +356,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
       contentPages={ this._contentPages }
       WebPartHelpElement={ this._webPartHelpElement }
 
-      // SpecialMessage = { Special }
+      // SpecialMessage = { Special } //  Placeholder sample in case it is needed in the future.
 
       updatePinState = { this._updatePinState.bind(this) }
       pinState = { this.state.pinState }
@@ -349,26 +368,15 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
         { devHeader }
         { Banner }
         <div className={styles.welcome}>
-          <img  onClick={ this._doSomething.bind(this)} alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
           <h2>Well done, {escape(userDisplayName)}!</h2>
           <div>{environmentMessage}</div>
-          <div>Web part property value: <strong>{escape(description)}</strong></div>
         </div>
         <div>
           <h3>Welcome to SharePoint Framework!</h3>
-          <p>
-            The SharePoint Framework (SPFx) is a extensibility model for Microsoft Viva, Microsoft Teams and SharePoint. It&#39;s the easiest way to extend Microsoft 365 with automatic Single Sign On, automatic hosting and industry standard tooling.
-          </p>
-          <h4>Learn more about SPFx development:</h4>
-          <ul className={styles.links}>
-            <li><a href="https://aka.ms/spfx" target="_blank" rel="noreferrer">SharePoint Framework Overview</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-graph" target="_blank" rel="noreferrer">Use Microsoft Graph in your solution</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-teams" target="_blank" rel="noreferrer">Build for Microsoft Teams using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-viva" target="_blank" rel="noreferrer">Build for Microsoft Viva Connections using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-store" target="_blank" rel="noreferrer">Publish SharePoint Framework applications to the marketplace</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-api" target="_blank" rel="noreferrer">SharePoint Framework API reference</a></li>
-            <li><a href="https://aka.ms/m365pnp" target="_blank" rel="noreferrer">Microsoft 365 Developer Community</a></li>
-          </ul>
+          <FieldPanel 
+            displayMode={this.props.displayMode}
+            webURL= { this.props.context.pageContext.web.absoluteUrl }
+            listTitle= 'Documents' />
         </div>
       </section>
     );

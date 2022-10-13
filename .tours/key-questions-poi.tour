@@ -54,13 +54,18 @@
     },
     {
       "file": "src/webparts/v2NpmBanner/components/IV2NpmBannerProps.ts",
+      "description": "## Another example of the [key: string]: update that may be incorrect\r\n\r\nSee Discord message thread here about it\r\n\r\nhttps://discordapp.com/channels/969580377549185054/1025251346116526180/1029963476501803018",
+      "line": 7
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/components/IV2NpmBannerProps.ts",
       "description": "## Verify proper use of extends for props and state",
       "line": 5
     },
     {
-      "file": "src/webparts/v2NpmBanner/components/IV2NpmBannerProps.ts",
-      "description": "## Another example of the [key: string]: update that may be incorrect\r\n\r\nSee Discord message thread here about it\r\n\r\nhttps://discordapp.com/channels/969580377549185054/1025251346116526180/1029963476501803018",
-      "line": 7
+      "file": "src/webparts/v2NpmBanner/CoreFPS/BuildExportProps.ts",
+      "description": "## Please explain this lint error:\r\n\r\nIt recommends making this a 'deconstructed object' like so... But still gives me an error on : any\r\n\r\n```typescript\r\n export function buildExportProps({ wpProps, wpInstanceID, currentWeb }: { wpProps: IV2NpmBannerWebPartProps; wpInstanceID: string; currentWeb: string; }, ): any {\r\n```\r\n",
+      "line": 74
     }
   ]
 }

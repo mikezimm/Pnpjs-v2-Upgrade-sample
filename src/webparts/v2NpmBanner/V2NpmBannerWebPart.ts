@@ -287,7 +287,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
        displayMode: this.displayMode,
        doHeadings: false } );  //doHeadings is currently only used in PageInfo so set to false.
 
-  const exportProps = buildExportProps( this.properties , this._wpInstanceID, this.context.pageContext.web.serverRelativeUrl );
+  const exportProps = buildExportProps({ wpProps: this.properties, wpInstanceID: this._wpInstanceID, currentWeb: this.context.pageContext.web.serverRelativeUrl });
 
   const bannerProps: IWebpartBannerProps = mainWebPartRenderBannerSetup( this.displayMode, this._beAReader, this._FPSUser, //repoLink.desc, 
       this.properties, repoLink, trickyEmails, exportProps, strings , this.domElement.clientWidth, this.context as any, this._modifyBannerTitle, 
