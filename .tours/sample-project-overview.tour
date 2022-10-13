@@ -1,0 +1,234 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Sample Project Overview",
+  "steps": [
+    {
+      "file": "README.md",
+      "description": "Copied in content from my baseline 1.15.2 sample project",
+      "line": 12
+    },
+    {
+      "file": "README.md",
+      "description": "After adding all new files, ran additional npm installs",
+      "line": 23
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/fpsReferences.ts",
+      "description": "fpsReferences.ts is my barrel file which has all the imports from my npm package:\r\n@mikezimm/npmFunctions/dist",
+      "line": 1
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/IV2NpmBannerWebPartProps.ts",
+      "description": "the imports listed above have to come directly from npm package and NOT through references.\r\nElse it does not work."
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/IV2NpmBannerWebPartProps.ts",
+      "description": "## Some imports used for various things including extending interfaces",
+      "line": 11,
+      "selection": {
+        "start": {
+          "line": 8,
+          "character": 1
+        },
+        "end": {
+          "line": 14,
+          "character": 75
+        }
+      }
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/IV2NpmBannerWebPartProps.ts",
+      "description": "these 'change' constants are used in the export/import properties funcitonality.  I import standard ones from my npm package and only add web part specific ones here.",
+      "line": 32
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/IV2NpmBannerWebPartProps.ts",
+      "description": "## This is my main web part props.  I bring in all the interfaces from my npm package with the extends.\r\nBut is this the right way?  It seems to have resolved the linting errors but I lost some typing ability.\r\n\r\nBasically, I want to start with all those interfaces and as is and then add ones sepcific to this web part here.\r\n\r\n```typescript\r\n   //Andrew mentioned I should use a property bag here instead.\r\n```\r\n\r\n## One other question...\r\nWhat would be correct way to 'modify' one of the types I want to use?"
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This is where I bring in all my typical imports\r\nI use ascii art comments because it makes the sections more visible in the vs code side panel.",
+      "line": 34
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## These functions are my home built version of preconfiguredEntries but on steroids.\r\nImprovements vs preconfiguredEntries:\r\n\r\n### I can 'Force' properties during web part load regardless of the prop pane:\r\n- even after the web part was installed.\r\n- on ALL my web parts, or have specific forced settings for just this web part.\r\n- on the web parts in a specific sitecollection/subsite url if I want.\r\n\r\n### I can apply preset properties during web part load ( if current prop is null||undefined ) \r\n- works well for new properties that may not have been in the previous version:\r\n- even after the web part was installed.\r\n- on ALL my web parts, or have specific forced settings for just this web part.\r\n- on the web parts in a specific sitecollection/subsite url if I want.\r\n",
+      "line": 54
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Some interfaces and imports I use during the onInit cycle.\r\n\r\nGenerally, this is where I start building properties that eventually get passed to the banner.\r\n\r\n1. The first row of imports are general things needed to pass into the banner props.\r\n\r\n2. The second row are imports used to create and update the baseline performance object I use.\r\n\r\n- The performance object let's me track very specific performance metrics on any step of the process and make available to me or the end user.\r\n\r\n- As an example, I can measure how long it takes to perform individual fetches such as getLists/Items/etc.\r\n\r\n- It can also track and display how long it takes to do specific functions which may be taxing...\r\n\r\n3. The third row are interfaces related to the performance object.\r\n\r\n",
+      "line": 70
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## These are style related functions I created that give me/end user special css capabilities I have created.\r\n\r\n- Later on, you will also see some property pane groups I import from my npm package that make it easy to cherry pick which ones I want in each web part.\r\n\r\n- I use the functions during the on-init for to minimize the glitchy effect of applying css after page load.\r\n\r\n- I also re-run them during property pane save and sometimes on demand from the banner component command buttons.",
+      "line": 83
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This is my own version of 'web part history'.\r\n\r\n- It tracks when someone updates and saves any props to this instance of the web part.\r\n\r\n- It shows property, person, timestamp and summary of new property\r\n- I can see who updated what properties after I have set up a web part or site... ie who broke it :)\r\n",
+      "line": 97
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This is the main banner component props.\r\n- The banner has evolved over time.\r\n- In the past, most of the code was copied into every web part.\r\n- Now I have most of it, including the react component, in my npm package\r\n\r\n- I'm sure there are cleaner, better ways to do it\r\n- but it is now very functional and easy for me to re-use in any web part.\r\n\r\n## I also have some imports which help create an object of 'exportable' props.\r\n- I use that to easily copy props from one instance of a web part to another.",
+      "line": 111
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Helper functions for creating an object of all required properties from main webpart class.\r\n\r\n- ie context, property changes, performance, some help panel components.\r\n- some imports are not used in this example but I keep them here in case I need to use them.",
+      "line": 120
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## All my re-usable property pane groups\r\n\r\n- Standard props for the banner\r\n- Easy to re-use specific functionality\r\n- Can selectively use or hide / 'not use' them in each web part",
+      "line": 139
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## FPSImportProps help import props\r\n\r\n- the earlier section handled the Exporting of web part properties.\r\n- this handles the import of properties via the property pane.\r\n- includes the prop pane group and functions needed to import/update web part props",
+      "line": 152
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This is a function used to block imported props\r\n\r\n- sometimes I want to specifically block some properties from being updated\r\n- this is part of how that is handled",
+      "line": 165
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This has special css I use to improve visiblity of property pane groups.\r\n\r\n- just makes the group title (accordion) a gray color to stando out",
+      "line": 178
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Some variables used in the banner functionality.",
+      "line": 202
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## _sitePresets are my version of preconfigured properties",
+      "line": 187
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## _beAReader function works with banner in this way\r\n\r\n- For settings that have permission based audience targetting...\r\n- It lets an owner simulate what it would be like for a visitor\r\n- Can see what options/content are visible to a person with just read permissions",
+      "line": 210
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Create basine performance object that is passed down to react component",
+      "line": 233
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Actually apply my preconfigured web part properties here",
+      "line": 235
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Create special object on window\r\n\r\n- used so I don't have to do same things repeatedly if I have more than one web part on the page that needs it",
+      "line": 241
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## One of my special styling options",
+      "line": 244
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## More special styling options\r\nThis updates the web part property style theme values that may have have been imported from presets.",
+      "line": 246
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This is what actually applies any css updates that need to be done in onInit",
+      "line": 253
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This is what updates the performance object after all the onInit steps",
+      "line": 255
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Performance example to track render function performance\r\n- Starts tracking 'renderWebPartStart'",
+      "line": 279,
+      "selection": {
+        "start": {
+          "line": 279,
+          "character": 64
+        },
+        "end": {
+          "line": 279,
+          "character": 82
+        }
+      }
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Performance example to track render function performance\r\n- ENDS tracking 'renderWebPartStart'",
+      "line": 302
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## These are all the things the banner needs to run during the main web part render function\r\n- gets passed down to main react component",
+      "line": 294
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This is one instance where I need to set context as any.\r\n- Possibly due to a miss-matched version I may reference in my npm library banner component.\r\n- I have a lot of imports in my npm library.  \r\n- Some dependancies are installed there\r\n- Some dependancies it uses are assumed to be installed in the web part already so it just refers to the import.\r\n- This causes the npm library to throw errors saying lot of things can't be found.  But works when imported into a real web part.",
+      "line": 319
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## _beAUserFunction was referenced earlier in the tour.\r\n- It is passed down into the banner and called when pressing a button.\r\n- It allows a person who can see features to look at the web part from eyes of person with just read permissions",
+      "line": 405
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## validateDocumentationUrl is used in banner\r\n- There is portion of the banner which has a panel with help info.\r\n- This is used to validate a web part property if it's required\r\n- In some web parts, it forces the page owner to put help contact and a link for their own support for the web part to work.",
+      "line": 428,
+      "selection": {
+        "start": {
+          "line": 424,
+          "character": 17
+        },
+        "end": {
+          "line": 424,
+          "character": 41
+        }
+      }
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This updates my internal history of the web part properties",
+      "line": 430
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This handles when someone passes in imported props",
+      "line": 438
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Handles if the user changes styling settings in property pane",
+      "line": 442
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## This updates some styling preferences\r\n- when the page owner selects pre-defined choices from a drop-down.",
+      "line": 447
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## I try to put all my prop pane groups in separate files\r\n\r\n- makes it easier to see big picture and move around if needed\r\n\r\n",
+      "line": 485
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "## Baseline web part history creation",
+      "line": 248
+    }
+  ]
+}
