@@ -210,7 +210,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
       // private _fetchInfo: any = null; // Originally IFetchInfo if it has it
 
 
-  protected onInit(): Promise<void> {
+  protected async onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
 
     return super.onInit().then(async _ => {

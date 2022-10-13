@@ -8,7 +8,7 @@ import { createAboutRow } from '../../fpsReferences';
 
 export const panelVersionNumber = '2022-07-22 -  1.0.0.01'; //Added to show in panel
 
-export function aboutTable( showRepoLinks: boolean ) {
+export function aboutTable( showRepoLinks: boolean ): { table: IHelpTable; } {
 
     const table : IHelpTable  = {
         heading: 'Version History',
@@ -29,7 +29,8 @@ export function aboutTable( showRepoLinks: boolean ) {
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
-    table.rows.push( createAboutRow('2022-07-22',"1.0.0.01","Initial Build", showRepoLinks === true ? repoLink : null ) );
+    table.rows.push( createAboutRow('2022-07-22',"1.0.0.01","Update _performance in main react component", showRepoLinks === true ? repoLink : null ) );
+    table.rows.push( createAboutRow('2022-07-22',"1.0.0.00","Initial Build", showRepoLinks === true ? repoLink : null ) );
     
     return { table: table };
 

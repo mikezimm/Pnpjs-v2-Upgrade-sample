@@ -27,6 +27,8 @@
 
 // export { saveViewAnalytics } from './CoreFPS/Analytics';
 
+export { IUser } from '@mikezimm/npmfunctions/dist/Services/Users/IUserInterfaces';
+
 /***
  *    db    db d888888b d888888b db      d888888b d888888b d888888b d88888b .d8888. 
  *    88    88 `~~88~~'   `88'   88        `88'   `~~88~~'   `88'   88'     88'  YP 
