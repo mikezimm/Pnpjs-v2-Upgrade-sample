@@ -15,7 +15,7 @@
  import { DisplayMode, } from '@microsoft/sp-core-library';
  import {
    IPropertyPaneConfiguration,
-   PropertyPaneTextField
+  //  PropertyPaneTextField
  } from '@microsoft/sp-property-pane';
  import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
  import { IReadonlyTheme } from '@microsoft/sp-component-base';
@@ -66,6 +66,7 @@
  
  import { webpartInstance, IFPSUser, getFPSUser, repoLink, trickyEmails } from './fpsReferences';
  import { createBasePerformanceInit, startPerformOp, updatePerformanceEnd } from './fpsReferences';
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
  import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformanceOps } from './fpsReferences';
  
  /***
@@ -113,10 +114,12 @@
  //  import { mainWebPartRenderBannerSetup } from './CoreFPS/WebPartRenderBanner';
  
  //For whatever reason, THIS NEEDS TO BE CALLED Directly and NOT through fpsReferences or it gives error.
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
  import { mainWebPartRenderBannerSetup, refreshPanelHTML } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/WebPartRenderBannerV2';
  
- import { visitorPanelInfo, } from './fpsReferences';
- import { createPerformanceTableVisitor } from './fpsReferences';
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//  import { visitorPanelInfo, } from './fpsReferences';
+//  import { createPerformanceTableVisitor } from './fpsReferences';
  
  /***
   *    d8888b. d8888b.  .d88b.  d8888b.       d888b  d8888b.  .d88b.  db    db d8888b. .d8888. 
@@ -186,7 +189,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
 
       private _sitePresets : ISitePreConfigProps = null;
       private _trickyApp = 'FPS Core115';
-      private _wpInstanceID: any = webpartInstance( this._trickyApp );
+      private _wpInstanceID: string = webpartInstance( this._trickyApp );
       private _FPSUser: IFPSUser = null;
     
       //For FPS Banner
@@ -391,7 +394,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
  *                                                                       
  */
 
-     private _beAUserFunction() {
+     private _beAUserFunction(): void {
       console.log('beAUserFunction:',   );
       if ( this.displayMode === DisplayMode.Edit ) {
         alert("'Be a regular user' mode is only available while viewing the page.  \n\nOnce you are out of Edit mode, please refresh the page (CTRL-F5) to reload the web part.");
@@ -417,7 +420,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
   
     //Copied from AdvancedPagePropertiesWebPart.ts
     // protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
-      protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any) {
+      protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): Promise<void> {
         super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
     
         try {
