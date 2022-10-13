@@ -13,13 +13,13 @@
   }
 
   .performanceRow {
-    display: inline-block;
+    display: flex;
 
     div:nth-child(1) { //This is the fetchLabel
-      min-width: 100px;
+      min-width: 70px;
     }
 
-    div:nth-child(1) { //This is the fetchProp
+    div:nth-child(2) { //This is the fetchProp
       color: 'darkblue';
       font-weight: 600;
     }
