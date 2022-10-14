@@ -4,9 +4,9 @@
 // import { IRepoLinks, repoLink, } from '../../fpsReferences';
 // import { convertIssuesMarkdownStringToSpan } from '../../fpsReferences';
 
-export function errorsContent( ): null {
+export function errorsContent( ): undefined {
 
-    return null;
+    return undefined;
     
     // let messageRows : IHelpTableRow = [];
 
@@ -24,8 +24,8 @@ export function errorsContent( ): null {
     // </div>;
 
 
-    // let thisPage = null;
-    // thisPage = <div className={ null }>
+    // let thisPage = undefined;
+    // thisPage = <div className={ undefined }>
 
     // { thisTable }
     // </div>;

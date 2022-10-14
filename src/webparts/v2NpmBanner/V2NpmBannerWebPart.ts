@@ -66,6 +66,7 @@
  
  import { webpartInstance, IFPSUser, getFPSUser, repoLink, trickyEmails } from './fpsReferences';
  import { createBasePerformanceInit, startPerformOp, updatePerformanceEnd } from './fpsReferences';
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
  import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformanceOps } from './fpsReferences';
  
  /***
@@ -113,10 +114,12 @@
  //  import { mainWebPartRenderBannerSetup } from './CoreFPS/WebPartRenderBanner';
  
  //For whatever reason, THIS NEEDS TO BE CALLED Directly and NOT through fpsReferences or it gives error.
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
  import { mainWebPartRenderBannerSetup, refreshPanelHTML } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/WebPartRenderBannerV2';
  
- import { visitorPanelInfo, } from './fpsReferences';
- import { createPerformanceTableVisitor } from './fpsReferences';
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//  import { visitorPanelInfo, } from './fpsReferences';
+//  import { createPerformanceTableVisitor } from './fpsReferences';
  
  /***
   *    d8888b. d8888b.  .d88b.  d8888b.       d888b  d8888b.  .d88b.  db    db d8888b. .d8888. 
@@ -176,6 +179,7 @@
  
  require('@mikezimm/npmfunctions/dist/Services/PropPane/GrayPropPaneAccordions.css');
 
+ 
 export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBannerWebPartProps> {
 
   private _isDarkTheme: boolean = false;
@@ -185,7 +189,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
 
       private _sitePresets : ISitePreConfigProps = null;
       private _trickyApp = 'FPS Core115';
-      private _wpInstanceID: any = webpartInstance( this._trickyApp );
+      private _wpInstanceID: string = webpartInstance( this._trickyApp );
       private _FPSUser: IFPSUser = null;
     
       //For FPS Banner
@@ -210,7 +214,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
       // private _fetchInfo: any = null; // Originally IFetchInfo if it has it
 
 
-  protected onInit(): Promise<void> {
+  protected async onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
 
     return super.onInit().then(async _ => {
@@ -309,7 +313,16 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
 
-                /**
+        /**
+         * Specific for this web part
+         * 
+         */
+        lists: [{
+          webURL: this.properties.webURL ? this.properties.webURL : this.context.pageContext.web.absoluteUrl,
+          listTitle: this.properties.listTitle,
+        }],
+
+        /**
          * Added FPS Banner settings
          */
 
@@ -390,7 +403,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
  *                                                                       
  */
 
-     private _beAUserFunction() {
+     private _beAUserFunction(): void {
       console.log('beAUserFunction:',   );
       if ( this.displayMode === DisplayMode.Edit ) {
         alert("'Be a regular user' mode is only available while viewing the page.  \n\nOnce you are out of Edit mode, please refresh the page (CTRL-F5) to reload the web part.");
@@ -416,7 +429,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
   
     //Copied from AdvancedPagePropertiesWebPart.ts
     // protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
-      protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any) {
+      protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): Promise<void> {
         super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
     
         try {
@@ -471,7 +484,23 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           },
           displayGroupsAsAccordion: true, //DONT FORGET THIS IF PROP PANE GROUPS DO NOT EXPAND
           groups: [
+
             WebPartInfoGroup( repoLink, 'Sample FPS Banner component :)' ),
+
+            {groupName: 'Npm Banner Web Part Sample',
+            isCollapsed: false,
+            groupFields: [
+              PropertyPaneTextField('webURL', {
+                label: 'webURL',
+                description: 'Leave blank for current site',
+              }),
+              PropertyPaneTextField('listTitle', {
+                label: 'listTitle',
+                description: 'Full Title of list or library',
+              }),]
+
+           },
+
             FPSPinMePropsGroup, //End this group  
 
             FPSBanner3VisHelpGroup( this.context, this.onPropertyPaneFieldChanged, this.properties ),

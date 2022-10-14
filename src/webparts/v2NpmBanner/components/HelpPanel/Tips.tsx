@@ -42,7 +42,7 @@ export const webParTips : any[] = [
 ];
 
 
-export function getRandomTip( ): any[] {
+export function getRandomTip( ): any {
 
   return webParTips[Math.floor(Math.random() * webParTips.length)];
 

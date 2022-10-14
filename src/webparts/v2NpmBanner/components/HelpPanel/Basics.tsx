@@ -6,9 +6,9 @@
 // import { IRepoLinks, repoLink, } from '../../fpsReferences';
 // import { convertIssuesMarkdownStringToSpan } from '../../fpsReferences';
 
-export function basicsContent(  ): null {
+export function basicsContent(  ): undefined {
 
-    return null;
+    return undefined;
     
 //     let messageRows : IHelpTableRow = [];
 
@@ -39,8 +39,8 @@ export function basicsContent(  ): null {
 //     </div>;
 
 
-//     let thisPage = null;
-//     thisPage = <div className={ null }>
+//     let thisPage = undefined;
+//     thisPage = <div className={ undefined }>
 
 //     { thisTable }
 //   </div>;

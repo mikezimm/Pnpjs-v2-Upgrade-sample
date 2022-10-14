@@ -27,6 +27,8 @@
 
 // export { saveViewAnalytics } from './CoreFPS/Analytics';
 
+export { IUser } from '@mikezimm/npmfunctions/dist/Services/Users/IUserInterfaces';
+
 /***
  *    db    db d888888b d888888b db      d888888b d888888b d888888b d88888b .d8888. 
  *    88    88 `~~88~~'   `88'   88        `88'   `~~88~~'   `88'   88'     88'  YP 
@@ -41,7 +43,7 @@
  export { sortStringArray, sortObjectArrayByStringKey, sortNumberArray, sortObjectArrayByNumberKey, sortKeysByOtherKey } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
  export { ISeriesSort, } from '@mikezimm/npmfunctions/dist/CSSCharts/ICSSCharts';
  export { getExpandColumns, getKeysLike, getSelectColumns } from '@mikezimm/npmfunctions/dist/Lists/getV1/getFunctions';
- 
+ export { getHighlightedText , } from '@mikezimm/npmfunctions/dist/Elements/HighlightedText';
  
  
  /***

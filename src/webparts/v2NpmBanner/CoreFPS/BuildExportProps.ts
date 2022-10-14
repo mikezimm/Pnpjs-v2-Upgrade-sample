@@ -44,12 +44,13 @@
 
 import { IV2NpmBannerWebPartProps, exportIgnoreProps, } from '../IV2NpmBannerWebPartProps';
 
-import { changeCustomHelp, changeExpando, changeBanner, changePageStyle, changefpsOptions2,  } from '../fpsReferences';
+import { changeCustomHelp, changeExpando, changePageStyle, changefpsOptions2,  } from '../fpsReferences';
 
 import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerUtility,  } from '../fpsReferences';
 
 import { changePinMe,  } from '../fpsReferences';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { importBlockProps } from '../IV2NpmBannerWebPartProps'
 
 /***
@@ -70,7 +71,7 @@ import { importBlockProps } from '../IV2NpmBannerWebPartProps'
 
 // import { } from '../IV2NpmBannerWebPartProps';
 
- export function buildExportProps( wpProps : IV2NpmBannerWebPartProps, wpInstanceID: string, currentWeb: string, ) {
+ export function buildExportProps( wpProps : IV2NpmBannerWebPartProps, wpInstanceID: string, currentWeb: string, ): any {
   const exportStructure :any = {};
     // let wpInstanceIDSplit = wpInstanceID.split('|');
     // exportStructure.wpInstanceID = [ wpInstanceIDSplit[0], wpInstanceIDSplit[1], wpInstanceIDSplit[3]].join(' ~ ');
