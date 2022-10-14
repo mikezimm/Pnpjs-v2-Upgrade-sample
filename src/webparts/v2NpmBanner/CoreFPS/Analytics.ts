@@ -28,7 +28,7 @@ import { DisplayMode, } from '@microsoft/sp-core-library';
   *                                             
   */
  
- export const analyticsList: string = "FPSPageInfoViews";
+ export const analyticsList: string = "WebPartTesting";
  export const analyticsWeb: string = "/sites/Templates/Analytics/";
  
  /***

@@ -71,7 +71,7 @@ import { importBlockProps } from '../IV2NpmBannerWebPartProps'
 
 // import { } from '../IV2NpmBannerWebPartProps';
 
- export function buildExportProps({ wpProps, wpInstanceID, currentWeb }: { wpProps: IV2NpmBannerWebPartProps; wpInstanceID: string; currentWeb: string; }, ): any {
+ export function buildExportProps( wpProps : IV2NpmBannerWebPartProps, wpInstanceID: string, currentWeb: string, ): any {
   const exportStructure :any = {};
     // let wpInstanceIDSplit = wpInstanceID.split('|');
     // exportStructure.wpInstanceID = [ wpInstanceIDSplit[0], wpInstanceIDSplit[1], wpInstanceIDSplit[3]].join(' ~ ');

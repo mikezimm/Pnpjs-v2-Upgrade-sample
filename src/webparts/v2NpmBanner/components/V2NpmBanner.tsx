@@ -195,17 +195,17 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
     *                                                                                         
     */
 
-    public componentDidUpdate(prevProps: IV2NpmBannerProps): void {
+    public componentDidUpdate(prevProps: IV2NpmBannerProps): boolean {
 
-    if ( fpsconsole === true ) console.log( `${consolePrefix} ~ componentDidUpdate` );
+      if ( fpsconsole === true ) console.log( `${consolePrefix} ~ componentDidUpdate` );
 
-    const refresh = this.props.displayMode !== prevProps.displayMode ? true : false;
+      const refresh = this.props.displayMode !== prevProps.displayMode ? true : false;
 
-    //refresh these privates when the prop changes warrent it
-    if ( refresh === true ) {
-      this._webPartHelpElement = getWebPartHelpElement( this.props.sitePresets );
-      this._contentPages = getBannerPages( this.props.bannerProps );
-    }
+      //refresh these privates when the prop changes warrent it
+      if ( refresh === true ) {
+        this._webPartHelpElement = getWebPartHelpElement( this.props.sitePresets );
+        this._contentPages = getBannerPages( this.props.bannerProps );
+      }
 
 
     /**
@@ -230,6 +230,12 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
       if ( fpsconsole === true ) console.log('React componentDidUpdate - this._performance:', JSON.parse(JSON.stringify(this._performance)) );
 
      }
+
+     if ( JSON.stringify( prevProps.lists) !== JSON.stringify( this.props.lists ) ) {
+      refresh === true;
+     }
+
+     return refresh;
 
     }
 
@@ -372,11 +378,11 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
           <div>{environmentMessage}</div>
         </div>
         <div>
-          <h3>Welcome to SharePoint Framework!</h3>
+          <h3>Test by updating webURL and ListName in the property pane :{escape(`)`)}</h3>
           <FieldPanel 
             displayMode={this.props.displayMode}
-            webURL= { this.props.context.pageContext.web.absoluteUrl }
-            listTitle= 'Documents' />
+            lists={this.props.lists}
+          />
         </div>
       </section>
     );

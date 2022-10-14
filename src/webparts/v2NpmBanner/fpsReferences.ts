@@ -43,7 +43,7 @@ export { IUser } from '@mikezimm/npmfunctions/dist/Services/Users/IUserInterface
  export { sortStringArray, sortObjectArrayByStringKey, sortNumberArray, sortObjectArrayByNumberKey, sortKeysByOtherKey } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
  export { ISeriesSort, } from '@mikezimm/npmfunctions/dist/CSSCharts/ICSSCharts';
  export { getExpandColumns, getKeysLike, getSelectColumns } from '@mikezimm/npmfunctions/dist/Lists/getV1/getFunctions';
- 
+ export { getHighlightedText , } from '@mikezimm/npmfunctions/dist/Elements/HighlightedText';
  
  
  /***

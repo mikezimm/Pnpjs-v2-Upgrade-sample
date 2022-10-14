@@ -44,6 +44,8 @@ export const WPPresetEverywhere : IPreConfigSettings = {
     props: {
         bannerTitle: "FPS Pnpjs V2 Upgrade Sample",
         defPinState: 'disabled',
+        webUrl: '',
+        listTitle: 'Documents',
     }
 };
 

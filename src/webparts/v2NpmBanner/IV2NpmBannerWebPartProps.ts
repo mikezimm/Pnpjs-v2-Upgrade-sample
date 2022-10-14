@@ -40,5 +40,8 @@ export interface IV2NpmBannerWebPartProps extends IMinBannerUIProps, IMinPinMePr
   [key: string]: any;
   
   description: string;
+  
+  webURL: string;
+  listTitle: string,
 
 }

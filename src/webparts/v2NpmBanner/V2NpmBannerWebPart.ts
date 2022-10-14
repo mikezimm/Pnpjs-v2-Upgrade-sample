@@ -15,7 +15,7 @@
  import { DisplayMode, } from '@microsoft/sp-core-library';
  import {
    IPropertyPaneConfiguration,
-  //  PropertyPaneTextField
+   PropertyPaneTextField
  } from '@microsoft/sp-property-pane';
  import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
  import { IReadonlyTheme } from '@microsoft/sp-component-base';
@@ -287,7 +287,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
        displayMode: this.displayMode,
        doHeadings: false } );  //doHeadings is currently only used in PageInfo so set to false.
 
-  const exportProps = buildExportProps({ wpProps: this.properties, wpInstanceID: this._wpInstanceID, currentWeb: this.context.pageContext.web.serverRelativeUrl });
+  const exportProps = buildExportProps( this.properties , this._wpInstanceID, this.context.pageContext.web.serverRelativeUrl );
 
   const bannerProps: IWebpartBannerProps = mainWebPartRenderBannerSetup( this.displayMode, this._beAReader, this._FPSUser, //repoLink.desc, 
       this.properties, repoLink, trickyEmails, exportProps, strings , this.domElement.clientWidth, this.context as any, this._modifyBannerTitle, 
@@ -313,7 +313,16 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
 
-                /**
+        /**
+         * Specific for this web part
+         * 
+         */
+        lists: [{
+          webURL: this.properties.webURL ? this.properties.webURL : this.context.pageContext.web.absoluteUrl,
+          listTitle: this.properties.listTitle,
+        }],
+
+        /**
          * Added FPS Banner settings
          */
 
@@ -475,7 +484,23 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           },
           displayGroupsAsAccordion: true, //DONT FORGET THIS IF PROP PANE GROUPS DO NOT EXPAND
           groups: [
+
             WebPartInfoGroup( repoLink, 'Sample FPS Banner component :)' ),
+
+            {groupName: 'Npm Banner Web Part Sample',
+            isCollapsed: false,
+            groupFields: [
+              PropertyPaneTextField('webURL', {
+                label: 'webURL',
+                description: 'Leave blank for current site',
+              }),
+              PropertyPaneTextField('listTitle', {
+                label: 'listTitle',
+                description: 'Full Title of list or library',
+              }),]
+
+           },
+
             FPSPinMePropsGroup, //End this group  
 
             FPSBanner3VisHelpGroup( this.context, this.onPropertyPaneFieldChanged, this.properties ),

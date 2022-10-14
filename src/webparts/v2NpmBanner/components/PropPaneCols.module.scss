@@ -3,44 +3,6 @@
 .propPaneCols {
   padding:20px 50px;
   background: #ececec;
-  display: flex;
-  justify-content: space-between;
-
-  table {
-    th {
-      text-align: start;
-      margin-bottom: 15px;
-      text-decoration: underline;
-      font-size: larger;
-    }
-
-    th:nth-child(1) { //This is the fetchLabel
-      color: darkred;
-    }
-
-    th:nth-child(2) { //This is the fetchLabel
-      color: darkgreen;
-      display: list-item;
-    }
-
-    td:nth-child(2) { //This is the fetchProp
-      display: list-item;
-    }
-
-  }
-
-  .performanceRow {
-    display: flex;
-
-    div:nth-child(1) { //This is the fetchLabel
-      min-width: 70px;
-    }
-
-    div:nth-child(2) { //This is the fetchProp
-      color: 'darkblue';
-      font-weight: 600;
-    }
-  }
 
   .button {
     // Our button
@@ -83,5 +45,70 @@
     color: $ms-color-white;
   }
 
+  .performanceRow {
+    display: flex;
+
+    div:nth-child(1) { //This is the fetchLabel
+      min-width: 70px;
+    }
+
+    div:nth-child(2) { //This is the fetchProp
+      color: 'darkblue';
+      font-weight: 600;
+    }
+  }
+
 }
 
+.colsResults {
+  display: flex;
+  justify-content: space-between;
+
+  table {
+    border-spacing: 5px;
+    th {
+      text-align: start;
+      margin-bottom: 15px;
+      text-decoration: underline;
+      font-size: larger;
+      width: 200px;
+    }
+
+    tr {
+      margin-bottom: 15px;
+    }
+    th:nth-child(1) { //This is the fetchLabel
+      color: darkred;
+    }
+
+    th:nth-child(2) { //This is the fetchLabel
+      color: darkgreen;
+      display: list-item;
+    }
+
+    td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 20px;
+    }
+
+    td:nth-child(1) { //This is the fetchProp
+      max-width: 150px;
+    }
+    td:nth-child(2) { //This is the fetchProp
+      display: list-item;
+      max-width: 150px;
+    }
+    td:nth-child(3) { //This is the fetchProp
+      max-width: 130px;
+      cursor: pointer;
+    }
+    td:nth-child(4) { //This is the fetchProp
+      max-width: 150px;
+    }
+
+  }
+
+
+}
