@@ -124,6 +124,16 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     if ( JSON.stringify( this.props.lists) !== JSON.stringify( prevProps.lists) ) {
       refresh = true;
+
+      // Eventually add this and auto load?
+      // setTimeout(() => {
+      //   if (this.LastSearch === NewSearch ) {
+      //     this._onSearchChange( NewSearch );
+      //   } else {
+  
+      //   }
+      // }, 1000);
+
       this.setState({
         status: 'Not started',
         fetch: false,
