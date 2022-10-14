@@ -19,7 +19,7 @@
     },
     {
       "file": "src/webparts/v2NpmBanner/IV2NpmBannerWebPartProps.ts",
-      "description": "the imports listed above have to come directly from npm package and NOT through references.\r\nElse it does not work."
+      "description": "the imports listed above have to come directly from npm package and NOT through fpsReferences.\r\nElse it does not work."
     },
     {
       "file": "src/webparts/v2NpmBanner/IV2NpmBannerWebPartProps.ts",
@@ -38,7 +38,7 @@
     },
     {
       "file": "src/webparts/v2NpmBanner/IV2NpmBannerWebPartProps.ts",
-      "description": "these 'change' constants are used in the export/import properties funcitonality.  I import standard ones from my npm package and only add web part specific ones here.",
+      "description": "## these 'change' constants are used in the export/import properties funcitonality.  \r\n\r\nI import standard ones from my npm package and only add web part specific ones here.",
       "line": 32
     },
     {
