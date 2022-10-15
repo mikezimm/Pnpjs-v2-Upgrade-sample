@@ -373,7 +373,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           const allFields : IMinField[] = await thisWebInstance.lists.getByTitle(listTitle).fields.orderBy("Title", true)();
           const FilteredFields : IMinField[] = allFields.filter( field => field.Hidden !== true && field.Sealed !== true );
 
-          const DefaultSelected: string[] = [ 'ID', 'Title', 'Editor', 'Modified', 'FileLeafRef', '_UIVersionString' ];
+          const DefaultSelected: string[] = [ 'ID', 'Editor', 'Modified', 'Title', 'FileLeafRef', '_UIVersionString' ];
           const SelectedFields: IMinField[] = [];
           const SelectedNames: string[] = [];
 
@@ -384,7 +384,11 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             }).join(' || ').toLocaleLowerCase();
 
 
-            if ( DefaultSelected.indexOf(field.InternalName) > -1 ) { SelectedFields.push( field ); SelectedNames.push( field.InternalName ) ; }
+            if ( DefaultSelected.indexOf(field.InternalName) > -1 ) { 
+              field.isKeeper = true;
+              field.isSelected = true;
+              SelectedFields.push( field ); 
+              SelectedNames.push( field.InternalName ) ; }
             // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName} 
             //     || Choices:${field.Choices} || Formula:${field.Formula} || DefaultValue:${field.DefaultValue}`.toLocaleLowerCase();
           });

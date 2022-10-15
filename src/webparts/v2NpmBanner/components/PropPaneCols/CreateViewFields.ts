@@ -48,6 +48,7 @@ export function createThisViewField( field: IMinField ) : IViewField {
       break;
 
     case FieldTypes.File: 
+      returnField.displayName = 'File';
       returnField.linkPropertyName = 'FileRef';
       returnField.maxWidth = 200;
       break;
@@ -69,6 +70,11 @@ export function createThisViewField( field: IMinField ) : IViewField {
     returnField.minWidth = 10;
     returnField.maxWidth = 30;
     returnField.linkPropertyName = 'goToPropsLink';
+
+  } else if ( field.InternalName === '_UIVersionString' ) {
+    returnField.displayName = 'Vers';
+    returnField.minWidth = 6;
+    returnField.maxWidth = 20;
   }
 
   return returnField;
