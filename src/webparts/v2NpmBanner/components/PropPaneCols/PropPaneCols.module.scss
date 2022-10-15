@@ -7,7 +7,7 @@
   display: grid;
   grid-gap: 2em;
 
-  .fetchElement, .designElement{
+  .fetchPane, .designPane{
     grid-column: 1;
     grid-row: 1;
   }
@@ -90,7 +90,7 @@
 
 }
 
-.designElement {
+.designPane {
   th {
     width: 50px;
   }
@@ -139,7 +139,7 @@
 
     th:nth-child(3) { //This is the fetchLabel
       color: darkgreen;
-      display: list-item;
+
     }
 
     td {
@@ -150,7 +150,7 @@
     }
 
     td:nth-child(1) { //This is the fetchProp
-      max-width: 20px;
+      max-width: 25px;
     }
     td:nth-child(2) { //This is the fetchProp
       max-width: 150px;

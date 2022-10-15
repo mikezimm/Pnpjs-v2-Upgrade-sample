@@ -1,12 +1,14 @@
 import * as React from 'react';
 
-import { IWeb, Web, IFieldInfo } from "@pnp/sp/presets/all";
+import { IWeb, Web, IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
 
 import {  SearchBox, ISearchBoxStyles, } from 'office-ui-fabric-react/lib/SearchBox';
 import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, IPerformanceOp } from "../../fpsReferences";
+
+import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
 
 import { getHighlightedText , getHelpfullErrorV2 } from '../../fpsReferences';
 import "@pnp/sp/webs";
@@ -16,8 +18,8 @@ import ReactJson from "react-json-view";
 // import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './PropPaneCols.module.scss';
-import { divProperties } from 'office-ui-fabric-react';
-import { head } from 'lodash';
+import { IViewField } from '@pnp/spfx-controls-react';
+import { createThisViewField } from './CreateViewFields';
 
 // import { IContentsFieldInfo, IFieldBucketInfo } from './IFieldComponentTypes';
 
@@ -39,7 +41,10 @@ export interface IMinField extends IFieldInfo {
   isSelected: boolean;
   isKeeper: boolean;
   Choices?: string[];
+  DisplayFormat?: 0 | 1; //  DisplayFormat 0 === Date, 1 === Date and Time
   Formula?: string;
+  NumberOfLines?: number;
+  MaxLength?: number;
 }
 
 export interface IMinListProps {
@@ -198,7 +203,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     const fetchButton: JSX.Element = <div className={ styles.button } onClick={ () => this._clickFetchFields() } >Fetch</div>;
 
-    const fetchButtonInfo : JSX.Element = <div className={ [ styles.fetchElement, this.state.designMode === true ? styles.hideLeft : styles.showLeft ].join(' ') }>
+    const fetchPane : JSX.Element = <div className={ [ styles.fetchPane, this.state.designMode === true ? styles.hideLeft : styles.showLeft ].join(' ') }>
       { fetchButton }
       <div style={{ margin: '20px', fontWeight: 'bolder', color: status.indexOf('Success') > -1 ? 'darkgreen': status.indexOf('Failed') > -1 ? 'red': '' }}>{ status }</div>
       <div style={{ margin: '20px' }}>{ fetchPerformance }</div>
@@ -222,7 +227,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
                   { siteLink }
                   <p style={{ fontWeight: 'bold' }}>{messages[0]}</p>
                   <p style={{ fontWeight: 'bold', color: 'red' }}>{ messages[1] }</p>
-                  { fetchButtonInfo }
+                  { fetchPane }
                 </div>);
 
     } else if ( lists.length === 0 ) {
@@ -248,14 +253,33 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
         }
 
-        fieldRows = this._buildMainFieldTable( filtered, designMode, heading, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind( this ) )
+        fieldRows = this._buildMainFieldTable( filtered, designMode, heading, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) )
 
       }
 
-      let designList: JSX.Element = null;
+      const DesignCommands: JSX.Element = <Accordion 
+        title={ `Build Commands` }
+        showAccordion={ false }
+        animation= { 'TopDown' }
+        contentStyles={ {height: '70px'} }
+        content = { `Command Builder goes here` }
+      />;
+
+      const DesignViews: JSX.Element = <Accordion 
+        title={ `Build Views` }
+        showAccordion={ false }
+        animation= { 'TopDown' }
+        contentStyles={ {height: ''} }
+        content = { this._createViewBuilder() }
+      />;
+
+      let designPane: JSX.Element = null;
       if ( designMode === true ) {
         const selectedRows: any[] = this._buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
-        designList = <div className={ styles.designElement }>
+        designPane = <div className={ styles.designPane }>
+            { DesignCommands }
+            { DesignViews }
+            <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Arrows</b> to move to Top or Bottom</div>
             <table>
               { selectedRows }
             </table>
@@ -288,12 +312,13 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       return (
   
         <div className={ [ styles.propPaneCols, styles.colsResults ].join( ' ' ) } >
-          { fetchButtonInfo }
-          { designList }
+          { fetchPane }
+          { designPane }
           <div className={ styles.rightSide }>
             <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }{DesignToggle}</h3>
             { siteLink }
             <div style={{paddingBottom: '15px' }}>{ FieldSearchBox }</div>
+            <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Add</b> to add to Top of list, Click <b>Type</b> to filter on column type</div>
             <table className={ styles.fieldTable }>
               { fieldRows }
             </table>
@@ -303,6 +328,25 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       );
 
     }
+
+  }
+
+  private _createViewBuilder() : JSX.Element {
+
+    const viewFields: IViewField[] = [];
+
+    this.state.selected.map( field => {
+      if ( field.isKeeper === true ) {
+        viewFields.push( createThisViewField( field ) );
+      }
+    });
+
+    const viewElement: JSX.Element = <div>
+
+      <ReactJson src={ viewFields } name={ 'viewFields' } collapsed={ true } displayDataTypes={ false } displayObjectSize={ false } 
+          enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+    </div>;
+    return viewElement;
 
   }
 
@@ -328,15 +372,28 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           const thisWebInstance : IWeb = Web(fetchWebURL);
           const allFields : IMinField[] = await thisWebInstance.lists.getByTitle(listTitle).fields.orderBy("Title", true)();
           const FilteredFields : IMinField[] = allFields.filter( field => field.Hidden !== true && field.Sealed !== true );
+
+          const DefaultSelected: string[] = [ 'ID', 'Title', 'Editor', 'Modified', 'FileLeafRef', '_UIVersionString' ];
+          const SelectedFields: IMinField[] = [];
+          const SelectedNames: string[] = [];
+
           FilteredFields.map( field => {
             field.searchTextLC = ['Title', 'InternalName', 'TypeDisplayName', 'Choices', 'Formula', 'DefaultValue' ].map( prop => {
               const anyField : any = field;
               return anyField[ prop ] ? `${prop}:${anyField[ prop ]}` : '';
             }).join(' || ').toLocaleLowerCase();
 
+
+            if ( DefaultSelected.indexOf(field.InternalName) > -1 ) { SelectedFields.push( field ); SelectedNames.push( field.InternalName ) ; }
             // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName} 
             //     || Choices:${field.Choices} || Formula:${field.Formula} || DefaultValue:${field.DefaultValue}`.toLocaleLowerCase();
           });
+
+          const SortedSelectedFields: IMinField[] = [];
+          DefaultSelected.map( name => {
+            const idx: number = SelectedNames.indexOf( name ) ;
+            if ( idx > -1 ) { SortedSelectedFields.push( SelectedFields[ idx ] ); }
+          })
           fetchLength = FilteredFields.length;
 
           this._updatePerformance( 'fetch4', 'update', '', fetchLength );
@@ -344,7 +401,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           this.setState({
             listFields: FilteredFields,
             filtered: FilteredFields,
-            selected: [],
+            selected: SortedSelectedFields,
             status: 'Success - Fetched!',
             fetched: true,
             searchText: '',
@@ -383,12 +440,21 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this.setState({ designMode: designMode })
   }
 
+  
+  private _onTypeClick ( field: IMinField ): void {
+    const filterType : string = this.state.searchProp ? '' : field.TypeDisplayName;
+    this._onSearchChange( '' , filterType );
+  }
+
   private _onSelectItem = ( ev: React.MouseEvent<HTMLElement>  ): void => {
     const target: any = ev.target;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+
     const itemName: string = target.dataset.fieldname;
     let thisSelected : IMinField = null;
-    
+
     this.state.listFields.map( field => {  //Find selected item
       if ( field.InternalName === itemName ) { 
         field.isSelected = field.isSelected === true ? false : true;
@@ -406,7 +472,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     if ( selectedIdx === -1 ) {  //Add to selected list
       
-      if ( shiftKey === true ) {
+      if ( ctrlKey === true ) {
         newSelected = [ ...[ thisSelected ], ...this.state.selected ];
       } else {
         newSelected = [ ...this.state.selected, ...[ thisSelected ] ];
@@ -421,10 +487,6 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this.setState({ selected: newSelected });
   };
 
-  private _onTypeClick ( field: IMinField ): void {
-    const filterType : string = this.state.searchProp ? '' : field.TypeDisplayName;
-    this._onSearchChange( '' , filterType );
-  }
 
   private _onTextSearch ( input: any, text: string = '' ): void {
     const SearchValue : string = typeof input === 'string' ? input : input && input.target && input.target.value ? input.target.value : '';
@@ -499,10 +561,12 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   
   private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
     const target: any = ev.target;
-    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
     const itemName: string = target.dataset.fieldname;
+
     // let thisSelected : IMinField = null;
-    
     const newSelected: IMinField [] = [ ];
     this.state.selected.map( field => {  //Find selected item
       if ( field.InternalName === itemName ) { 
@@ -519,6 +583,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
     const itemName: string = target.dataset.fieldname;
     const direction: string = target.dataset.direction;
+    const ctrlKey : boolean = ev.ctrlKey;
 
     const { selected } = this.state;
     let idx: number = -1;
@@ -534,7 +599,16 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     } else {
       let newSelected: IMinField [] = [];
 
-      if ( direction === 'up' ) {
+      if ( ctrlKey === true ) {
+        if ( direction === 'up' ) newSelected.push( currentPick );
+
+        selected.map( ( field:IMinField, i: number) => {  //Find selected item
+          if ( field.InternalName !== itemName ) {  newSelected.push( field ) ; }
+        });
+
+        if ( direction === 'down' ) newSelected.push( currentPick );
+
+      } else if ( direction === 'up' ) {
         const part1: IMinField[] = idx === 1 ? [] : selected.slice( 0, idx - 1  );
         const part2: IMinField[] = idx === selected.length -1 ? [] :selected.slice( idx + 1 );
         newSelected = [ ...part1, ...[ currentPick ], ...[ selected[ idx - 1 ] ]  , ...part2 ];
