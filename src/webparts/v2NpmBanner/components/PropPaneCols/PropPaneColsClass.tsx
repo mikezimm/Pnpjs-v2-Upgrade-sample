@@ -61,7 +61,7 @@ export interface IFieldPanelState {
   searchProp: string;
   listFields: IMinField[];
   filtered: IMinField[];
-  picked: IMinField[];
+  selected: IMinField[];
   listIdx: number;
   errMessage: string;
   designMode: boolean;
@@ -114,7 +114,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       searchProp: '',
       listFields: [],
       filtered: [],
-      picked: [],
+      selected: [],
       listIdx: this.props.lists.length > 0 ? 0 : null,
       errMessage: '',
       designMode: false,
@@ -153,7 +153,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         searchProp: '',
         listFields: [],
         filtered: [],
-        picked: [],
+        selected: [],
         listIdx: this.props.lists.length > 0 ? 0 : null,
         errMessage: '', 
       });
@@ -248,16 +248,16 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
         }
 
-        fieldRows = this._buildMainFieldTable( filtered, designMode, heading, searchProp, searchText, this._onSelectItem, this._onTypeClick )
+        fieldRows = this._buildMainFieldTable( filtered, designMode, heading, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind( this ) )
 
       }
 
       let designList: JSX.Element = null;
       if ( designMode === true ) {
-        const pickedRows: any[] = this._buildSelectedFieldTable( this.state.picked, this._onKeeperClick, this._onDirectionClick );
+        const selectedRows: any[] = this._buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
         designList = <div className={ styles.designElement }>
             <table>
-              { pickedRows }
+              { selectedRows }
             </table>
           </div>
       }
@@ -344,7 +344,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           this.setState({
             listFields: FilteredFields,
             filtered: FilteredFields,
-            picked: [],
+            selected: [],
             status: 'Success - Fetched!',
             fetched: true,
             searchText: '',
@@ -397,28 +397,28 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       }
     });
 
-    let pickedIdx : number = -1;
-    this.state.picked.map( ( pick: IMinField, idx : number ) => {
-      if ( pick.InternalName === thisSelected.InternalName ) pickedIdx = idx;
+    let selectedIdx : number = -1;
+    this.state.selected.map( ( pick: IMinField, idx : number ) => {
+      if ( pick.InternalName === thisSelected.InternalName ) selectedIdx = idx;
     });
 
-    let newPicked: IMinField [] = [];
+    let newSelected: IMinField [] = [];
 
-    if ( pickedIdx === -1 ) {  //Add to picked list
+    if ( selectedIdx === -1 ) {  //Add to selected list
       
       if ( shiftKey === true ) {
-        newPicked = [ ...[ thisSelected ], ...this.state.picked ];
+        newSelected = [ ...[ thisSelected ], ...this.state.selected ];
       } else {
-        newPicked = [ ...this.state.picked, ...[ thisSelected ] ];
+        newSelected = [ ...this.state.selected, ...[ thisSelected ] ];
       }
 
-    } else { //Remove from picked list
-      newPicked = this.state.picked.filter( (field) => { return field.InternalName !== thisSelected.InternalName } )
+    } else { //Remove from selected list
+      newSelected = this.state.selected.filter( (field) => { return field.InternalName !== thisSelected.InternalName } )
     }
 
-    console.log('_onSelectItem:', itemName, target, newPicked );
+    console.log('_onSelectItem:', itemName, target, newSelected );
 
-    this.setState({ picked: newPicked });
+    this.setState({ selected: newSelected });
   };
 
   private _onTypeClick ( field: IMinField ): void {
@@ -485,7 +485,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
         <td>{ getHighlightedText (field.Title , searchText ) }</td>
         <td title={field.InternalName}>{ getHighlightedText (field.InternalName , searchText ) }</td>
-        <td onClick={ () => onTypeClick( field ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
+        <td onClick={ () => onTypeClick( field, this ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
         <td title={detailValue}>{ getHighlightedText (detailValue , searchText ) }</td>
       </tr>;
       fieldRows.push( row );
@@ -503,15 +503,15 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     const itemName: string = target.dataset.fieldname;
     // let thisSelected : IMinField = null;
     
-    const newPicked: IMinField [] = [ ];
-    this.state.picked.map( field => {  //Find selected item
+    const newSelected: IMinField [] = [ ];
+    this.state.selected.map( field => {  //Find selected item
       if ( field.InternalName === itemName ) { 
         field.isKeeper = field.isKeeper === true ? false : true;
       }
-      newPicked.push( field );
+      newSelected.push( field );
     });
 
-    this.setState({ picked: newPicked });
+    this.setState({ selected: newSelected });
   };
 
   private _onDirectionClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
@@ -520,33 +520,33 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     const itemName: string = target.dataset.fieldname;
     const direction: string = target.dataset.direction;
 
-    const { picked } = this.state;
+    const { selected } = this.state;
     let idx: number = -1;
 
-    picked.map( ( field:IMinField, i: number) => {  //Find selected item
+    selected.map( ( field:IMinField, i: number) => {  //Find selected item
       if ( field.InternalName === itemName ) {  idx = i; }
     });
-    const currentPick = picked[idx];
+    const currentPick = selected[idx];
 
     if ( idx === - 1 ){
       alert('Something went wrong :(');
 
     } else {
-      let newPicked: IMinField [] = [];
+      let newSelected: IMinField [] = [];
 
       if ( direction === 'up' ) {
-        const part1: IMinField[] = idx === 1 ? [] : picked.slice( 0, idx - 1  );
-        const part2: IMinField[] = idx === picked.length -1 ? [] :picked.slice( idx + 1 );
-        newPicked = [ ...part1, ...[ currentPick ], ...[ picked[ idx - 1 ] ]  , ...part2 ];
+        const part1: IMinField[] = idx === 1 ? [] : selected.slice( 0, idx - 1  );
+        const part2: IMinField[] = idx === selected.length -1 ? [] :selected.slice( idx + 1 );
+        newSelected = [ ...part1, ...[ currentPick ], ...[ selected[ idx - 1 ] ]  , ...part2 ];
 
       } else {
-        const part1: IMinField[] = idx === 0 ? [] : picked.slice( 0, idx );
-        const part2: IMinField[] = idx === picked.length -2 ? [] : picked.slice( idx + 2 );
-        newPicked = [ ...part1, ...[ picked[ idx + 1 ] ], ...[ currentPick ]  , ...part2 ];
+        const part1: IMinField[] = idx === 0 ? [] : selected.slice( 0, idx );
+        const part2: IMinField[] = idx === selected.length -2 ? [] : selected.slice( idx + 2 );
+        newSelected = [ ...part1, ...[ selected[ idx + 1 ] ], ...[ currentPick ]  , ...part2 ];
 
       }
 
-      this.setState({ picked: newPicked });
+      this.setState({ selected: newSelected });
     }
   };
 

@@ -5,6 +5,7 @@
   background: #ececec;
 
   display: grid;
+  grid-gap: 2em;
 
   .fetchElement, .designElement{
     grid-column: 1;
@@ -89,9 +90,27 @@
 
 }
 
+.designElement {
+  th {
+    width: 50px;
+  }
+
+  th:nth-child(2) { //This is the fetchLabel
+    min-width: 150px;
+    white-space: nowrap;
+
+  }
+  
+  th:nth-child(3) { //This is the fetchLabel
+    min-width: 75px;
+    white-space: nowrap;
+  }
+
+}
+
 .colsResults {
-  display: flex;
-  justify-content: space-between;
+  // display: flex;
+  // justify-content: space-between;
 
   table {
     border-spacing: 5px;
@@ -108,20 +127,6 @@
 
   }
 
-  .designElement {
-    th {
-      width: 50px;
-    }
-
-    th:nth-child(2) { //This is the fetchLabel
-      width: 150px;
-    }
-    
-    th:nth-child(3) { //This is the fetchLabel
-      width: 75px;
-    }
-
-  }
 
   .fieldTable {
     th {
