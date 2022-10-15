@@ -3,10 +3,12 @@ import * as React from 'react';
 import { IWeb, Web, IFieldInfo } from "@pnp/sp/presets/all";
 
 import {  SearchBox, ISearchBoxStyles, } from 'office-ui-fabric-react/lib/SearchBox';
+import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
+import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, IPerformanceOp } from "../fpsReferences";
+import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, IPerformanceOp } from "../../fpsReferences";
 
-import { getHighlightedText , getHelpfullErrorV2 } from '../fpsReferences';
+import { getHighlightedText , getHelpfullErrorV2 } from '../../fpsReferences';
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { DisplayMode } from '@microsoft/sp-core-library';
@@ -15,6 +17,7 @@ import ReactJson from "react-json-view";
 
 import styles from './PropPaneCols.module.scss';
 import { divProperties } from 'office-ui-fabric-react';
+import { head } from 'lodash';
 
 // import { IContentsFieldInfo, IFieldBucketInfo } from './IFieldComponentTypes';
 
@@ -33,6 +36,8 @@ export type IValidTemplate = 100 | 101;
 
 export interface IMinField extends IFieldInfo {
   searchTextLC: string;
+  isSelected: boolean;
+  isKeeper: boolean;
   Choices?: string[];
   Formula?: string;
 }
@@ -40,22 +45,26 @@ export interface IMinField extends IFieldInfo {
 export interface IMinListProps {
   webURL: string;
   listTitle: string,
+
 }
 
 export interface IFieldPanelProps {
   displayMode: DisplayMode;
   lists: IMinListProps[];
+  disableDesign?: boolean; //Default is false
 }
 
 export interface IFieldPanelState {
   status: string;
-  fetch: boolean,
+  fetched: boolean,
   searchText: string;
   searchProp: string;
-  listFields: IMinField[],
-  filtered: IMinField[],
-  listIdx: number,
-  errMessage: string
+  listFields: IMinField[];
+  filtered: IMinField[];
+  picked: IMinField[];
+  listIdx: number;
+  errMessage: string;
+  designMode: boolean;
 }
 
 export default class FieldPanel extends React.Component< IFieldPanelProps, IFieldPanelState > {
@@ -100,13 +109,16 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     this.state = {
       status: 'Not started',
-      fetch: false,
+      fetched: false,
       searchText: '',
       searchProp: '',
       listFields: [],
       filtered: [],
+      picked: [],
       listIdx: this.props.lists.length > 0 ? 0 : null,
       errMessage: '',
+      designMode: false,
+
     };
   
     this._performance.ops.superOnInit = updatePerformanceEnd( this._performance.ops.superOnInit, true,666 );
@@ -136,11 +148,12 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       this.setState({
         status: 'Not started',
-        fetch: false,
+        fetched: false,
         searchText: '',
         searchProp: '',
         listFields: [],
         filtered: [],
+        picked: [],
         listIdx: this.props.lists.length > 0 ? 0 : null,
         errMessage: '', 
       });
@@ -152,8 +165,8 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
   public render(): React.ReactElement<IFieldPanelProps> {
 
-    const { lists, } = this.props;
-    const { status, filtered, listFields, } = this.state;
+    const { lists, disableDesign } = this.props;
+    const { status, filtered, listFields, designMode, searchProp, searchText, } = this.state;
       
     const fetch4: IPerformanceOp = this._performance.ops.fetch4 ;
   
@@ -185,7 +198,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     const fetchButton: JSX.Element = <div className={ styles.button } onClick={ () => this._clickFetchFields() } >Fetch</div>;
 
-    const fetchButtonInfo : JSX.Element = <div>
+    const fetchButtonInfo : JSX.Element = <div className={ [ styles.fetchElement, this.state.designMode === true ? styles.hideLeft : styles.showLeft ].join(' ') }>
       { fetchButton }
       <div style={{ margin: '20px', fontWeight: 'bolder', color: status.indexOf('Success') > -1 ? 'darkgreen': status.indexOf('Failed') > -1 ? 'red': '' }}>{ status }</div>
       <div style={{ margin: '20px' }}>{ fetchPerformance }</div>
@@ -222,7 +235,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       const { listTitle, } = lists[this.state.listIdx] ;
 
-      const fieldRows : any [] = [];
+      let fieldRows : JSX.Element [] = [];
 
       if ( listFields.length > 0 ) {
         let heading: string = 'Description';
@@ -235,39 +248,19 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
         }
 
-        fieldRows.push( 
-          <tr>
-            <th>Title</th>
-            <th>InternalName</th>
-            <th>Type</th>
-            <th>{heading}</th>
-          </tr>
-        );
+        fieldRows = this._buildMainFieldTable( filtered, designMode, heading, searchProp, searchText, this._onSelectItem, this._onTypeClick )
 
-        filtered.map( ( field: IMinField ) => {
-
-          let detailValue = field.Description;
-
-          if ( this.state.searchProp === 'Choice' || ( !detailValue && field.TypeAsString === 'Choice' ) ) {
-            detailValue = JSON.stringify(field.Choices);
-
-          } else if ( this.state.searchProp === 'Calculated' || ( !detailValue && field.Formula ) ) {
-            detailValue = JSON.stringify(field.Formula);
-            detailValue = detailValue.slice(1, detailValue.length - 1);  //Remove extra quotes around formula
-
-          } else { detailValue = field.Description; }
-
-          const row = <tr>
-            <td>{ getHighlightedText (field.Title , this.state.searchText ) }</td>
-            <td title={field.InternalName}>{ getHighlightedText (field.InternalName , this.state.searchText ) }</td>
-            <td onClick={ () => this._onTypeClick( field ) } >{ getHighlightedText (field.TypeDisplayName , this.state.searchText ) }</td>
-            <td title={detailValue}>{ getHighlightedText (detailValue , this.state.searchText ) }</td>
-          </tr>;
-          fieldRows.push( row );
-
-        });
       }
 
+      let designList: JSX.Element = null;
+      if ( designMode === true ) {
+        const pickedRows: any[] = this._buildSelectedFieldTable( this.state.picked, this._onKeeperClick, this._onDirectionClick );
+        designList = <div className={ styles.designElement }>
+            <table>
+              { pickedRows }
+            </table>
+          </div>
+      }
 
       const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { width: 200 } };
 
@@ -282,19 +275,26 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         onChange={ this._onTextSearch.bind(this) }
         onClear={ this._onTextSearch.bind(this) }
       />;
+
+      const DesignToggle: JSX.Element = this.state.fetched !== true ? null : <Toggle 
+          label={ 'Design' } 
+          inlineLabel={ true } 
+          onChange={ () => this._toggleDesign() } 
+          checked={ designMode }
+          disabled= { disableDesign }
+          styles={ { root: { width: 160, float: 'right' } } }
+          />;
   
       return (
   
         <div className={ [ styles.propPaneCols, styles.colsResults ].join( ' ' ) } >
-          <div>
-            { fetchButtonInfo }
-          </div>
-  
-          <div>
-            <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }</h3>
+          { fetchButtonInfo }
+          { designList }
+          <div className={ styles.rightSide }>
+            <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }{DesignToggle}</h3>
             { siteLink }
             <div style={{paddingBottom: '15px' }}>{ FieldSearchBox }</div>
-            <table>
+            <table className={ styles.fieldTable }>
               { fieldRows }
             </table>
           </div>
@@ -344,7 +344,9 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           this.setState({
             listFields: FilteredFields,
             filtered: FilteredFields,
+            picked: [],
             status: 'Success - Fetched!',
+            fetched: true,
             searchText: '',
             searchProp: '',
             errMessage: '',
@@ -376,6 +378,49 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   }
 
 
+  private _toggleDesign ( ): void {
+    const designMode : boolean = this.state.designMode === true ? false : true;
+    this.setState({ designMode: designMode })
+  }
+
+  private _onSelectItem = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+    const target: any = ev.target;
+    const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    const itemName: string = target.dataset.fieldname;
+    let thisSelected : IMinField = null;
+    
+    this.state.listFields.map( field => {  //Find selected item
+      if ( field.InternalName === itemName ) { 
+        field.isSelected = field.isSelected === true ? false : true;
+        field.isKeeper = true;
+        thisSelected = field;
+      }
+    });
+
+    let pickedIdx : number = -1;
+    this.state.picked.map( ( pick: IMinField, idx : number ) => {
+      if ( pick.InternalName === thisSelected.InternalName ) pickedIdx = idx;
+    });
+
+    let newPicked: IMinField [] = [];
+
+    if ( pickedIdx === -1 ) {  //Add to picked list
+      
+      if ( shiftKey === true ) {
+        newPicked = [ ...[ thisSelected ], ...this.state.picked ];
+      } else {
+        newPicked = [ ...this.state.picked, ...[ thisSelected ] ];
+      }
+
+    } else { //Remove from picked list
+      newPicked = this.state.picked.filter( (field) => { return field.InternalName !== thisSelected.InternalName } )
+    }
+
+    console.log('_onSelectItem:', itemName, target, newPicked );
+
+    this.setState({ picked: newPicked });
+  };
+
   private _onTypeClick ( field: IMinField ): void {
     const filterType : string = this.state.searchProp ? '' : field.TypeDisplayName;
     this._onSearchChange( '' , filterType );
@@ -405,6 +450,146 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     } else {
       this.setState({ filtered: filtered, searchText: searchText, searchProp: property });
     }
+  }
+
+  private _buildMainFieldTable( filtered: IMinField[], designMode: boolean, heading: string, searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any ) : any[] {
+
+    const fieldRows: any[] = [];
+    fieldRows.push( 
+      <tr>
+        <th style={{ display: designMode === true ? '' : 'none' }}>Add</th>
+        <th>Title</th>
+        <th>InternalName</th>
+        <th>Type</th>
+        <th>{heading}</th>
+      </tr>
+    );
+
+    filtered.map( ( field: IMinField ) => {
+
+      let detailValue = field.Description;
+
+      if ( searchProp === 'Choice' || ( !detailValue && field.TypeAsString === 'Choice' ) ) {
+        detailValue = JSON.stringify(field.Choices);
+
+      } else if ( searchProp === 'Calculated' || ( !detailValue && field.Formula ) ) {
+        detailValue = JSON.stringify(field.Formula);
+        detailValue = detailValue.slice(1, detailValue.length - 1);  //Remove extra quotes around formula
+
+      } else { detailValue = field.Description; }
+
+      const SelectIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } onClick= { onSelectItem } 
+        iconName={ field.isSelected === true ? 'SkypeCircleCheck' : 'StatusCircleRing' }/>;
+
+      const row = <tr>
+        <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
+        <td>{ getHighlightedText (field.Title , searchText ) }</td>
+        <td title={field.InternalName}>{ getHighlightedText (field.InternalName , searchText ) }</td>
+        <td onClick={ () => onTypeClick( field ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
+        <td title={detailValue}>{ getHighlightedText (detailValue , searchText ) }</td>
+      </tr>;
+      fieldRows.push( row );
+
+    });
+    return fieldRows;
+
+  }
+
+
+  
+  private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+    const target: any = ev.target;
+    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    const itemName: string = target.dataset.fieldname;
+    // let thisSelected : IMinField = null;
+    
+    const newPicked: IMinField [] = [ ];
+    this.state.picked.map( field => {  //Find selected item
+      if ( field.InternalName === itemName ) { 
+        field.isKeeper = field.isKeeper === true ? false : true;
+      }
+      newPicked.push( field );
+    });
+
+    this.setState({ picked: newPicked });
+  };
+
+  private _onDirectionClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+    const target: any = ev.target;
+    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    const itemName: string = target.dataset.fieldname;
+    const direction: string = target.dataset.direction;
+
+    const { picked } = this.state;
+    let idx: number = -1;
+
+    picked.map( ( field:IMinField, i: number) => {  //Find selected item
+      if ( field.InternalName === itemName ) {  idx = i; }
+    });
+    const currentPick = picked[idx];
+
+    if ( idx === - 1 ){
+      alert('Something went wrong :(');
+
+    } else {
+      let newPicked: IMinField [] = [];
+
+      if ( direction === 'up' ) {
+        const part1: IMinField[] = idx === 1 ? [] : picked.slice( 0, idx - 1  );
+        const part2: IMinField[] = idx === picked.length -1 ? [] :picked.slice( idx + 1 );
+        newPicked = [ ...part1, ...[ currentPick ], ...[ picked[ idx - 1 ] ]  , ...part2 ];
+
+      } else {
+        const part1: IMinField[] = idx === 0 ? [] : picked.slice( 0, idx );
+        const part2: IMinField[] = idx === picked.length -2 ? [] : picked.slice( idx + 2 );
+        newPicked = [ ...part1, ...[ picked[ idx + 1 ] ], ...[ currentPick ]  , ...part2 ];
+
+      }
+
+      this.setState({ picked: newPicked });
+    }
+  };
+
+
+  private _buildSelectedFieldTable( selected: IMinField[], onKeeperClick: any, onDirectionClick: any ) : any[] {
+
+    const fieldRows: any[] = [];
+    fieldRows.push( 
+      <tr>
+        <th style={{ }}>Keep</th>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Up</th>
+        <th>Down</th>
+      </tr>
+    );
+
+    selected.map( ( field: IMinField, idx: number ) => {
+
+      const disableUp : boolean = idx === 0 ? true : false;
+      const disableDown : boolean = idx === selected.length -1 ? true : false;
+
+      const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }
+        onClick= { onKeeperClick } iconName={ field.isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
+
+      const UpIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'up' } style={{ color: disableUp === true ? 'dimgray' : '' }}
+        onClick= { disableUp !== true ? onDirectionClick : null } iconName={ disableUp === false ? 'Up' : 'StatusCircleBlock2' }/>;
+
+      const DownIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'down' } style={{ color: disableDown === true ? 'dimgray' : '' }}
+        onClick= { disableDown !== true ? onDirectionClick : null } iconName={ disableDown === false ? 'Down': 'StatusCircleBlock2'  }/>;
+
+      const row = <tr>
+        <td>{KeeperIcon}</td>
+        <td>{ field.Title }</td>
+        <td title={field.TypeAsString}>{ field.TypeAsString }</td>
+        <td>{ UpIcon }</td>
+        <td>{ DownIcon }</td>
+      </tr>;
+      fieldRows.push( row );
+
+    });
+    return fieldRows;
+
   }
 
 }

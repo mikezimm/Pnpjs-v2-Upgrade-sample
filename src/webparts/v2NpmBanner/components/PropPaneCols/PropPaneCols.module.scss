@@ -4,6 +4,35 @@
   padding:20px 50px;
   background: #ececec;
 
+  display: grid;
+
+  .fetchElement, .designElement{
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .rightSide {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .showLeft {
+    transition:all 0.4s ease;
+    opacity: 1;
+  }
+
+  .hideLeft {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
+  .selectIcon {
+    font-size: large;
+    cursor: pointer;
+    padding: 3px;
+  }
+
   .button {
     // Our button
     padding: 10px; //Added this to give padding around buttons
@@ -71,17 +100,39 @@
       margin-bottom: 15px;
       text-decoration: underline;
       font-size: larger;
-      width: 200px;
     }
 
     tr {
       margin-bottom: 15px;
     }
-    th:nth-child(1) { //This is the fetchLabel
-      color: darkred;
+
+  }
+
+  .designElement {
+    th {
+      width: 50px;
     }
 
     th:nth-child(2) { //This is the fetchLabel
+      width: 150px;
+    }
+    
+    th:nth-child(3) { //This is the fetchLabel
+      width: 75px;
+    }
+
+  }
+
+  .fieldTable {
+    th {
+      width: 200px;
+    }
+
+    th:nth-child(2) { //This is the fetchLabel
+      color: darkred;
+    }
+
+    th:nth-child(3) { //This is the fetchLabel
       color: darkgreen;
       display: list-item;
     }
@@ -94,17 +145,20 @@
     }
 
     td:nth-child(1) { //This is the fetchProp
-      max-width: 150px;
+      max-width: 20px;
     }
     td:nth-child(2) { //This is the fetchProp
-      display: list-item;
       max-width: 150px;
     }
     td:nth-child(3) { //This is the fetchProp
+      display: list-item;
+      max-width: 150px;
+    }
+    td:nth-child(4) { //This is the fetchProp
       max-width: 130px;
       cursor: pointer;
     }
-    td:nth-child(4) { //This is the fetchProp
+    td:nth-child(5) { //This is the fetchProp
       max-width: 150px;
     }
 
