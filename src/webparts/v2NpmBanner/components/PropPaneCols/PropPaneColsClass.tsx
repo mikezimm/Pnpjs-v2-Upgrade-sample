@@ -36,10 +36,25 @@ import { createThisViewField } from './CreateViewFields';
 
 export type IValidTemplate = 100 | 101;
 
+export interface IMinFieldCmds {
+  userFilter?: boolean;  // Use this field to filter the button:  true will show button when current user is in this field
+  choiceFilter?: boolean;  // Use this field to filter stack of buttons:  will hide button if this
+  perChoice?: boolean;  // Use this field to create stack of buttons:  one button per choice is created, button hidden if it's selected choice, adds placeholder to show on certain status (same column)
+  setUser?: boolean;  // Set current field equal to this current user
+  addUser?: boolean;  // Add current user to this field
+  updateDate?: boolean;  // Add current date to this field
+  updateNote?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
+  updateText?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
+}
+
 export interface IMinField extends IFieldInfo {
+  idx: number; //Index number of field in main list of fields
   searchTextLC: string;
-  isSelected: boolean;
-  isKeeper: boolean;
+  isSelected: boolean; // Is selected in main list ( right list )
+  isKeeper: boolean; // Is selected in the keeper list ( left list )
+
+  commands: IMinFieldCmds;
+
   Choices?: string[];
   DisplayFormat?: 0 | 1; //  DisplayFormat 0 === Date, 1 === Date and Time
   Formula?: string;
@@ -261,8 +276,8 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         title={ `Build Commands` }
         showAccordion={ false }
         animation= { 'TopDown' }
-        contentStyles={ {height: '70px'} }
-        content = { `Command Builder goes here` }
+        contentStyles={ {height: ''} }
+        content = { this._createCommandBuilder( this.state.selected, this._onCmdFieldClick ) }
       />;
 
       const DesignViews: JSX.Element = <Accordion 
@@ -270,7 +285,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         showAccordion={ false }
         animation= { 'TopDown' }
         contentStyles={ {height: ''} }
-        content = { this._createViewBuilder() }
+        content = { this._createViewBuilder( this.state.selected ) }
       />;
 
       let designPane: JSX.Element = null;
@@ -331,18 +346,114 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
   }
 
-  private _createViewBuilder() : JSX.Element {
+
+    
+  private _onCmdFieldClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+    const target: any = ev.target;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    const itemName: string = target.dataset.fieldname;
+    const role: string = target.dataset.role;
+
+    // let thisSelected : IMinField = null;
+    const newSelected: IMinField [] = [ ];
+    this.state.selected.map( field => {  //Find selected item
+      if ( field.InternalName === itemName ) { 
+        if ( role === 'PerChoice' ) {
+          field.commands.perChoice = field.commands.perChoice === true ? false : true;
+        } else if ( role === 'FilterUser' ) {
+          field.commands.userFilter = field.commands.userFilter === true ? false : true;
+        } else if ( role === 'SetUser' ) {
+          field.commands.setUser = field.commands.setUser === true ? false : true;
+        } else if ( role === 'AddUser' ) {
+          field.commands.addUser = field.commands.addUser === true ? false : true;
+        // } else if ( role === '' ) {
+
+        // } else if ( role === '' ) {
+
+        }
+      }
+      newSelected.push( field );
+    });
+
+    this.setState({ selected: newSelected });
+  };
+
+
+  private _createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null ) : JSX.Element { //onCmdFieldClick: any
+
+    // const viewFields: IViewField[] = [];
+
+    const userFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.User );
+    const choiceFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.Choice );
+    // const dateFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.DateTime );
+    // const noteFields: IMinField[] = selected.filter( field => field.NumberOfLines > 0 );
+    // const textFields: IMinField[] = selected.filter( field => field.MaxLength > 0 );
+
+    const ChoiceTableRows = [ <tr><th>Name</th><th>Per</th><th></th><th>Title</th></tr>]
+
+    choiceFields.map( ( field: IMinField ) => {
+      ChoiceTableRows.push( <tr key={ field.InternalName } >
+        <td title={field.InternalName}>{ field.InternalName }</td>
+        <td><Icon iconName={ field.commands.perChoice === true ? 'Stack' : 'StatusCircleBlock2' }
+            data-fieldname={ field.InternalName } data-role= 'PerChoice' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+      </tr> );
+    });
+
+    const UserTableRows = [ <tr><th>Name</th><th>Filter</th><th>Set</th>Add<th></th></tr>]
+
+    userFields.map( ( field: IMinField ) => {
+      UserTableRows.push( <tr key={ field.InternalName } >
+        <td title={field.InternalName}>{ field.InternalName }</td>
+        <td><Icon iconName={ field.commands.userFilter === true ? 'Filter' : 'StatusCircleBlock2' }
+            data-fieldname={ field.InternalName } data-role= 'FilterUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+        <td><Icon iconName={ field.commands.setUser === true ? 'Contact' : 'StatusCircleBlock2' }
+            data-fieldname={ field.InternalName } data-role= 'SetUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+        <td><Icon iconName={ field.commands.addUser === true ? 'AddFriend' : 'StatusCircleBlock2' }
+            data-fieldname={ field.InternalName } data-role= 'AddUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+      </tr> );
+    });
+
+    // userFilter?: boolean;  // Use this field to filter the button:  true will show button when current user is in this field
+    // choiceFilter?: boolean;  // Use this field to filter stack of buttons:  will hide button if this
+    // perChoice?: boolean;  // Use this field to create stack of buttons:  one button per choice is created, button hidden if it's selected choice, adds placeholder to show on certain status (same column)
+    // updateUser?: boolean;  // Add current user to this field
+    // updateDate?: boolean;  // Add current date to this field
+    // updateNote?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
+    // updateText?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
+
+    const viewElement: JSX.Element = <div>
+      { ChoiceTableRows.length === 1 ? null : <div>
+        <table>
+          { ChoiceTableRows }
+        </table>
+
+        </div>
+      }
+      { UserTableRows.length === 1 ? null : <div>
+        <table>
+          { UserTableRows }
+        </table>
+
+        </div>
+      }
+    </div>;
+    return <div>{ viewElement }</div>;
+
+  }
+
+  private _createViewBuilder( selected: IMinField[] ) : JSX.Element {
 
     const viewFields: IViewField[] = [];
 
-    this.state.selected.map( field => {
+    selected.map( field => {
       if ( field.isKeeper === true ) {
         viewFields.push( createThisViewField( field ) );
       }
     });
 
     const viewElement: JSX.Element = <div>
-
       <ReactJson src={ viewFields } name={ 'viewFields' } collapsed={ true } displayDataTypes={ false } displayObjectSize={ false } 
           enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
     </div>;
@@ -374,29 +485,30 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           const FilteredFields : IMinField[] = allFields.filter( field => field.Hidden !== true && field.Sealed !== true );
 
           const DefaultSelected: string[] = [ 'ID', 'Editor', 'Modified', 'Title', 'FileLeafRef', '_UIVersionString' ];
-          const SelectedFields: IMinField[] = [];
+          const PreSelectedFields: IMinField[] = [];
           const SelectedNames: string[] = [];
 
-          FilteredFields.map( field => {
+          FilteredFields.map( ( field, idx ) => {
+            field.idx = idx;
+            field.commands = {};
             field.searchTextLC = ['Title', 'InternalName', 'TypeDisplayName', 'Choices', 'Formula', 'DefaultValue' ].map( prop => {
               const anyField : any = field;
               return anyField[ prop ] ? `${prop}:${anyField[ prop ]}` : '';
             }).join(' || ').toLocaleLowerCase();
 
-
-            if ( DefaultSelected.indexOf(field.InternalName) > -1 ) { 
+            if ( DefaultSelected.indexOf(field.InternalName) > -1 ) {
               field.isKeeper = true;
               field.isSelected = true;
-              SelectedFields.push( field ); 
+              PreSelectedFields.push( field ); 
               SelectedNames.push( field.InternalName ) ; }
-            // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName} 
+            // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName}
             //     || Choices:${field.Choices} || Formula:${field.Formula} || DefaultValue:${field.DefaultValue}`.toLocaleLowerCase();
           });
 
-          const SortedSelectedFields: IMinField[] = [];
+          const SortedPreSelectedFields: IMinField[] = [];
           DefaultSelected.map( name => {
             const idx: number = SelectedNames.indexOf( name ) ;
-            if ( idx > -1 ) { SortedSelectedFields.push( SelectedFields[ idx ] ); }
+            if ( idx > -1 ) { SortedPreSelectedFields.push( PreSelectedFields[ idx ] ); }
           })
           fetchLength = FilteredFields.length;
 
@@ -405,7 +517,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           this.setState({
             listFields: FilteredFields,
             filtered: FilteredFields,
-            selected: SortedSelectedFields,
+            selected: SortedPreSelectedFields,
             status: 'Success - Fetched!',
             fetched: true,
             searchText: '',
@@ -562,7 +674,6 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   }
 
 
-  
   private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
     const target: any = ev.target;
 
