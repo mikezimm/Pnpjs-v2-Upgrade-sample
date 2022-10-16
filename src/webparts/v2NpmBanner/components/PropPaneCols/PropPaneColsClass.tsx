@@ -19,7 +19,11 @@ import ReactJson from "react-json-view";
 
 import styles from './PropPaneCols.module.scss';
 import { IViewField } from '@pnp/spfx-controls-react';
-import { createThisViewField } from './CreateViewFields';
+import { createThisViewField } from './components/ViewFields';
+import { createCommandBuilder, updateSelectedCommands } from './components/CommandAccordion';
+import { buildMainFieldTable, getMainSelectedItems } from './components/MainFieldTable';
+import { buildSelectedFieldTable } from './components/SelectedTable';
+import { createViewBuilder } from './components/ViewAccordion';
 
 // import { IContentsFieldInfo, IFieldBucketInfo } from './IFieldComponentTypes';
 
@@ -255,42 +259,15 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       const { listTitle, } = lists[this.state.listIdx] ;
 
-      let fieldRows : JSX.Element [] = [];
+      const fieldRows : JSX.Element [] = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) );
 
-      if ( listFields.length > 0 ) {
-        let heading: string = 'Description';
+      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick ) ;
 
-        if ( this.state.searchProp === 'Choice' ) {
-          heading = 'Choices';
-
-        } else if ( this.state.searchProp === 'Calculated' ) {
-          heading = 'Formula';
-
-        }
-
-        fieldRows = this._buildMainFieldTable( filtered, designMode, heading, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) )
-
-      }
-
-      const DesignCommands: JSX.Element = <Accordion 
-        title={ `Build Commands` }
-        showAccordion={ false }
-        animation= { 'TopDown' }
-        contentStyles={ {height: ''} }
-        content = { this._createCommandBuilder( this.state.selected, this._onCmdFieldClick ) }
-      />;
-
-      const DesignViews: JSX.Element = <Accordion 
-        title={ `Build Views` }
-        showAccordion={ false }
-        animation= { 'TopDown' }
-        contentStyles={ {height: ''} }
-        content = { this._createViewBuilder( this.state.selected ) }
-      />;
+      const DesignViews: JSX.Element = createViewBuilder( this.state.selected );
 
       let designPane: JSX.Element = null;
       if ( designMode === true ) {
-        const selectedRows: any[] = this._buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
+        const selectedRows: any[] = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
         designPane = <div className={ styles.designPane }>
             { DesignCommands }
             { DesignViews }
@@ -309,8 +286,8 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         placeholder="Search"
         value={ this.state.searchText }
         onSearch={ this._onTextSearch.bind(this) }
-        onFocus={ () => console.log('this.state',  this.state) }
-        onBlur={ () => console.log('onBlur called') }
+        // onFocus={ () => console.log('this.state',  this.state) }
+        // onBlur={ () => console.log('onBlur called') }
         onChange={ this._onTextSearch.bind(this) }
         onClear={ this._onTextSearch.bind(this) }
       />;
@@ -323,9 +300,9 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           disabled= { disableDesign }
           styles={ { root: { width: 160, float: 'right' } } }
           />;
-  
+
       return (
-  
+
         <div className={ [ styles.propPaneCols, styles.colsResults ].join( ' ' ) } >
           { fetchPane }
           { designPane }
@@ -349,117 +326,41 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     
   private _onCmdFieldClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const target: any = ev.target;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    const itemName: string = target.dataset.fieldname;
-    const role: string = target.dataset.role;
+    const newSelected: IMinField [] = updateSelectedCommands( ev, this.state.selected );
+    // const target: any = ev.target;
 
-    // let thisSelected : IMinField = null;
-    const newSelected: IMinField [] = [ ];
-    this.state.selected.map( field => {  //Find selected item
-      if ( field.InternalName === itemName ) { 
-        if ( role === 'PerChoice' ) {
-          field.commands.perChoice = field.commands.perChoice === true ? false : true;
-        } else if ( role === 'FilterUser' ) {
-          field.commands.userFilter = field.commands.userFilter === true ? false : true;
-        } else if ( role === 'SetUser' ) {
-          field.commands.setUser = field.commands.setUser === true ? false : true;
-        } else if ( role === 'AddUser' ) {
-          field.commands.addUser = field.commands.addUser === true ? false : true;
-        // } else if ( role === '' ) {
+    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    // const itemName: string = target.dataset.fieldname;
+    // const role: string = target.dataset.role;
 
-        // } else if ( role === '' ) {
+    // // let thisSelected : IMinField = null;
+    // const newSelected: IMinField [] = [ ];
+    // this.state.selected.map( field => {  //Find selected item
+    //   if ( field.InternalName === itemName ) { 
+    //     if ( role === 'PerChoice' ) {
+    //       field.commands.perChoice = field.commands.perChoice === true ? false : true;
+    //     } else if ( role === 'FilterUser' ) {
+    //       field.commands.userFilter = field.commands.userFilter === true ? false : true;
+    //     } else if ( role === 'SetUser' ) {
+    //       field.commands.setUser = field.commands.setUser === true ? false : true;
+    //     } else if ( role === 'AddUser' ) {
+    //       field.commands.addUser = field.commands.addUser === true ? false : true;
+    //     // } else if ( role === '' ) {
 
-        }
-      }
-      newSelected.push( field );
-    });
+    //     // } else if ( role === '' ) {
+
+    //     }
+    //   }
+    //   newSelected.push( field );
+    // });
 
     this.setState({ selected: newSelected });
   };
 
 
-  private _createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null ) : JSX.Element { //onCmdFieldClick: any
 
-    // const viewFields: IViewField[] = [];
-
-    const userFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.User );
-    const choiceFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.Choice );
-    // const dateFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.DateTime );
-    // const noteFields: IMinField[] = selected.filter( field => field.NumberOfLines > 0 );
-    // const textFields: IMinField[] = selected.filter( field => field.MaxLength > 0 );
-
-    const ChoiceTableRows = [ <tr><th>Name</th><th>Per</th><th></th><th>Title</th></tr>]
-
-    choiceFields.map( ( field: IMinField ) => {
-      ChoiceTableRows.push( <tr key={ field.InternalName } >
-        <td title={field.InternalName}>{ field.InternalName }</td>
-        <td><Icon iconName={ field.commands.perChoice === true ? 'Stack' : 'StatusCircleBlock2' }
-            data-fieldname={ field.InternalName } data-role= 'PerChoice' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
-      </tr> );
-    });
-
-    const UserTableRows = [ <tr><th>Name</th><th>Filter</th><th>Set</th>Add<th></th></tr>]
-
-    userFields.map( ( field: IMinField ) => {
-      UserTableRows.push( <tr key={ field.InternalName } >
-        <td title={field.InternalName}>{ field.InternalName }</td>
-        <td><Icon iconName={ field.commands.userFilter === true ? 'Filter' : 'StatusCircleBlock2' }
-            data-fieldname={ field.InternalName } data-role= 'FilterUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
-        <td><Icon iconName={ field.commands.setUser === true ? 'Contact' : 'StatusCircleBlock2' }
-            data-fieldname={ field.InternalName } data-role= 'SetUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
-        <td><Icon iconName={ field.commands.addUser === true ? 'AddFriend' : 'StatusCircleBlock2' }
-            data-fieldname={ field.InternalName } data-role= 'AddUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
-      </tr> );
-    });
-
-    // userFilter?: boolean;  // Use this field to filter the button:  true will show button when current user is in this field
-    // choiceFilter?: boolean;  // Use this field to filter stack of buttons:  will hide button if this
-    // perChoice?: boolean;  // Use this field to create stack of buttons:  one button per choice is created, button hidden if it's selected choice, adds placeholder to show on certain status (same column)
-    // updateUser?: boolean;  // Add current user to this field
-    // updateDate?: boolean;  // Add current date to this field
-    // updateNote?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
-    // updateText?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
-
-    const viewElement: JSX.Element = <div>
-      { ChoiceTableRows.length === 1 ? null : <div>
-        <table>
-          { ChoiceTableRows }
-        </table>
-
-        </div>
-      }
-      { UserTableRows.length === 1 ? null : <div>
-        <table>
-          { UserTableRows }
-        </table>
-
-        </div>
-      }
-    </div>;
-    return <div>{ viewElement }</div>;
-
-  }
-
-  private _createViewBuilder( selected: IMinField[] ) : JSX.Element {
-
-    const viewFields: IViewField[] = [];
-
-    selected.map( field => {
-      if ( field.isKeeper === true ) {
-        viewFields.push( createThisViewField( field ) );
-      }
-    });
-
-    const viewElement: JSX.Element = <div>
-      <ReactJson src={ viewFields } name={ 'viewFields' } collapsed={ true } displayDataTypes={ false } displayObjectSize={ false } 
-          enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
-    </div>;
-    return viewElement;
-
-  }
 
   private async _clickFetchFields( ) : Promise<void> {
 
@@ -545,7 +446,6 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         });
       }
 
-
       console.log( 'listFieldsHook: finished!', status, listFields  );
     }
   }
@@ -556,50 +456,13 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this.setState({ designMode: designMode })
   }
 
-  
   private _onTypeClick ( field: IMinField ): void {
     const filterType : string = this.state.searchProp ? '' : field.TypeDisplayName;
     this._onSearchChange( '' , filterType );
   }
 
   private _onSelectItem = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const target: any = ev.target;
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-
-    const itemName: string = target.dataset.fieldname;
-    let thisSelected : IMinField = null;
-
-    this.state.listFields.map( field => {  //Find selected item
-      if ( field.InternalName === itemName ) { 
-        field.isSelected = field.isSelected === true ? false : true;
-        field.isKeeper = true;
-        thisSelected = field;
-      }
-    });
-
-    let selectedIdx : number = -1;
-    this.state.selected.map( ( pick: IMinField, idx : number ) => {
-      if ( pick.InternalName === thisSelected.InternalName ) selectedIdx = idx;
-    });
-
-    let newSelected: IMinField [] = [];
-
-    if ( selectedIdx === -1 ) {  //Add to selected list
-      
-      if ( ctrlKey === true ) {
-        newSelected = [ ...[ thisSelected ], ...this.state.selected ];
-      } else {
-        newSelected = [ ...this.state.selected, ...[ thisSelected ] ];
-      }
-
-    } else { //Remove from selected list
-      newSelected = this.state.selected.filter( (field) => { return field.InternalName !== thisSelected.InternalName } )
-    }
-
-    console.log('_onSelectItem:', itemName, target, newSelected );
-
+    const newSelected: IMinField [] = getMainSelectedItems( ev, this.state.listFields, this.state.selected );
     this.setState({ selected: newSelected });
   };
 
@@ -630,48 +493,48 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     }
   }
 
-  private _buildMainFieldTable( filtered: IMinField[], designMode: boolean, heading: string, searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any ) : any[] {
+  // private _buildMainFieldTable( filtered: IMinField[], designMode: boolean, heading: string, searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any ) : any[] {
 
-    const fieldRows: any[] = [];
-    fieldRows.push( 
-      <tr>
-        <th style={{ display: designMode === true ? '' : 'none' }}>Add</th>
-        <th>Title</th>
-        <th>InternalName</th>
-        <th>Type</th>
-        <th>{heading}</th>
-      </tr>
-    );
+  //   const fieldRows: any[] = [];
+  //   fieldRows.push( 
+  //     <tr>
+  //       <th style={{ display: designMode === true ? '' : 'none' }}>Add</th>
+  //       <th>Title</th>
+  //       <th>InternalName</th>
+  //       <th>Type</th>
+  //       <th>{heading}</th>
+  //     </tr>
+  //   );
 
-    filtered.map( ( field: IMinField ) => {
+  //   filtered.map( ( field: IMinField ) => {
 
-      let detailValue = field.Description;
+  //     let detailValue = field.Description;
 
-      if ( searchProp === 'Choice' || ( !detailValue && field.TypeAsString === 'Choice' ) ) {
-        detailValue = JSON.stringify(field.Choices);
+  //     if ( searchProp === 'Choice' || ( !detailValue && field.TypeAsString === 'Choice' ) ) {
+  //       detailValue = JSON.stringify(field.Choices);
 
-      } else if ( searchProp === 'Calculated' || ( !detailValue && field.Formula ) ) {
-        detailValue = JSON.stringify(field.Formula);
-        detailValue = detailValue.slice(1, detailValue.length - 1);  //Remove extra quotes around formula
+  //     } else if ( searchProp === 'Calculated' || ( !detailValue && field.Formula ) ) {
+  //       detailValue = JSON.stringify(field.Formula);
+  //       detailValue = detailValue.slice(1, detailValue.length - 1);  //Remove extra quotes around formula
 
-      } else { detailValue = field.Description; }
+  //     } else { detailValue = field.Description; }
 
-      const SelectIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } onClick= { onSelectItem } 
-        iconName={ field.isSelected === true ? 'SkypeCircleCheck' : 'StatusCircleRing' }/>;
+  //     const SelectIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } onClick= { onSelectItem } 
+  //       iconName={ field.isSelected === true ? 'SkypeCircleCheck' : 'StatusCircleRing' }/>;
 
-      const row = <tr>
-        <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
-        <td>{ getHighlightedText (field.Title , searchText ) }</td>
-        <td title={field.InternalName}>{ getHighlightedText (field.InternalName , searchText ) }</td>
-        <td onClick={ () => onTypeClick( field, this ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
-        <td title={detailValue}>{ getHighlightedText (detailValue , searchText ) }</td>
-      </tr>;
-      fieldRows.push( row );
+  //     const row = <tr>
+  //       <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
+  //       <td>{ getHighlightedText (field.Title , searchText ) }</td>
+  //       <td title={field.InternalName}>{ getHighlightedText (field.InternalName , searchText ) }</td>
+  //       <td onClick={ () => onTypeClick( field, this ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
+  //       <td title={detailValue}>{ getHighlightedText (detailValue , searchText ) }</td>
+  //     </tr>;
+  //     fieldRows.push( row );
 
-    });
-    return fieldRows;
+  //   });
+  //   return fieldRows;
 
-  }
+  // }
 
 
   private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
@@ -740,46 +603,46 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   };
 
 
-  private _buildSelectedFieldTable( selected: IMinField[], onKeeperClick: any, onDirectionClick: any ) : any[] {
+  // private _buildSelectedFieldTable( selected: IMinField[], onKeeperClick: any, onDirectionClick: any ) : any[] {
 
-    const fieldRows: any[] = [];
-    fieldRows.push( 
-      <tr>
-        <th style={{ }}>Keep</th>
-        <th>Title</th>
-        <th>Type</th>
-        <th>Up</th>
-        <th>Down</th>
-      </tr>
-    );
+  //   const fieldRows: any[] = [];
+  //   fieldRows.push( 
+  //     <tr>
+  //       <th style={{ }}>Keep</th>
+  //       <th>Title</th>
+  //       <th>Type</th>
+  //       <th>Up</th>
+  //       <th>Down</th>
+  //     </tr>
+  //   );
 
-    selected.map( ( field: IMinField, idx: number ) => {
+  //   selected.map( ( field: IMinField, idx: number ) => {
 
-      const disableUp : boolean = idx === 0 ? true : false;
-      const disableDown : boolean = idx === selected.length -1 ? true : false;
+  //     const disableUp : boolean = idx === 0 ? true : false;
+  //     const disableDown : boolean = idx === selected.length -1 ? true : false;
 
-      const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }
-        onClick= { onKeeperClick } iconName={ field.isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
+  //     const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }
+  //       onClick= { onKeeperClick } iconName={ field.isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
 
-      const UpIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'up' } style={{ color: disableUp === true ? 'dimgray' : '' }}
-        onClick= { disableUp !== true ? onDirectionClick : null } iconName={ disableUp === false ? 'Up' : 'StatusCircleBlock2' }/>;
+  //     const UpIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'up' } style={{ color: disableUp === true ? 'dimgray' : '' }}
+  //       onClick= { disableUp !== true ? onDirectionClick : null } iconName={ disableUp === false ? 'Up' : 'StatusCircleBlock2' }/>;
 
-      const DownIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'down' } style={{ color: disableDown === true ? 'dimgray' : '' }}
-        onClick= { disableDown !== true ? onDirectionClick : null } iconName={ disableDown === false ? 'Down': 'StatusCircleBlock2'  }/>;
+  //     const DownIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'down' } style={{ color: disableDown === true ? 'dimgray' : '' }}
+  //       onClick= { disableDown !== true ? onDirectionClick : null } iconName={ disableDown === false ? 'Down': 'StatusCircleBlock2'  }/>;
 
-      const row = <tr>
-        <td>{KeeperIcon}</td>
-        <td>{ field.Title }</td>
-        <td title={field.TypeAsString}>{ field.TypeAsString }</td>
-        <td>{ UpIcon }</td>
-        <td>{ DownIcon }</td>
-      </tr>;
-      fieldRows.push( row );
+  //     const row = <tr>
+  //       <td>{KeeperIcon}</td>
+  //       <td>{ field.Title }</td>
+  //       <td title={field.TypeAsString}>{ field.TypeAsString }</td>
+  //       <td>{ UpIcon }</td>
+  //       <td>{ DownIcon }</td>
+  //     </tr>;
+  //     fieldRows.push( row );
 
-    });
-    return fieldRows;
+  //   });
+  //   return fieldRows;
 
-  }
+  // }
 
 }
 
