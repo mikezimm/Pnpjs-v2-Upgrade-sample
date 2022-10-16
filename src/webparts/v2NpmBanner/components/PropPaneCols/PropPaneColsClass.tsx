@@ -4,7 +4,7 @@ import { IWeb, Web, IFieldInfo, } from "@pnp/sp/presets/all";
 
 import {  SearchBox, ISearchBoxStyles, } from 'office-ui-fabric-react/lib/SearchBox';
 import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
-// import { Icon, } from 'office-ui-fabric-react/lib/Icon';
+import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, IPerformanceOp } from "../../fpsReferences";
 
@@ -311,6 +311,23 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           styles={ { root: { width: 160, float: 'right' } } }
           />;
 
+      const DateFilterIcon = <Icon iconName={ 'DateTime' } title={ 'Filter for DateTime columns'} style={{ marginLeft: '30px' }}
+        data-filterType= 'Date and Time' onClick= { () => this._onFilterClick('Date and Time') } className={ styles.selectIcon } />;
+
+      const UserFilterIcon = <Icon iconName={ 'Contact' } title={ 'Filter for User columns'} style={{ marginLeft: '30px' }}
+        data-filterType= 'Date and Time' onClick= { () => this._onFilterClick('Person or Group') } className={ styles.selectIcon } />;
+
+      const TextFilterIcon = <Icon iconName={ 'TextField' } title={ 'Filter for Text columns'} style={{ marginLeft: '30px' }}
+        data-filterType= 'Text' onClick= { () => this._onFilterClick('Text') } className={ styles.selectIcon } />;
+
+      const ChoiceFilterIcon = <Icon iconName={ 'Stack' } title={ 'Filter for Choice columns'} style={{ marginLeft: '30px' }}
+        data-filterType= 'Choice' onClick= { () => this._onFilterClick('Choice') } className={ styles.selectIcon } />;
+
+      const NumberFilterIcon = <Icon iconName={ 'Number' } title={ 'Filter for Number columns'} style={{ marginLeft: '30px' }}
+        data-filterType= 'Number' onClick= { () => this._onFilterClick('Number') } className={ styles.selectIcon } />;
+
+      const FilterButtons = <div style={{display: 'flex', marginLeft: '50px' }}>{DateFilterIcon}{UserFilterIcon}{TextFilterIcon}{ChoiceFilterIcon}{NumberFilterIcon}</div>;
+
       return (
 
         <div className={ [ styles.propPaneCols, styles.colsResults ].join( ' ' ) } >
@@ -319,7 +336,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           <div className={ styles.rightSide }>
             <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }{DesignToggle}</h3>
             { siteLink }
-            <div style={{paddingBottom: '15px' }}>{ FieldSearchBox }</div>
+            <div style={{paddingBottom: '15px', display: 'flex', alignContent: 'space-between' }}>{ FieldSearchBox }{ FilterButtons }</div>
             <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Add</b> to add to Top of list, Click <b>Type</b> to filter on column type</div>
             { MainFieldTable }
           </div>
@@ -461,6 +478,11 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   private _toggleDesign ( ): void {
     const designMode : boolean = this.state.designMode === true ? false : true;
     this.setState({ designMode: designMode })
+  }
+
+  private _onFilterClick ( searchText: string ): void {
+    const filterType : string = this.state.searchText === searchText.toLocaleLowerCase() ? '' : searchText;
+    this._onSearchChange( filterType , '' );
   }
 
   private _onTypeClick ( field: IMinField ): void {

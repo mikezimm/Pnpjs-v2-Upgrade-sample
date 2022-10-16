@@ -87,7 +87,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
       <td><Icon iconName={ field.commands.setToday === true ? 'EventDate' : 'StatusCircleBlock2' } title={ 'Set Field to today'}
           data-fieldname={ field.InternalName } data-role= 'setToday' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
 
-      <td><Icon iconName={ field.commands.set1Week === true ? 'CalendarWeek' : 'StatusCircleBlock2' } title={ 'Set Field to + 7 days'}
+      <td><Icon iconName={ field.commands.set1Week === true ? 'CalendarWorkWeek' : 'StatusCircleBlock2' } title={ 'Set Field to + 7 days'}
           data-fieldname={ field.InternalName } data-role= 'set1Week' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td> 
 
       <td><Icon iconName={ field.commands.set1Month === true ? 'Calendar' : 'StatusCircleBlock2' } title={ 'Set Field to + 1 month'}
@@ -168,7 +168,7 @@ export function updateSelectedCommands ( ev: React.MouseEvent<HTMLElement>, sele
           commands[ role ] = newVal;
 
         }
-        
+
         field.commands = commands;
 
       } else {
