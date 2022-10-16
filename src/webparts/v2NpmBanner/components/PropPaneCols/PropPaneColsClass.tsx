@@ -24,6 +24,7 @@ import { createCommandBuilder, updateSelectedCommands } from './components/Comma
 import { buildMainFieldTable, getMainSelectedItems } from './components/MainFieldTable';
 import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/ViewAccordion';
+import { getDirectionClicks, getKeeperClicks } from './OnClickHelpers';
 
 // import { IContentsFieldInfo, IFieldBucketInfo } from './IFieldComponentTypes';
 
@@ -267,16 +268,14 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       let designPane: JSX.Element = null;
       if ( designMode === true ) {
-        const selectedRows: any[] = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
         designPane = <div className={ styles.designPane }>
             { DesignCommands }
             { DesignViews }
-            <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Arrows</b> to move to Top or Bottom</div>
-            <table>
-              { selectedRows }
-            </table>
+            <div style={{paddingBottom: '5px', fontSize: 'smaller' }}>CTRL-click <b>Arrows</b> to move to Top or Bottom</div>
           </div>
       }
+
+      const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
 
       const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { width: 200 } };
 
@@ -311,9 +310,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             { siteLink }
             <div style={{paddingBottom: '15px' }}>{ FieldSearchBox }</div>
             <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Add</b> to add to Top of list, Click <b>Type</b> to filter on column type</div>
-            <table className={ styles.fieldTable }>
-              { fieldRows }
-            </table>
+            { SelectedTable }
           </div>
 
         </div>
@@ -538,68 +535,70 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
 
   private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const target: any = ev.target;
+    // const target: any = ev.target;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    const itemName: string = target.dataset.fieldname;
+    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    // const itemName: string = target.dataset.fieldname;
 
-    // let thisSelected : IMinField = null;
-    const newSelected: IMinField [] = [ ];
-    this.state.selected.map( field => {  //Find selected item
-      if ( field.InternalName === itemName ) { 
-        field.isKeeper = field.isKeeper === true ? false : true;
-      }
-      newSelected.push( field );
-    });
+    // // let thisSelected : IMinField = null;
+    // const newSelected: IMinField [] = [ ];
+    // this.state.selected.map( field => {  //Find selected item
+    //   if ( field.InternalName === itemName ) { 
+    //     field.isKeeper = field.isKeeper === true ? false : true;
+    //   }
+    //   newSelected.push( field );
+    // });
 
+    const newSelected: IMinField[] = getKeeperClicks( ev, this.state.selected );
     this.setState({ selected: newSelected });
   };
 
   private _onDirectionClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const target: any = ev.target;
-    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    const itemName: string = target.dataset.fieldname;
-    const direction: string = target.dataset.direction;
-    const ctrlKey : boolean = ev.ctrlKey;
+    // const target: any = ev.target;
+    // // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    // const itemName: string = target.dataset.fieldname;
+    // const direction: string = target.dataset.direction;
+    // const ctrlKey : boolean = ev.ctrlKey;
 
-    const { selected } = this.state;
-    let idx: number = -1;
+    // const { selected } = this.state;
+    // let idx: number = -1;
 
-    selected.map( ( field:IMinField, i: number) => {  //Find selected item
-      if ( field.InternalName === itemName ) {  idx = i; }
-    });
-    const currentPick = selected[idx];
+    // selected.map( ( field:IMinField, i: number) => {  //Find selected item
+    //   if ( field.InternalName === itemName ) {  idx = i; }
+    // });
+    // const currentPick = selected[idx];
 
-    if ( idx === - 1 ){
-      alert('Something went wrong :(');
+    // if ( idx === - 1 ){
+    //   alert('Something went wrong :(');
 
-    } else {
-      let newSelected: IMinField [] = [];
+    // } else {
+    //   let newSelected: IMinField [] = [];
 
-      if ( ctrlKey === true ) {
-        if ( direction === 'up' ) newSelected.push( currentPick );
+    //   if ( ctrlKey === true ) {
+    //     if ( direction === 'up' ) newSelected.push( currentPick );
 
-        selected.map( ( field:IMinField, i: number) => {  //Find selected item
-          if ( field.InternalName !== itemName ) {  newSelected.push( field ) ; }
-        });
+    //     selected.map( ( field:IMinField, i: number) => {  //Find selected item
+    //       if ( field.InternalName !== itemName ) {  newSelected.push( field ) ; }
+    //     });
 
-        if ( direction === 'down' ) newSelected.push( currentPick );
+    //     if ( direction === 'down' ) newSelected.push( currentPick );
 
-      } else if ( direction === 'up' ) {
-        const part1: IMinField[] = idx === 1 ? [] : selected.slice( 0, idx - 1  );
-        const part2: IMinField[] = idx === selected.length -1 ? [] :selected.slice( idx + 1 );
-        newSelected = [ ...part1, ...[ currentPick ], ...[ selected[ idx - 1 ] ]  , ...part2 ];
+    //   } else if ( direction === 'up' ) {
+    //     const part1: IMinField[] = idx === 1 ? [] : selected.slice( 0, idx - 1  );
+    //     const part2: IMinField[] = idx === selected.length -1 ? [] :selected.slice( idx + 1 );
+    //     newSelected = [ ...part1, ...[ currentPick ], ...[ selected[ idx - 1 ] ]  , ...part2 ];
 
-      } else {
-        const part1: IMinField[] = idx === 0 ? [] : selected.slice( 0, idx );
-        const part2: IMinField[] = idx === selected.length -2 ? [] : selected.slice( idx + 2 );
-        newSelected = [ ...part1, ...[ selected[ idx + 1 ] ], ...[ currentPick ]  , ...part2 ];
+    //   } else {
+    //     const part1: IMinField[] = idx === 0 ? [] : selected.slice( 0, idx );
+    //     const part2: IMinField[] = idx === selected.length -2 ? [] : selected.slice( idx + 2 );
+    //     newSelected = [ ...part1, ...[ selected[ idx + 1 ] ], ...[ currentPick ]  , ...part2 ];
 
-      }
+    //   }
 
-      this.setState({ selected: newSelected });
-    }
+    const newSelected: IMinField[] = getDirectionClicks( ev, this.state.selected );
+    this.setState({ selected: newSelected });
+    // }
   };
 
 

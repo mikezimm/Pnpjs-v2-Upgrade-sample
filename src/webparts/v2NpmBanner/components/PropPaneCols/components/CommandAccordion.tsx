@@ -27,7 +27,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
   // const noteFields: IMinField[] = selected.filter( field => field.NumberOfLines > 0 );
   // const textFields: IMinField[] = selected.filter( field => field.MaxLength > 0 );
 
-  const ChoiceTableRows = [ <tr><th>Name</th><th>Per</th><th></th><th>Title</th></tr>]
+  const ChoiceTableRows = [ <tr key='choiceTableHeader'><th>Name</th><th>Per</th><th></th><th>Title</th></tr>];
 
   choiceFields.map( ( field: IMinField ) => {
     ChoiceTableRows.push( <tr key={ field.InternalName } >
@@ -37,7 +37,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
     </tr> );
   });
 
-  const UserTableRows = [ <tr><th>Name</th><th>Filter</th><th>Set</th>Add<th></th></tr>]
+  const UserTableRows = [ <tr key='userTableHeader'><th>Name</th><th>Filter</th><th>Set</th><th>Add</th></tr>];
 
   userFields.map( ( field: IMinField ) => {
     UserTableRows.push( <tr key={ field.InternalName } >
@@ -59,7 +59,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
   // updateNote?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
   // updateText?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
 
-  const commandElement: JSX.Element = <div>
+  const commandElement: JSX.Element = <div className={ styles.commandTable }>
     { ChoiceTableRows.length === 1 ? null : <div>
       <table>
         { ChoiceTableRows }
@@ -82,6 +82,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
     animation= { 'TopDown' }
     contentStyles={ {height: ''} }
     content = { commandElement }
+    componentStyles = {{ marginBottom: '15px' }}
   />;
 
   return DesignCommands ;

@@ -39,6 +39,7 @@ export function createViewBuilder( selected: IMinField[] ) : JSX.Element {
     animation= { 'TopDown' }
     contentStyles={ {height: ''} }
     content = { viewElement }
+    componentStyles = {{ marginBottom: '15px' }}
   />;
 
     return DesignViews;

@@ -5,7 +5,7 @@
   background: #ececec;
 
   display: grid;
-  grid-gap: 2em;
+  grid-gap: 3em;
 
   .fetchPane, .designPane{
     grid-column: 1;
@@ -90,7 +90,20 @@
 
 }
 
-.designPane {
+
+.commandTable {
+  th {
+    width: 50px;
+  }
+
+  th:nth-child(1) { //This is the Name property
+    min-width: 150px;
+    white-space: nowrap;
+  }
+
+}
+
+.selectedTable {
   th {
     width: 50px;
   }
@@ -98,7 +111,6 @@
   th:nth-child(2) { //This is the fetchLabel
     min-width: 150px;
     white-space: nowrap;
-
   }
   
   th:nth-child(3) { //This is the fetchLabel

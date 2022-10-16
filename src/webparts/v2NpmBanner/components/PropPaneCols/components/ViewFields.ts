@@ -26,7 +26,12 @@ export function createThisViewField( field: IMinField ) : IViewField {
 
     case FieldTypes.Text: 
       // If it's single line of text, max length is 10*characters with max of 250
-      returnField.maxWidth = field.NumberOfLines ? 350 : field.MaxLength ? Math.min( field.MaxLength * 10, 350 ) : returnField.maxWidth;
+      returnField.maxWidth = field.MaxLength ? Math.min( field.MaxLength * 10, 350 ) : returnField.maxWidth;
+      break;
+
+    case FieldTypes.Note: 
+      // If it's single line of text, max length is 10*characters with max of 250
+      returnField.maxWidth = 350;
       break;
 
     case FieldTypes.MultiChoice: 
