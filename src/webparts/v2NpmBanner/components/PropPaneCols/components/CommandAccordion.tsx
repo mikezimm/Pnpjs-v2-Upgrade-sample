@@ -13,8 +13,23 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import styles from '../PropPaneCols.module.scss';
 
-import { IMinField } from "../PropPaneColsClass";
+import { IMinField, IMinFieldCmds } from "../PropPaneColsClass";
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
+
+export type IChoiceActionTypes = 'perChoice' | 'choiceFilter' ;
+export const ChoiceActions: IChoiceActionTypes[] = [ 'perChoice', 'choiceFilter',  ] ;
+
+export type IUserActionTypes = 'showToUser' | 'hideFromUser' | 'setUser' | 'addUser'  ;
+export const UserActions: IUserActionTypes[] = [ 'showToUser', 'hideFromUser', 'setUser', 'addUser', ] ;
+
+export type IDateActionTypes = 'setToday' | 'set1Week' | 'set1Month' | 'clearDate' ;
+export const DateActions: IDateActionTypes[] = [ 'setToday', 'set1Week', 'set1Month', 'clearDate',  ] ;
+
+export type ITextActionTypes = 'updateNote' | 'updateText'  ;
+export const TextActions: ITextActionTypes[] = [ 'updateNote', 'updateText', ] ;
+
+export type IAllActionTypes = IChoiceActionTypes | IUserActionTypes | IDateActionTypes | ITextActionTypes;
+export const AllActions = [ ...ChoiceActions, ...UserActions,  ...DateActions, ...TextActions ];
 
 
 export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null ) : JSX.Element { //onCmdFieldClick: any
@@ -23,31 +38,64 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
 
   const userFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.User );
   const choiceFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.Choice );
-  // const dateFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.DateTime );
+  const dateFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.DateTime );
   // const noteFields: IMinField[] = selected.filter( field => field.NumberOfLines > 0 );
   // const textFields: IMinField[] = selected.filter( field => field.MaxLength > 0 );
 
-  const ChoiceTableRows = [ <tr key='choiceTableHeader'><th>Name</th><th>Per</th><th></th><th>Title</th></tr>];
+  const ChoiceTableRows = [ <tr key='choiceTableHeader'>{ [ 'Name', 'Per', 'Title',  ].map( h => { return <th key={h} >{h}</th> } ) } </tr>];
 
   choiceFields.map( ( field: IMinField ) => {
     ChoiceTableRows.push( <tr key={ field.InternalName } >
       <td title={field.InternalName}>{ field.InternalName }</td>
       <td><Icon iconName={ field.commands.perChoice === true ? 'Stack' : 'StatusCircleBlock2' }
-          data-fieldname={ field.InternalName } data-role= 'PerChoice' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+          data-fieldname={ field.InternalName } data-role= 'perChoice' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
     </tr> );
   });
 
-  const UserTableRows = [ <tr key='userTableHeader'><th>Name</th><th>Filter</th><th>Set</th><th>Add</th></tr>];
+  const UserTableRows = [ <tr key='userTableHeader'> { [ 'Name', 'Show', 'Hide', 'Set', 'Add', ].map( h => { return <th key={h} >{h}</th> } ) } </tr>];
 
   userFields.map( ( field: IMinField ) => {
     UserTableRows.push( <tr key={ field.InternalName } >
       <td title={field.InternalName}>{ field.InternalName }</td>
-      <td><Icon iconName={ field.commands.userFilter === true ? 'Filter' : 'StatusCircleBlock2' }
-          data-fieldname={ field.InternalName } data-role= 'FilterUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
-      <td><Icon iconName={ field.commands.setUser === true ? 'Contact' : 'StatusCircleBlock2' }
-          data-fieldname={ field.InternalName } data-role= 'SetUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
-      <td><Icon iconName={ field.commands.addUser === true ? 'AddFriend' : 'StatusCircleBlock2' }
-          data-fieldname={ field.InternalName } data-role= 'AddUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+      <td><Icon iconName={ field.commands.showToUser === true ? 'View' : 'StatusCircleBlock2' } title={ 'Show buttons to these users'}
+          data-fieldname={ field.InternalName } data-role= 'showToUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+
+      <td><Icon iconName={ field.commands.hideFromUser === true ? 'Hide3' : 'StatusCircleBlock2' } title={ 'Hide buttons for these users, Show takes precedance'}
+          data-fieldname={ field.InternalName } data-role= 'hideFromUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>  
+
+      <td><Icon iconName={ field.commands.setUser === true ? 'Contact' : 'StatusCircleBlock2' } title={ 'Set Field as current user'}
+          data-fieldname={ field.InternalName } data-role= 'setUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+
+      <td><Icon iconName={ field.commands.addUser === true ? 'AddFriend' : 'StatusCircleBlock2' } title={ 'Add User to field if Multi-Select'}
+          data-fieldname={ field.InternalName } data-role= 'addUser' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+
+    </tr> );
+  });
+
+  const DateTableRows = [ <tr key='userTableHeader'> { [ 'Name', 'Today', '+1Wk', '+1Mo', 'Clear' ].map( h => { return <th key={h} >{h}</th> } ) } </tr>];
+
+  // clearDate?: boolean;  // Add current date to this field
+  // setToday?: boolean;  // Add current date to this field
+  // set1Week?: boolean;  // Add current date to this field
+  // set1Month?: boolean;  // Add current date to this field
+
+  //export type IDateActionTypes = 'setToday' | 'set1Week' | 'set1Month' | 'clearDate'  ;
+
+  dateFields.map( ( field: IMinField ) => {
+    DateTableRows.push( <tr key={ field.InternalName } >
+      <td title={field.InternalName}>{ field.InternalName }</td>
+      <td><Icon iconName={ field.commands.setToday === true ? 'EventDate' : 'StatusCircleBlock2' } title={ 'Set Field to today'}
+          data-fieldname={ field.InternalName } data-role= 'setToday' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+
+      <td><Icon iconName={ field.commands.set1Week === true ? 'CalendarWeek' : 'StatusCircleBlock2' } title={ 'Set Field to + 7 days'}
+          data-fieldname={ field.InternalName } data-role= 'set1Week' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td> 
+
+      <td><Icon iconName={ field.commands.set1Month === true ? 'Calendar' : 'StatusCircleBlock2' } title={ 'Set Field to + 1 month'}
+          data-fieldname={ field.InternalName } data-role= 'set1Month' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+
+      <td><Icon iconName={ field.commands.clearDate === true ? 'Delete' : 'StatusCircleBlock2' } title={ 'Clear Date field'}
+          data-fieldname={ field.InternalName } data-role= 'clearDate' onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>
+
     </tr> );
   });
 
@@ -71,7 +119,12 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
       <table>
         { UserTableRows }
       </table>
-
+      </div>
+    }
+    { DateTableRows.length === 1 ? null : <div>
+      <table>
+        { DateTableRows }
+      </table>
       </div>
     }
   </div>;
@@ -95,24 +148,31 @@ export function updateSelectedCommands ( ev: React.MouseEvent<HTMLElement>, sele
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
   const itemName: string = target.dataset.fieldname;
-  const role: string = target.dataset.role;
+  const role: IAllActionTypes = target.dataset.role;
 
   // let thisSelected : IMinField = null;
   const newSelected: IMinField [] = [ ];
   selected.map( ( field: IMinField ) => {  //Find selected item
     if ( field.InternalName === itemName ) { 
-      if ( role === 'PerChoice' ) {
-        field.commands.perChoice = field.commands.perChoice === true ? false : true;
-      } else if ( role === 'FilterUser' ) {
-        field.commands.userFilter = field.commands.userFilter === true ? false : true;
-      } else if ( role === 'SetUser' ) {
-        field.commands.setUser = field.commands.setUser === true ? false : true;
-      } else if ( role === 'AddUser' ) {
-        field.commands.addUser = field.commands.addUser === true ? false : true;
-      // } else if ( role === '' ) {
 
-      // } else if ( role === '' ) {
+      if ( AllActions.indexOf( role ) > -1 ) {
 
+        const commands : IMinFieldCmds = field.commands;
+        const newVal = commands[ role ] === true ? false : true;
+
+        if ( DateActions.indexOf( role as IDateActionTypes ) > -1 ) {
+          DateActions.map( action => { commands[ action ] = false; });
+          commands[ role ] = newVal;
+
+        } else {
+          commands[ role ] = newVal;
+
+        }
+        
+        field.commands = commands;
+
+      } else {
+        alert('Opps!  Field updating field.commands ~ 161')
       }
     }
     newSelected.push( field );

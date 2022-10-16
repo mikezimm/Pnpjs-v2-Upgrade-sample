@@ -1,15 +1,16 @@
 import * as React from 'react';
 
-import { IWeb, Web, IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
+import { IWeb, Web, IFieldInfo, } from "@pnp/sp/presets/all";
 
 import {  SearchBox, ISearchBoxStyles, } from 'office-ui-fabric-react/lib/SearchBox';
 import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
-import { Icon, } from 'office-ui-fabric-react/lib/Icon';
+// import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, IPerformanceOp } from "../../fpsReferences";
 
-import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
+// import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getHighlightedText , getHelpfullErrorV2 } from '../../fpsReferences';
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
@@ -18,8 +19,6 @@ import ReactJson from "react-json-view";
 // import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './PropPaneCols.module.scss';
-import { IViewField } from '@pnp/spfx-controls-react';
-import { createThisViewField } from './components/ViewFields';
 import { createCommandBuilder, updateSelectedCommands } from './components/CommandAccordion';
 import { buildMainFieldTable, getMainSelectedItems } from './components/MainFieldTable';
 import { buildSelectedFieldTable } from './components/SelectedTable';
@@ -41,16 +40,26 @@ import { getDirectionClicks, getKeeperClicks } from './OnClickHelpers';
 
 export type IValidTemplate = 100 | 101;
 
+
 export interface IMinFieldCmds {
-  userFilter?: boolean;  // Use this field to filter the button:  true will show button when current user is in this field
-  choiceFilter?: boolean;  // Use this field to filter stack of buttons:  will hide button if this
-  perChoice?: boolean;  // Use this field to create stack of buttons:  one button per choice is created, button hidden if it's selected choice, adds placeholder to show on certain status (same column)
+  // userFilter?: boolean;  // Use this field to filter the button:  true will show button when current user is in this field
+  showToUser?: boolean;
+  hideFromUser?: boolean;
   setUser?: boolean;  // Set current field equal to this current user
   addUser?: boolean;  // Add current user to this field
-  updateDate?: boolean;  // Add current date to this field
+
+  perChoice?: boolean;  // Use this field to create stack of buttons:  one button per choice is created, button hidden if it's selected choice, adds placeholder to show on certain status (same column)
+  choiceFilter?: boolean;  // Use this field to filter stack of buttons:  will hide button if this
+
+  clearDate?: boolean;  // Add current date to this field
+  setToday?: boolean;  // Add current date to this field
+  set1Week?: boolean;  // Add current date to this field
+  set1Month?: boolean;  // Add current date to this field
+
   updateNote?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
   updateText?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
 }
+
 
 export interface IMinField extends IFieldInfo {
   idx: number; //Index number of field in main list of fields
@@ -260,11 +269,13 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       const { listTitle, } = lists[this.state.listIdx] ;
 
-      const fieldRows : JSX.Element [] = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) );
+      const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) );
 
       const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick ) ;
 
       const DesignViews: JSX.Element = createViewBuilder( this.state.selected );
+
+      const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
 
       let designPane: JSX.Element = null;
       if ( designMode === true ) {
@@ -272,10 +283,10 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             { DesignCommands }
             { DesignViews }
             <div style={{paddingBottom: '5px', fontSize: 'smaller' }}>CTRL-click <b>Arrows</b> to move to Top or Bottom</div>
+            { SelectedTable }
           </div>
       }
 
-      const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
 
       const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { width: 200 } };
 
@@ -310,9 +321,8 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             { siteLink }
             <div style={{paddingBottom: '15px' }}>{ FieldSearchBox }</div>
             <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Add</b> to add to Top of list, Click <b>Type</b> to filter on column type</div>
-            { SelectedTable }
+            { MainFieldTable }
           </div>
-
         </div>
       );
 

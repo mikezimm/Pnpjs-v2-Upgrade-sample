@@ -15,7 +15,7 @@ import styles from '../PropPaneCols.module.scss';
 
 import { IMinField } from "../PropPaneColsClass";
 
-export function buildMainFieldTable( filtered: IMinField[], designMode: boolean, listFields: IMinField[], searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any ) : any[] {
+export function buildMainFieldTable( filtered: IMinField[], designMode: boolean, listFields: IMinField[], searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any ) : JSX.Element {
 
   let heading: string = '';
 
@@ -30,8 +30,8 @@ export function buildMainFieldTable( filtered: IMinField[], designMode: boolean,
     }
   }
 
-  const fieldRows: any[] = [];
-  fieldRows.push( 
+  const tableRows: any[] = [];
+  tableRows.push( 
     <tr>
       <th style={{ display: designMode === true ? '' : 'none' }}>Add</th>
       <th>Title</th>
@@ -64,10 +64,15 @@ export function buildMainFieldTable( filtered: IMinField[], designMode: boolean,
       <td onClick={ () => onTypeClick( field, this ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
       <td title={detailValue}>{ getHighlightedText (detailValue , searchText ) }</td>
     </tr>;
-    fieldRows.push( row );
+    tableRows.push( row );
 
   });
-  return fieldRows;
+
+  const MainFieldTable: JSX.Element = <table className={ styles.fieldTable }>
+        { tableRows }
+      </table>;
+
+  return MainFieldTable;
 }
 
 export function  getMainSelectedItems ( ev: React.MouseEvent<HTMLElement>, listFields: IMinField[], selected: IMinField[]  ): IMinField []  {
