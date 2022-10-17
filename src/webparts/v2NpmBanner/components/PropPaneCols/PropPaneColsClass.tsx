@@ -79,6 +79,7 @@ export interface IMinField extends IFieldInfo {
   Formula?: string;
   NumberOfLines?: number;
   MaxLength?: number;
+  FileLeafRef?: string; // Used for Libraries to tell if it's a library
 }
 
 export interface IMinListProps {
@@ -429,9 +430,14 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           const allFields : IMinField[] = await thisWebInstance.lists.getByTitle(listTitle).fields.orderBy("Title", true)();
           const FilteredFields : IMinField[] = allFields.filter( field => field.Hidden !== true && field.Sealed !== true );
 
-          const DefaultSelected: string[] = [ 'ID', 'Editor', 'Modified', 'Title', 'FileLeafRef', '_UIVersionString' ];
+          const DefaultSelected: string[] = [ 'ID', 'Editor', 'Modified', 'Title', 'FileLeafRef' ];
           const PreSelectedFields: IMinField[] = [];
           const SelectedNames: string[] = [];
+          
+          let versionField = null;
+          let fileField = null;
+
+
 
           FilteredFields.map( ( field, idx ) => {
             field.idx = idx;
@@ -452,10 +458,15 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
               PreSelectedFields.push( field ); 
               SelectedNames.push( field.InternalName ) ; }
 
+            if ( field.InternalName === '_UIVersionString' ) versionField = field;
+            if ( field.FileLeafRef  ) fileField = field;
 
             // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName}
             //     || Choices:${field.Choices} || Formula:${field.Formula} || DefaultValue:${field.DefaultValue}`.toLocaleLowerCase();
           });
+
+          //Add version column only if it's a library.
+          if ( fileField ) PreSelectedFields.push( versionField );
 
           const SortedPreSelectedFields: IMinField[] = [];
           DefaultSelected.map( name => {

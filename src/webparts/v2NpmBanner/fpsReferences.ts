@@ -101,7 +101,7 @@ import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 export { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
 
-export const repoLink: IRepoLinks = links.gitRepoCoreFPS115Small;
+export const repoLink: IRepoLinks = links.gitRepoPnpjsV2Small;
 export const trickyEmails = links.trickyEmails;
 
 /***

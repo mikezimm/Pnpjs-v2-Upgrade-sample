@@ -26,20 +26,20 @@ export function createThisViewField( field: IMinField ) : IViewField {
 
     case FieldTypes.Text: 
       // If it's single line of text, max length is 10*characters with max of 250
-      returnField.maxWidth = field.MaxLength ? Math.min( field.MaxLength * 10, 350 ) : returnField.maxWidth;
+      returnField.maxWidth = field.MaxLength ? Math.min( field.MaxLength * 10, 250 ) : returnField.maxWidth;
       break;
 
     case FieldTypes.Note: 
       // If it's single line of text, max length is 10*characters with max of 250
-      returnField.maxWidth = 350;
+      returnField.maxWidth = 250;
       break;
 
     case FieldTypes.MultiChoice: 
-      returnField.maxWidth = 200;
+      returnField.maxWidth = 150;
       break;
 
     case FieldTypes.User: 
-      returnField.maxWidth = field.TypeAsString.indexOf('Multi') > -1 ? 200 : 75;
+      returnField.maxWidth = field.TypeAsString.indexOf('Multi') > -1 ? 150 : 75;
       returnField.name = `${field.InternalName}/Title`
       break;
 
@@ -49,19 +49,24 @@ export function createThisViewField( field: IMinField ) : IViewField {
       returnField.maxWidth = 100;
       break;
 
-    case FieldTypes.URL: 
-
-      break;
-
     case FieldTypes.File: 
       returnField.displayName = 'File';
       returnField.linkPropertyName = 'FileRef';
       returnField.maxWidth = 200;
       break;
 
+    case FieldTypes.URL:
+      // Other options for URL fields .name property ( determines what the link text is, not the url)
+      //"Location/ShowCollUrl"   "Location/ShowSitesUrl"   "Location/GetLinkUrl"
+      returnField.name = `${field.InternalName}/ShowPageName`;
+      returnField.linkPropertyName = 'goToItemLink';
+      returnField.maxWidth = 100;
+      break;
+
     case FieldTypes.DateTime:
       //DisplayFormat 0 === Date, 1 === Date and Time
-      returnField.maxWidth = field.DisplayFormat === 0 ? 150 : 200;
+      returnField.name = `${field.InternalName}/YYYY-MM-DD`;
+      returnField.maxWidth = field.DisplayFormat === 0 ? 100 : 130;
 
       break;
     // case FieldTypes.Choice: 
@@ -80,7 +85,7 @@ export function createThisViewField( field: IMinField ) : IViewField {
   } else if ( field.InternalName === '_UIVersionString' ) {
     returnField.displayName = 'Vers';
     returnField.minWidth = 6;
-    returnField.maxWidth = 20;
+    returnField.maxWidth = 35;
   }
 
   return returnField;
