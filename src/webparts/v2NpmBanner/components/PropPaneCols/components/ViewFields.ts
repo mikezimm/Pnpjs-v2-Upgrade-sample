@@ -40,6 +40,7 @@ export function createThisViewField( field: IMinField ) : IViewField {
 
     case FieldTypes.User: 
       returnField.maxWidth = field.TypeAsString.indexOf('Multi') > -1 ? 200 : 75;
+      returnField.name = `${field.InternalName}/Title`
       break;
 
     case FieldTypes.Number:
