@@ -29,7 +29,7 @@ export function createViewBuilder( selected: IMinField[], onToggleAccordion: any
   });
 
   
-  const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{ float: 'right' }}
+  const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{  }}
     data-fieldtype= 'Commands' onClick= { onExpandRight } className={ styles.typeFilterIcon } />;
 
   const viewElement: JSX.Element = <div>
@@ -38,10 +38,10 @@ export function createViewBuilder( selected: IMinField[], onToggleAccordion: any
         enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
   </div>;
 
-  const commandTitle = <div style={{display: 'flex' }}>Build Commands </div>;
+  const viewTitle = <div style={{display: 'flex' }}>Build Views</div>;
 
   const DesignViews: JSX.Element = <Accordion 
-    title={ commandTitle }
+    title={ viewTitle }
     showAccordion={ false }
     animation= { 'TopDown' }
     contentStyles={ {height: ''} }

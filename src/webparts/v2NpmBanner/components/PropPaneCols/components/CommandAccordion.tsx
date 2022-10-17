@@ -17,8 +17,10 @@ import { IMinField, IMinFieldCmds } from "../PropPaneColsClass";
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
 import { IQuickCommands } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
 import ReactJson from 'react-json-view';
+import { filter } from 'lodash';
 
-export type IChoiceActionTypes = 'perChoice' | 'showChoice' ;
+
+export type IChoiceActionTypes = 'perChoice' | 'promoteChoice' | 'demoteChoice' | 'bracketChoice' ;
 
 export type IUserActionTypes = 'showToUser' | 'hideFromUser' | 'setUser' | 'addUser'  ;
 
@@ -46,9 +48,21 @@ export interface IIconTableRow {
 }
 
 
+/**
+ * Other options for choices in group2
+ * filter to only show if current status is one status earlier than button... ie it move's up.
+ *  So for instance, if the button choices is 2. In Process, only show when status is in 1. Plan
+ *  This means that you can not go backwards via a button. 
+ * 
+ * Alternatively, make button visible if the status is either one above or one below
+ * 
+ * Maybe options are:  Promote ( up ), Demote ( down ), Promote/Demote ( up/down )
+ */
 const ChoiceFieldActionIcons: IIconTableRow[] = [ 
   { group: '1', type: 'special', cmd: 'perChoice', icon: 'Stack', head: 'Per', title: 'Create one button to set every choice', oneField: true },
-  { group: '2', type: 'filter', cmd: 'showChoice', icon: 'Filter', head: '???', title: 'Filter buttons for each choice - TBD' },
+  { group: '2', type: 'filter', cmd: 'promoteChoice', icon: 'Upload', head: 'Promote', title: 'Show button on Previous status - Able to only Promote' },
+  { group: '2', type: 'filter', cmd: 'demoteChoice', icon: 'Download', head: 'Demote', title: 'Show button on Higher status - Able to only Demote' },
+  { group: '2', type: 'filter', cmd: 'bracketChoice', icon: 'Sort', head: 'Both', title: 'Show button on Previous/Higher status - Able to only Promote/Demote' },
     // { cmd: '', icon: '', head: '', title: '' },
  ];
 
@@ -172,7 +186,7 @@ const ChoicePerButton : IQuickButton = {
     // Body: "Hi! It's [Today+3] and I'm $MyName$",
     // Comments: "{{append rich stamp}}"
   },
-  // "showWhenEvalTrue": "item.AssignedToTitle !== sourceUserInfo.Title"
+  showWhenEvalTrue: "", //item.AssignedToTitle !== sourceUserInfo.Title
 }
 
 export function buildQuickCommands(  selected: IMinField[], ): IQuickButton[] {
@@ -181,10 +195,71 @@ export function buildQuickCommands(  selected: IMinField[], ): IQuickButton[] {
 
   selected.map( ( field: IMinField ) => {
     if ( field.commands.perChoice === true ) {
-      field.Choices.map( choice => {
-        const thisButton = JSON.parse(JSON.stringify( ChoicePerButton ));
-        thisButton.str1 = choice;
-        buttons.push( thisButton );
+
+      const filterButton = field.commands.demoteChoice === true ? 'demote' : field.commands.promoteChoice === true ? 'promote'  : field.commands.bracketChoice === true ? 'bracket' : 'none'; 
+
+      field.Choices.map( ( choice: string , idx: number ) => {
+
+        const buttonIndex = idx === 0 ? 'first' : idx  === field.Choices.length -1 ? 'last' : 'middle';
+
+        if ( buttonIndex === 'first' && filterButton === 'promote' ) {
+          //Skip this button since you can not demote the item any further
+
+        } else if ( buttonIndex === 'last' && filterButton === 'demote' ) {
+          //Skip this button since you can not promote the item any further
+
+        } else {
+
+          const promoteFilter = idx === 0 ? '' : field.Choices[ idx -1 ];
+          const demoteFilter = idx === field.Choices.length -1 ? '' : field.Choices[ idx +1 ];
+
+          const thisButton: IQuickButton = JSON.parse(JSON.stringify( ChoicePerButton ));
+          thisButton.str1 = choice;
+
+          
+          if ( filterButton === 'demote' || filterButton === 'bracket' ){
+
+            if ( demoteFilter ) {
+              thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
+              thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${demoteFilter}`;
+            }
+
+            // if ( filterButton === 'bracket' && idx < field.Choices.length -1 && promoteFilter ) {
+            //   thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
+            //   thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${promoteFilter}`;
+            // }
+
+          }
+
+          if ( filterButton === 'promote' || filterButton === 'bracket' ){
+
+            if ( promoteFilter ) {
+              thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
+              thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${promoteFilter}`;
+            }
+
+            // if ( filterButton === 'bracket' && idx > 0 && demoteFilter ) {
+            //   thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
+            //   thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${demoteFilter}`;
+            // }
+
+          }
+
+          if ( filterButton === 'none' ) {
+            //Just don't show button when the status is the current one.
+            thisButton.showWhenEvalTrue = `item.${field.InternalName} !== ${choice}`;
+
+          } else { // Always exclude from showing when it's the current choice.  No need to set it to itself.
+
+            //Don't think this is needed since the other filters take care of it UNLESS 
+            // thisButton.showWhenEvalTrue = `item.${field.InternalName} !== ${choice} ${ !thisButton.showWhenEvalTrue ? '' : ` && ( ${thisButton.showWhenEvalTrue} )` }`;
+
+          }
+
+          buttons.push( thisButton );
+
+        }
+
       });
     }
   });
@@ -210,10 +285,13 @@ export function buildQuickCommands(  selected: IMinField[], ): IQuickButton[] {
     if ( field.commands[ command ] === true ) {
       // if ( command.indexOf('show') === 0 ) { 
         if ( command === 'showToUser' ) { eqUserFields.push( field.InternalName ) ;  }
-        else if ( command === 'showChoice' ) { eqTextFields.push( field.InternalName ) ;  }
+        else if ( command === 'hideFromUser' ) { neUserFields.push( field.InternalName ) ;  }
+        else if ( command === 'promoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
+        else if ( command === 'demoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
+        else if ( command === 'bracketChoice' ) { eqTextFields.push( field.InternalName ) ;  }
         else if ( command === 'showIfFuture' ) { gtTodayFields.push( field.InternalName ) ;  }
         else if ( command === 'showIfPast' ) { ltTodayFields.push( field.InternalName ) ;  }
-        else if ( command === 'hideFromUser' ) { neUserFields.push( field.InternalName ) ;  }
+
 
       // } if ( command.indexOf('hide') === 0 ) { neUserFields.push( field.InternalName ) ; }
     }
