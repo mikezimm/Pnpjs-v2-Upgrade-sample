@@ -23,7 +23,7 @@ import { createCommandBuilder, updateSelectedCommands } from './components/Comma
 import { buildMainFieldTable, getMainSelectedItems } from './components/MainFieldTable';
 import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/ViewAccordion';
-import { getDirectionClicks, getKeeperClicks } from './OnClickHelpers';
+import { getDirectionClicks, getKeeperClicks, selectAllofType } from './OnClickHelpers';
 
 // import { IContentsFieldInfo, IFieldBucketInfo } from './IFieldComponentTypes';
 
@@ -51,13 +51,18 @@ export interface IMinFieldCmds {
   perChoice?: boolean;  // Use this field to create stack of buttons:  one button per choice is created, button hidden if it's selected choice, adds placeholder to show on certain status (same column)
   choiceFilter?: boolean;  // Use this field to filter stack of buttons:  will hide button if this
 
-  clearDate?: boolean;  // Add current date to this field
+  clearDate?: boolean;  // Clear date from this field
   setToday?: boolean;  // Add current date to this field
-  set1Week?: boolean;  // Add current date to this field
-  set1Month?: boolean;  // Add current date to this field
+  set1Week?: boolean;  // Add current date next week to this field
+  set1Month?: boolean;  // Add current date next month to this field
+  showIfPast?: boolean;  //Show button if date is Today or in the past
+  showIfFuture?: boolean;  //Show button if date is Today or in the future
 
-  updateNote?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
-  updateText?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
+  replaceText?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
+  promptText?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
+
+  appendNote?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
+  replaceNote?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
 }
 
 
@@ -99,7 +104,10 @@ export interface IFieldPanelState {
   listIdx: number;
   errMessage: string;
   designMode: boolean;
+  fullDesign: boolean;
 }
+
+const IsEditable: string = 'IsEditable';
 
 export default class FieldPanel extends React.Component< IFieldPanelProps, IFieldPanelState > {
 
@@ -152,7 +160,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       listIdx: this.props.lists.length > 0 ? 0 : null,
       errMessage: '',
       designMode: false,
-
+      fullDesign: false,
     };
   
     this._performance.ops.superOnInit = updatePerformanceEnd( this._performance.ops.superOnInit, true,666 );
@@ -271,9 +279,9 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) );
 
-      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick ) ;
+      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this._toggleFullDesign.bind(this) ) ;
 
-      const DesignViews: JSX.Element = createViewBuilder( this.state.selected );
+      const DesignViews: JSX.Element = createViewBuilder( this.state.selected, this._toggleFullDesign.bind(this) );
 
       const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
 
@@ -311,26 +319,35 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           styles={ { root: { width: 160, float: 'right' } } }
           />;
 
-      const DateFilterIcon = <Icon iconName={ 'DateTime' } title={ 'Filter for DateTime columns'} style={{ marginLeft: '30px' }}
-        data-filterType= 'Date and Time' onClick= { () => this._onFilterClick('Date and Time') } className={ styles.selectIcon } />;
+      const SelectFiltered = <Icon iconName={ 'SkypeCircleArrow' } title={ 'Select All these columns'} style={{ color: this.state.searchText ? '' : 'lightgray' }}
+        data-fieldtype= '' onClick= { this._selectFiltered } className={ styles.typeFilterIcon } />;
 
-      const UserFilterIcon = <Icon iconName={ 'Contact' } title={ 'Filter for User columns'} style={{ marginLeft: '30px' }}
-        data-filterType= 'Date and Time' onClick= { () => this._onFilterClick('Person or Group') } className={ styles.selectIcon } />;
+      const DateFilterIcon = <Icon iconName={ 'DateTime' } title={ 'Filter for DateTime columns'} style={{  }}
+        data-fieldtype= 'Date and Time' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const TextFilterIcon = <Icon iconName={ 'TextField' } title={ 'Filter for Text columns'} style={{ marginLeft: '30px' }}
-        data-filterType= 'Text' onClick= { () => this._onFilterClick('Text') } className={ styles.selectIcon } />;
+      const UserFilterIcon = <Icon iconName={ 'Contact' } title={ 'Filter for User columns'} style={{  }}
+        data-fieldtype= 'Person or Group' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const ChoiceFilterIcon = <Icon iconName={ 'Stack' } title={ 'Filter for Choice columns'} style={{ marginLeft: '30px' }}
-        data-filterType= 'Choice' onClick= { () => this._onFilterClick('Choice') } className={ styles.selectIcon } />;
+      const TextFilterIcon = <Icon iconName={ 'TextField' } title={ 'Filter for Text columns'} style={{  }}
+        data-fieldtype= 'Text' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const NumberFilterIcon = <Icon iconName={ 'Number' } title={ 'Filter for Number columns'} style={{ marginLeft: '30px' }}
-        data-filterType= 'Number' onClick= { () => this._onFilterClick('Number') } className={ styles.selectIcon } />;
+      const ChoiceFilterIcon = <Icon iconName={ 'Stack' } title={ 'Filter for Choice columns'} style={{  }}
+        data-fieldtype= 'Choice' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const FilterButtons = <div style={{display: 'flex', marginLeft: '50px' }}>{DateFilterIcon}{UserFilterIcon}{TextFilterIcon}{ChoiceFilterIcon}{NumberFilterIcon}</div>;
+      const NumberFilterIcon = <Icon iconName={ 'Number' } title={ 'Filter for Number columns'} style={{  }}
+        data-fieldtype= 'Number' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+
+      const EditableFilterIcon = <Icon iconName={ 'Edit' } title={ 'All Editable'} style={{ marginLeft: '30px' }}
+        data-fieldtype= { IsEditable } onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+
+      const CalculatedFilterIcon = <Icon iconName={ 'Variable' } title={ 'Calculated columns'} style={{ marginLeft: '30px' }}
+        data-fieldtype= 'Calculated' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+
+      const FilterButtons = <div style={{display: 'flex', marginLeft: '50px' }}>{SelectFiltered}{DateFilterIcon}{UserFilterIcon}{TextFilterIcon}{ChoiceFilterIcon}{NumberFilterIcon}{CalculatedFilterIcon}{EditableFilterIcon}</div>;
 
       return (
 
-        <div className={ [ styles.propPaneCols, styles.colsResults ].join( ' ' ) } >
+        <div className={ [ styles.propPaneCols, styles.colsResults, this.state.fullDesign === true ? styles.fullDesign : null ].join( ' ' ) } >
           { fetchPane }
           { designPane }
           <div className={ styles.rightSide }>
@@ -347,7 +364,10 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
   }
 
-
+  private _toggleFullDesign ( status: boolean): void {
+    // const fullDesign : boolean = this.state.fullDesign === true ? false : true;
+    this.setState({ fullDesign: status });
+  }
     
   private _onCmdFieldClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
 
@@ -416,16 +436,23 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           FilteredFields.map( ( field, idx ) => {
             field.idx = idx;
             field.commands = {};
+
             field.searchTextLC = ['Title', 'InternalName', 'TypeDisplayName', 'Choices', 'Formula', 'DefaultValue' ].map( prop => {
               const anyField : any = field;
               return anyField[ prop ] ? `${prop}:${anyField[ prop ]}` : '';
             }).join(' || ').toLocaleLowerCase();
+
+            let ReadOnly = field.ReadOnlyField === true ? 'IsReadOnly' : IsEditable.toLocaleLowerCase();
+            if ( field.InternalName === 'ContentType' ) ReadOnly = '';
+            field.searchTextLC += ` : ${ReadOnly}`;
 
             if ( DefaultSelected.indexOf(field.InternalName) > -1 ) {
               field.isKeeper = true;
               field.isSelected = true;
               PreSelectedFields.push( field ); 
               SelectedNames.push( field.InternalName ) ; }
+
+
             // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName}
             //     || Choices:${field.Choices} || Formula:${field.Formula} || DefaultValue:${field.DefaultValue}`.toLocaleLowerCase();
           });
@@ -480,10 +507,46 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this.setState({ designMode: designMode })
   }
 
+
+
+
+  private _selectFiltered = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+
+    const { listFields, selected, searchText } = this.state;
+
+    if ( searchText ) {
+      const filteredFields: string[] = listFields.filter( field => field.searchTextLC.indexOf( searchText.toLocaleLowerCase() ) > -1 ).map ( field => { return field.InternalName });
+      listFields.map( field => {
+        if ( field.isSelected !== true && filteredFields.indexOf( field.InternalName ) > -1 ) {
+          // Question:  Does this mutate the state directly?  Is it an issue?
+          // If so, how would I do this properly?  Do I need to stringify/parse all these arrays every time?
+          field.isSelected = true ;
+          selected.push( field ); //Add to selected array
+        }
+      });
+    }
+    this.setState( { listFields: listFields, selected: selected } );
+  }
+
+  private _onFilterClick2 = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+    const target: any = ev.target;
+  
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    const fieldtype: string = this.state?.searchText === target.dataset?.fieldtype.toLocaleLowerCase() ? '' : target.dataset.fieldtype;
+    this._onSearchChange( fieldtype , '' );
+    // if ( ctrlKey === true || altKey === true ) {
+    //   const newSelected: IMinField [] = selectAllofType( ev, this.state.listFields, this.state.selected );
+    //   this.setState({ selected: newSelected });
+    // }
+
+  }
+
   private _onFilterClick ( searchText: string ): void {
     const filterType : string = this.state.searchText === searchText.toLocaleLowerCase() ? '' : searchText;
     this._onSearchChange( filterType , '' );
   }
+
 
   private _onTypeClick ( field: IMinField ): void {
     const filterType : string = this.state.searchProp ? '' : field.TypeDisplayName;

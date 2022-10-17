@@ -1,5 +1,36 @@
 import { IMinField } from "./PropPaneColsClass";
 
+
+/**
+ * Does not work as desired.... not using now.
+ * @param ev
+ * @param listFields 
+ * @param selected 
+ * @returns 
+ */
+export function  selectAllofType ( ev: React.MouseEvent<HTMLElement>, listFields: IMinField[], selected: IMinField[]  ): IMinField []  {
+  const target: any = ev.target;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+
+  const fieldtype: string = target.dataset.fieldtype;
+
+  listFields.map( field => {  //Find selected item
+    if ( field.TypeAsString.toLocaleLowerCase() === fieldtype ) { 
+      field.isSelected = ctrlKey === true ? true : altKey === true ? false : field.isSelected;
+      field.isKeeper = ctrlKey === true ? true : altKey === true ? false : field.isKeeper;
+    }
+  });
+
+  const newSelected: IMinField [] = listFields.filter( field => { return field.isSelected === true } );
+
+  console.log('selectAllofType:', fieldtype, target, newSelected );
+
+  return newSelected;
+}
+
+
 // private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
   export function getKeeperClicks ( ev: React.MouseEvent<HTMLElement>, selected: IMinField[]  ): IMinField[] {
 

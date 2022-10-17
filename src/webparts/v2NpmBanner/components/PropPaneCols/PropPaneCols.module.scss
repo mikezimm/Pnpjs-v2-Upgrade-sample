@@ -36,6 +36,11 @@
     padding: 3px;
   }
 
+  .typeFilterIcon {
+    @extend .selectIcon;
+    margin-left: 20px;
+  }
+
   .button {
     // Our button
     padding: 10px; //Added this to give padding around buttons
@@ -92,8 +97,24 @@
 
 }
 
+.fullDesign {
+  justify-content: start;
+  grid-gap: 0;
+  .rightSide {
+    display: none;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
 
-.commandTable {
+  .designPane{
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+}
+
+.commandTables {
   th {
     width: 50px;
   }

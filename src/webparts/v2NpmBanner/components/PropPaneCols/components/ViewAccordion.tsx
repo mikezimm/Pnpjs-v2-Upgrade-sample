@@ -18,7 +18,7 @@ import { createThisViewField } from './ViewFields';
 import ReactJson from 'react-json-view';
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
 
-export function createViewBuilder( selected: IMinField[] ) : JSX.Element {
+export function createViewBuilder( selected: IMinField[], onToggleAccordion: any = null ) : JSX.Element {
 
   const viewFields: IViewField[] = [];
 
@@ -40,6 +40,7 @@ export function createViewBuilder( selected: IMinField[] ) : JSX.Element {
     contentStyles={ {height: ''} }
     content = { viewElement }
     componentStyles = {{ marginBottom: '15px' }}
+    toggleCallback = { onToggleAccordion }
   />;
 
     return DesignViews;
