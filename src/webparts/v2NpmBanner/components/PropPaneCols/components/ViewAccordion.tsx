@@ -18,7 +18,7 @@ import { createThisViewField } from './ViewFields';
 import ReactJson from 'react-json-view';
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
 
-export function createViewBuilder( selected: IMinField[], onToggleAccordion: any = null ) : JSX.Element {
+export function createViewBuilder( selected: IMinField[], onToggleAccordion: any = null, onExpandRight: any = null ) : JSX.Element {
 
   const viewFields: IViewField[] = [];
 
@@ -28,19 +28,26 @@ export function createViewBuilder( selected: IMinField[], onToggleAccordion: any
     }
   });
 
+  
+  const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{ float: 'right' }}
+    data-fieldtype= 'Commands' onClick= { onExpandRight } className={ styles.typeFilterIcon } />;
+
   const viewElement: JSX.Element = <div>
+    { expandRightIcon }
     <ReactJson src={ viewFields } name={ 'viewFields' } collapsed={ true } displayDataTypes={ false } displayObjectSize={ false } 
         enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
   </div>;
 
+  const commandTitle = <div style={{display: 'flex' }}>Build Commands </div>;
+
   const DesignViews: JSX.Element = <Accordion 
-    title={ `Build Views` }
+    title={ commandTitle }
     showAccordion={ false }
     animation= { 'TopDown' }
     contentStyles={ {height: ''} }
     content = { viewElement }
-    componentStyles = {{ marginBottom: '15px' }}
-    toggleCallback = { onToggleAccordion }
+    componentStyles = {{  marginBottom: '15px', border: '4px solid #d1d1d1', background: '#f5f5f5', padding: '10px'  }}
+    // toggleCallback = { onToggleAccordion }
   />;
 
     return DesignViews;

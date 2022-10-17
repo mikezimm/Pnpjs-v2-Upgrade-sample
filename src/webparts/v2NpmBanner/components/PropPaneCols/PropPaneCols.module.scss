@@ -100,6 +100,7 @@
 .fullDesign {
   justify-content: start;
   grid-gap: 0;
+
   .rightSide {
     display: none;
     opacity: 0;
@@ -115,6 +116,25 @@
 }
 
 .commandTables {
+
+  display: grid;
+  grid-gap: 3em;
+
+  .leftCommand{
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .rightCommand {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .collapseCommand {
+    grid-column: 0;
+    grid-row: 0;
+  }
+
   th {
     width: 50px;
   }

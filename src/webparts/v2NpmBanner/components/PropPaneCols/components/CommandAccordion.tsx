@@ -31,19 +31,22 @@ export type INoteActionTypes = 'appendNote' | 'replaceNote'  ;
 export type IAllActionTypes = IChoiceActionTypes | IUserActionTypes | IDateActionTypes | ITextActionTypes | INoteActionTypes;
 
 export interface IIconTableRow {
-  cmd: IAllActionTypes,
-  icon: string,
-  head: string,
-  title: string,
-  ignore?: string,  // javascript eval to ignore this label on per field basis.
-  group?: string, // Used to group commands for ensuring only one of a group is set to true
+  cmd: IAllActionTypes;
+  icon: string;
+  head: string;
+  title: string;
+  ignore?: string;  // javascript eval to ignore this label on per field basis.
+  group?: string; // Used to group commands for ensuring only one of a group is set to true
+  oneField?: boolean;  // Set to true to only allow this setting to be true on one field at a time
 }
 
 const ChoiceFieldActionIcons: IIconTableRow[] = [ 
-  { group: '1', cmd: 'perChoice', icon: 'Stack', head: 'Per', title: 'Create one button to set every choice' },
-  { group: '1', cmd: 'choiceFilter', icon: 'Filter', head: '???', title: 'Filter buttons for each choice - TBD' },
+  { group: '1', cmd: 'perChoice', icon: 'Stack', head: 'Per', title: 'Create one button to set every choice', oneField: true },
+  { group: '2', cmd: 'choiceFilter', icon: 'Filter', head: '???', title: 'Filter buttons for each choice - TBD' },
     // { cmd: '', icon: '', head: '', title: '' },
  ];
+
+ export const ChoiceActions = ChoiceFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
 
 const UserFieldActionIcons: IIconTableRow[] = [ 
   { group: '1', cmd: 'showToUser', icon: 'View', head: 'Show', title: 'Show buttons to these users' },
@@ -83,7 +86,7 @@ export const AllFieldActions = [ ...ChoiceFieldActionIcons, ...UserFieldActionIc
 
 export const AllActions = AllFieldActions.map( ( action: IIconTableRow ) => { return action.cmd } );
 
-export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null, onToggleAccordion: any = null ) : JSX.Element { //onCmdFieldClick: any
+export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null, expanded: boolean, onExpandRight: any = null ) : JSX.Element { //onCmdFieldClick: any
 
   const choiceFields: IMinField[] = selected.filter( field =>field.FieldTypeKind === FieldTypes.Choice );
   const ChoiceTable = createFieldTableRows( null, 'Choice fields', choiceFields, ChoiceFieldActionIcons, onCmdFieldClick );
@@ -103,22 +106,38 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
   const noteFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.Note );
   const NoteTable = createFieldTableRows( null, 'Note fields', noteFields, NoteFieldActionIcons, onCmdFieldClick );
 
+  const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{ float: 'right' }}
+    data-fieldtype= 'Commands' onClick= { onExpandRight } className={ styles.typeFilterIcon } />;
+
+
+
+  const RightSide = <div>
+    <h2>Command Set Title goes here</h2>
+  </div>
   const commandElement: JSX.Element = <div className={ styles.commandTables }>
-    { ChoiceTable }
-    { UserTable }
-    { DateTable }
-    { TextTable }
-    { NoteTable }
+    <div className={ styles.leftCommand}>
+      { expandRightIcon }
+      { ChoiceTable }
+      { UserTable }
+      { DateTable }
+      { TextTable }
+      { NoteTable }
+    </div>
+    <div className={ expanded === true ? styles.rightCommand : styles.collapseCommand }>
+      { `Right side` }
+    </div>
   </div>;
 
+  const commandTitle = <div style={{display: 'flex' }}>Build Commands </div>;
+  
   const DesignCommands: JSX.Element = <Accordion 
-    title={ `Build Commands` }
+    title={ commandTitle }
     showAccordion={ false }
     animation= { 'TopDown' }
     contentStyles={ {height: ''} }
     content = { commandElement }
-    componentStyles = {{ marginBottom: '15px' }}
-    toggleCallback = { onToggleAccordion }
+    componentStyles = {{ marginBottom: '15px', border: '4px solid #d1d1d1', background: '#f5f5f5', padding: '10px' }}
+    // toggleCallback = { onToggleAccordion }
   />;
 
   return DesignCommands ;
@@ -171,48 +190,28 @@ export function updateSelectedCommands ( ev: React.MouseEvent<HTMLElement>, sele
         let commands : IMinFieldCmds = field.commands;
         const newVal = commands[ role ] === true ? false : true;
 
-
         if ( DateActions.indexOf( role as IDateActionTypes ) > -1 ) {
           commands = updateCommandSet( commands, role, newVal, DateFieldActionIcons );
-          // //Should get the action for current button press
-          //   const ThisDateAction: IIconTableRow[] = DateFieldActionIcons.filter( icon => { return icon.cmd === role } ); 
-          //   DateFieldActionIcons.map( action => {
-
-          //     //Loop through all actions in the same group.
-          //     if ( action.group === ThisDateAction[0].group ) {
-          //       commands[ action.cmd ] = false;
-          //     }
-          //     commands[ role ] = newVal;
-          //   });
 
         } else if ( UserActions.indexOf( role as IUserActionTypes ) > -1 ) {
           commands = updateCommandSet( commands, role, newVal, UserFieldActionIcons );
-          // //Should get the action for current button press
-          //   const ThisUserAction: IIconTableRow[] = UserFieldActionIcons.filter( icon => { return icon.cmd === role } ); 
-          //   UserFieldActionIcons.map( action => {
 
-          //     //Loop through all actions in the same group.
-          //     if ( action.group === ThisUserAction[0].group ) {
-          //       commands[ action.cmd ] = false;
-          //     }
-          //     commands[ role ] = newVal;
-          //   });
-  
         } else if ( TextActions.indexOf( role as IUserActionTypes ) > -1 ) {
           commands = updateCommandSet( commands, role, newVal, TextFieldActionIcons );
-  
-    
+
         } else if ( NoteActions.indexOf( role as IUserActionTypes ) > -1 ) {
           commands = updateCommandSet( commands, role, newVal, NoteFieldActionIcons );
-  
-            //   DateActions.map( action => { commands[ action ] = false; });
-            //   commands[ role ] = newVal;
-  
-            // } else { // This applies to all the set date functions
-            //   DateActions.map( action => { commands[ action ] = false; });
-            //   commands[ role ] = newVal;
-            // }
 
+        } else if ( ChoiceActions.indexOf( role as IChoiceActionTypes ) > -1 ) {
+          commands = updateCommandSet( commands, role, newVal, ChoiceFieldActionIcons );
+
+          const ThisAction: IIconTableRow[] = ChoiceFieldActionIcons.filter( icon => { return icon.cmd === role } );
+          if ( ThisAction[0].oneField === true ) {
+            selected.map( ( checkField: IMinField ) => {  // This turns off same setting on all similarly typed columns
+              if ( field.TypeAsString === checkField.TypeAsString && field.InternalName !== checkField.InternalName ) {
+                checkField.commands[ role ] = false;
+            }} );
+          }
 
         } else {
           commands[ role ] = newVal;

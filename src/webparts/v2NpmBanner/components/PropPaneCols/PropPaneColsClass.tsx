@@ -279,9 +279,9 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) );
 
-      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this._toggleFullDesign.bind(this) ) ;
+      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign, this._toggleFullDesign.bind(this) ) ;
 
-      const DesignViews: JSX.Element = createViewBuilder( this.state.selected, this._toggleFullDesign.bind(this) );
+      const DesignViews: JSX.Element = createViewBuilder( this.state.selected, null, this._toggleFullDesign.bind(this) );
 
       const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
 
@@ -365,8 +365,8 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   }
 
   private _toggleFullDesign ( status: boolean): void {
-    // const fullDesign : boolean = this.state.fullDesign === true ? false : true;
-    this.setState({ fullDesign: status });
+    const fullDesign : boolean = this.state.fullDesign === true ? false : true;
+    this.setState({ fullDesign: fullDesign });
   }
     
   private _onCmdFieldClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
@@ -547,6 +547,12 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this._onSearchChange( filterType , '' );
   }
 
+  
+
+  // private _onExpandRight ( view: string ): void {
+  //   const filterType : string = this.state.expandDesign ? '' : field.TypeDisplayName;
+  //   this._onSearchChange( '' , filterType );
+  // }
 
   private _onTypeClick ( field: IMinField ): void {
     const filterType : string = this.state.searchProp ? '' : field.TypeDisplayName;
