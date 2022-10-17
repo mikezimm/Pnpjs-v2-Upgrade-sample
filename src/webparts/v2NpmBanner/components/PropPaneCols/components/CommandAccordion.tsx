@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2 } from '../../../fpsReferences';
+import { getHighlightedText , getHelpfullErrorV2, IQuickButton } from '../../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,9 +15,10 @@ import styles from '../PropPaneCols.module.scss';
 
 import { IMinField, IMinFieldCmds } from "../PropPaneColsClass";
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
+import { IQuickCommands } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
+import ReactJson from 'react-json-view';
 
-
-export type IChoiceActionTypes = 'perChoice' | 'choiceFilter' ;
+export type IChoiceActionTypes = 'perChoice' | 'showChoice' ;
 
 export type IUserActionTypes = 'showToUser' | 'hideFromUser' | 'setUser' | 'addUser'  ;
 
@@ -30,54 +31,59 @@ export type INoteActionTypes = 'appendNote' | 'replaceNote'  ;
 
 export type IAllActionTypes = IChoiceActionTypes | IUserActionTypes | IDateActionTypes | ITextActionTypes | INoteActionTypes;
 
+export type IActionExecType = 'filter' | 'update' | 'special';
+
 export interface IIconTableRow {
   cmd: IAllActionTypes;
   icon: string;
   head: string;
   title: string;
+  type: IActionExecType;
   ignore?: string;  // javascript eval to ignore this label on per field basis.
   group?: string; // Used to group commands for ensuring only one of a group is set to true
   oneField?: boolean;  // Set to true to only allow this setting to be true on one field at a time
+
 }
 
+
 const ChoiceFieldActionIcons: IIconTableRow[] = [ 
-  { group: '1', cmd: 'perChoice', icon: 'Stack', head: 'Per', title: 'Create one button to set every choice', oneField: true },
-  { group: '2', cmd: 'choiceFilter', icon: 'Filter', head: '???', title: 'Filter buttons for each choice - TBD' },
+  { group: '1', type: 'special', cmd: 'perChoice', icon: 'Stack', head: 'Per', title: 'Create one button to set every choice', oneField: true },
+  { group: '2', type: 'filter', cmd: 'showChoice', icon: 'Filter', head: '???', title: 'Filter buttons for each choice - TBD' },
     // { cmd: '', icon: '', head: '', title: '' },
  ];
 
  export const ChoiceActions = ChoiceFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
 
 const UserFieldActionIcons: IIconTableRow[] = [ 
-  { group: '1', cmd: 'showToUser', icon: 'View', head: 'Show', title: 'Show buttons to these users' },
-  { group: '1', cmd: 'hideFromUser', icon: 'Hide3', head: 'Hide', title: 'Hide buttons for these users, Show takes precedance' },
-  { group: '2', cmd: 'setUser', icon: 'Contact', head: 'Set', title: 'Set Field as current user', ignore: 'field.ReadOnlyField === true'  },
-  { group: '2', cmd: 'addUser', icon: 'AddFriend', head: 'Add', title: 'Add User to field if Multi-Select', ignore: 'field.ReadOnlyField === true'  },
+  { group: '1', type: 'filter', cmd: 'showToUser', icon: 'View', head: 'Show', title: 'Show buttons to these users' },
+  { group: '1', type: 'filter', cmd: 'hideFromUser', icon: 'Hide3', head: 'Hide', title: 'Hide buttons for these users, Show takes precedance' },
+  { group: '2', type: 'update', cmd: 'setUser', icon: 'Contact', head: 'Set', title: 'Set Field as current user', ignore: 'field.ReadOnlyField === true'  },
+  { group: '2', type: 'update', cmd: 'addUser', icon: 'AddFriend', head: 'Add', title: 'Add User to field if Multi-Select', ignore: 'field.ReadOnlyField === true'  },
  ];
 
  export const UserActions = UserFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
 
  const DateFieldActionIcons: IIconTableRow[] = [ 
-  { group: '1', cmd: 'setToday', icon: 'EventDate', head: 'Today', title: 'Set Field to today' , ignore: 'field.ReadOnlyField === true' },
-  { group: '1', cmd: 'set1Week', icon: 'CalendarWorkWeek', head: '+1Wk', title: 'Set Field to + 7 days' , ignore: 'field.ReadOnlyField === true'  },
-  { group: '1', cmd: 'set1Month', icon: 'Calendar', head: '+1Mo', title: 'Set Field to + 1 month' , ignore: 'field.ReadOnlyField === true'  },
-  { group: '1', cmd: 'clearDate', icon: 'Delete', head: 'Clear', title: 'Clear Date field' , ignore: 'field.ReadOnlyField === true'  },
-  { group: '2', cmd: 'showIfPast', icon: 'Filter', head: '<Now', title: 'Show if Date is in past' , ignore: 'field.ReadOnlyField === true'  },
-  { group: '2', cmd: 'showIfFuture', icon: 'Filter', head: '>Now', title: 'Show if Date is in future' , ignore: 'field.ReadOnlyField === true'  },
+  { group: '1', type: 'update', cmd: 'setToday', icon: 'EventDate', head: 'Today', title: 'Set Field to today' , ignore: 'field.ReadOnlyField === true' },
+  { group: '1', type: 'update', cmd: 'set1Week', icon: 'CalendarWorkWeek', head: '+1Wk', title: 'Set Field to + 7 days' , ignore: 'field.ReadOnlyField === true'  },
+  { group: '1', type: 'update', cmd: 'set1Month', icon: 'Calendar', head: '+1Mo', title: 'Set Field to + 1 month' , ignore: 'field.ReadOnlyField === true'  },
+  { group: '1', type: 'update', cmd: 'clearDate', icon: 'Delete', head: 'Clear', title: 'Clear Date field' , ignore: 'field.ReadOnlyField === true'  },
+  { group: '2', type: 'filter', cmd: 'showIfPast', icon: 'Filter', head: '<Now', title: 'Show if Date is in past' , ignore: 'field.ReadOnlyField === true'  },
+  { group: '2', type: 'filter', cmd: 'showIfFuture', icon: 'Filter', head: '>Now', title: 'Show if Date is in future' , ignore: 'field.ReadOnlyField === true'  },
  ];
 
  export const DateActions = DateFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
 
  const TextFieldActionIcons: IIconTableRow[] = [ 
-  { group: '1', cmd: 'replaceText', icon: 'ActionCenter', head: 'Replace', title: 'Replace Text with your own - must update in props yourself', ignore: 'field.ReadOnlyField === true' },
-  { group: '1', cmd: 'promptText', icon: 'Comment', head: 'Prompt', title: 'Prompt to update column', ignore: 'field.ReadOnlyField === true' },
+  { group: '1', type: 'update', cmd: 'replaceText', icon: 'ActionCenter', head: 'Replace', title: 'Replace Text with your own - must update in props yourself', ignore: 'field.ReadOnlyField === true' },
+  { group: '1', type: 'update', cmd: 'promptText', icon: 'Comment', head: 'Prompt', title: 'Prompt to update column', ignore: 'field.ReadOnlyField === true' },
  ];
 
  export const TextActions = TextFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
 
  const NoteFieldActionIcons: IIconTableRow[] = [ 
-  { group: '1', cmd: 'appendNote', icon: 'CommentAdd', head: 'Append', title: 'Prompt to Append comment to column', ignore: 'field.ReadOnlyField === true' },
-  { group: '1', cmd: 'replaceNote', icon: 'Comment', head: 'Replace', title: 'Prompt to Replace column text', ignore: 'field.ReadOnlyField === true' },
+  { group: '1', type: 'update', cmd: 'appendNote', icon: 'CommentAdd', head: 'Append', title: 'Prompt to Append comment to column', ignore: 'field.ReadOnlyField === true' },
+  { group: '1', type: 'update', cmd: 'replaceNote', icon: 'Comment', head: 'Replace', title: 'Prompt to Replace column text', ignore: 'field.ReadOnlyField === true' },
  ];
 
  export const NoteActions = NoteFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
@@ -110,10 +116,14 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
     data-fieldtype= 'Commands' onClick= { onExpandRight } className={ styles.typeFilterIcon } />;
 
 
+  const QuickCommands = buildQuickCommands( selected ) ;
 
   const RightSide = <div>
     <h2>Command Set Title goes here</h2>
-  </div>
+    <ReactJson src={ QuickCommands } name={ 'QuickCommands' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+        enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+  </div>;
+
   const commandElement: JSX.Element = <div className={ styles.commandTables }>
     <div className={ styles.leftCommand}>
       { expandRightIcon }
@@ -124,7 +134,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
       { NoteTable }
     </div>
     <div className={ expanded === true ? styles.rightCommand : styles.collapseCommand }>
-      { `Right side` }
+      { RightSide }
     </div>
   </div>;
 
@@ -141,6 +151,89 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
   />;
 
   return DesignCommands ;
+
+}
+
+
+const ChoicePerButton : IQuickButton = {
+  str1: "",
+  label: "Set to {str1}",
+  primary: false,
+  confirm: "Are you sure you want to Set to {str1}",
+  // alert: "We made our updates!",
+  console: "Updated item to {str1}",
+  panelMessage: "Updated item to {str1}",
+  // icon: "User",
+  updateItem: {
+    // DueDate: "[today+14]",
+    // AssignedToId: "[Me]",
+    // Status: "{str1}",
+    // ReviewDays: 99,
+    // Body: "Hi! It's [Today+3] and I'm $MyName$",
+    // Comments: "{{append rich stamp}}"
+  },
+  // "showWhenEvalTrue": "item.AssignedToTitle !== sourceUserInfo.Title"
+}
+
+export function buildQuickCommands(  selected: IMinField[], ): IQuickButton[] {
+
+  const buttons : IQuickButton[] = [];
+
+  selected.map( ( field: IMinField ) => {
+    if ( field.commands.perChoice === true ) {
+      field.Choices.map( choice => {
+        const thisButton = JSON.parse(JSON.stringify( ChoicePerButton ));
+        thisButton.str1 = choice;
+        buttons.push( thisButton );
+      });
+    }
+  });
+
+  //Get filtered fields
+  const eqUserFields : string[] = [];
+  const neUserFields : string[] = [];
+
+  //Get filtered fields
+  const eqTextFields : string[] = [];
+  const neTextFields : string[] = [];
+
+  //Get filtered fields
+  const gtTodayFields : string[] = [];
+  const ltTodayFields : string[] = [];
+
+  selected.map( ( field: IMinField ) => {
+   //Find any field that has a filter command
+
+   //If filter command contains show, add to eqFields array else if contains hide, add to neFields array
+   Object.keys( field.commands ).map( ( command: IAllActionTypes ) => {
+
+    if ( field.commands[ command ] === true ) {
+      // if ( command.indexOf('show') === 0 ) { 
+        if ( command === 'showToUser' ) { eqUserFields.push( field.InternalName ) ;  }
+        else if ( command === 'showChoice' ) { eqTextFields.push( field.InternalName ) ;  }
+        else if ( command === 'showIfFuture' ) { gtTodayFields.push( field.InternalName ) ;  }
+        else if ( command === 'showIfPast' ) { ltTodayFields.push( field.InternalName ) ;  }
+        else if ( command === 'hideFromUser' ) { neUserFields.push( field.InternalName ) ;  }
+
+      // } if ( command.indexOf('hide') === 0 ) { neUserFields.push( field.InternalName ) ; }
+    }
+   });
+
+  });
+
+  let filterText = '';
+
+  // //now go through all and add filters
+  buttons.map( ( button: IQuickButton ) => {
+
+  });
+
+  //now go through and do updates
+
+
+      
+
+  return buttons;
 
 }
 
