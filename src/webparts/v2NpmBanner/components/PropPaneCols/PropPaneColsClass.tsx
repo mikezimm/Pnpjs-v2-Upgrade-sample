@@ -47,6 +47,8 @@ export interface IMinFieldCmds {
   hideFromUser?: boolean;
   setUser?: boolean;  // Set current field equal to this current user
   addUser?: boolean;  // Add current user to this field
+  removeUser?: boolean;  // Remove current User from field
+  clearUsers?: boolean;  // Clear User field
 
   perChoice?: boolean;  // Use this field to create stack of buttons:  one button per choice is created, button hidden if it's selected choice, adds placeholder to show on certain status (same column)
   promoteChoice?: boolean;  // Use this field to filter stack of buttons:  Will show this button when item choice is previous in order - allows to promote only
@@ -212,7 +214,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   public render(): React.ReactElement<IFieldPanelProps> {
 
     const { lists, disableDesign } = this.props;
-    const { status, filtered, listFields, designMode, searchProp, searchText, } = this.state;
+    const { status, filtered, listFields, designMode, searchProp, searchText, fetched } = this.state;
       
     const fetch4: IPerformanceOp = this._performance.ops.fetch4 ;
   
@@ -324,28 +326,28 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           />;
 
       const SelectFiltered = <Icon iconName={ 'SkypeCircleArrow' } title={ 'Select All these columns'} style={{ color: this.state.searchText ? '' : 'lightgray' }}
-        data-fieldtype= '' onClick= { this._selectFiltered } className={ styles.typeFilterIcon } />;
+        data-fieldtype= '' onClick= { !fetched ? null : this._selectFiltered } className={ styles.typeFilterIcon } />;
 
       const DateFilterIcon = <Icon iconName={ 'DateTime' } title={ 'Filter for DateTime columns'} style={{  }}
-        data-fieldtype= 'Date and Time' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+        data-fieldtype= 'Date and Time' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
       const UserFilterIcon = <Icon iconName={ 'Contact' } title={ 'Filter for User columns'} style={{  }}
-        data-fieldtype= 'Person or Group' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+        data-fieldtype= 'Person or Group' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
       const TextFilterIcon = <Icon iconName={ 'TextField' } title={ 'Filter for Text columns'} style={{  }}
-        data-fieldtype= 'Text' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+        data-fieldtype= 'Text' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
       const ChoiceFilterIcon = <Icon iconName={ 'Stack' } title={ 'Filter for Choice columns'} style={{  }}
-        data-fieldtype= 'Choice' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+        data-fieldtype= 'Choice' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
       const NumberFilterIcon = <Icon iconName={ 'Number' } title={ 'Filter for Number columns'} style={{  }}
-        data-fieldtype= 'Number' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+        data-fieldtype= 'Number' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const EditableFilterIcon = <Icon iconName={ 'Edit' } title={ 'All Editable'} style={{ marginLeft: '30px' }}
-        data-fieldtype= { IsEditable } onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      const EditableFilterIcon = <Icon iconName={ 'Edit' } title={ 'All Editable'} style={{  }}
+        data-fieldtype= { IsEditable } onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const CalculatedFilterIcon = <Icon iconName={ 'Variable' } title={ 'Calculated columns'} style={{ marginLeft: '30px' }}
-        data-fieldtype= 'Calculated' onClick= { this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      const CalculatedFilterIcon = <Icon iconName={ 'Variable' } title={ 'Calculated columns'} style={{  }}
+        data-fieldtype= 'Calculated' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
       const FilterButtons = <div style={{display: 'flex', marginLeft: '50px' }}>{SelectFiltered}{DateFilterIcon}{UserFilterIcon}{TextFilterIcon}{ChoiceFilterIcon}{NumberFilterIcon}{CalculatedFilterIcon}{EditableFilterIcon}</div>;
 

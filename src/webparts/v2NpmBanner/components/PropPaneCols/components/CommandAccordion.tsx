@@ -18,11 +18,12 @@ import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordi
 
 import ReactJson from 'react-json-view';
 import { filter } from 'lodash';
+import { IActionProps } from '@pnp/spfx-controls-react';
 
 
 export type IChoiceActionTypes = 'perChoice' | 'promoteChoice' | 'demoteChoice' | 'bracketChoice' | 'rejectLast' ;
 
-export type IUserActionTypes = 'showToUser' | 'hideFromUser' | 'setUser' | 'addUser'  ;
+export type IUserActionTypes = 'showToUser' | 'hideFromUser' | 'setUser' | 'addUser' | 'removeUser' | 'clearUsers'   ;
 
 export type IDateActionTypes = 'setToday' | 'set1Week' | 'set1Month' | 'clearDate' | 'showIfPast' | 'showIfFuture';
 
@@ -44,7 +45,7 @@ export interface IIconTableRow {
   ignore?: string;  // javascript eval to ignore this label on per field basis.
   group?: string; // Used to group commands for ensuring only one of a group is set to true
   oneField?: boolean;  // Set to true to only allow this setting to be true on one field at a time
-
+  disabled?: boolean;  // Disables function, sets to red
 }
 
 
@@ -74,6 +75,8 @@ const UserFieldActionIcons: IIconTableRow[] = [
   { group: '1', type: 'filter', cmd: 'hideFromUser', icon: 'Hide3', head: 'Hide', title: 'Hide buttons for these users, Show takes precedance' },
   { group: '2', type: 'update', cmd: 'setUser', icon: 'Contact', head: 'Set', title: 'Set Field as current user', ignore: 'field.ReadOnlyField === true'  },
   { group: '2', type: 'update', cmd: 'addUser', icon: 'AddFriend', head: 'Add', title: 'Add User to field if Multi-Select', ignore: 'field.ReadOnlyField === true'  },
+  { group: '2', type: 'update', cmd: 'removeUser', icon: 'UserRemove', head: 'Remove', title: 'Remove current User from field' , ignore: 'field.ReadOnlyField === true'  },
+  { group: '2', type: 'update', cmd: 'clearUsers', icon: 'Delete', head: 'Clear', title: 'Clear User field' , ignore: 'field.ReadOnlyField === true'  },
  ];
 
  export const UserActions = UserFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
@@ -83,8 +86,8 @@ const UserFieldActionIcons: IIconTableRow[] = [
   { group: '1', type: 'update', cmd: 'set1Week', icon: 'CalendarWorkWeek', head: '+1Wk', title: 'Set Field to + 7 days' , ignore: 'field.ReadOnlyField === true'  },
   { group: '1', type: 'update', cmd: 'set1Month', icon: 'Calendar', head: '+1Mo', title: 'Set Field to + 1 month' , ignore: 'field.ReadOnlyField === true'  },
   { group: '1', type: 'update', cmd: 'clearDate', icon: 'Delete', head: 'Clear', title: 'Clear Date field' , ignore: 'field.ReadOnlyField === true'  },
-  { group: '2', type: 'filter', cmd: 'showIfPast', icon: 'Filter', head: '<Now', title: 'Show if Date is in past' , ignore: 'field.ReadOnlyField === true'  },
-  { group: '2', type: 'filter', cmd: 'showIfFuture', icon: 'Filter', head: '>Now', title: 'Show if Date is in future' , ignore: 'field.ReadOnlyField === true'  },
+  { group: '2', type: 'filter', cmd: 'showIfPast', icon: 'Filter', head: '<Now', title: 'Show if Date is in past' , ignore: 'field.ReadOnlyField === true', disabled: true  },
+  { group: '2', type: 'filter', cmd: 'showIfFuture', icon: 'Filter', head: '>Now', title: 'Show if Date is in future' , ignore: 'field.ReadOnlyField === true', disabled: true  },
  ];
 
  export const DateActions = DateFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
@@ -104,6 +107,10 @@ const UserFieldActionIcons: IIconTableRow[] = [
  export const NoteActions = NoteFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
 
 export const AllFieldActions = [ ...ChoiceFieldActionIcons, ...UserFieldActionIcons,  ...DateFieldActionIcons, ...TextFieldActionIcons, ...NoteFieldActionIcons ];
+
+export const AllUpdateActions = AllFieldActions.filter( field => { return field.type === 'update' });
+export const AllUpdateActionCmds = AllUpdateActions.map( field => { return field.cmd });
+
 
 export const AllActions = AllFieldActions.map( ( action: IIconTableRow ) => { return action.cmd } );
 
@@ -190,6 +197,26 @@ const ChoicePerButton : IQuickButton = {
   showWhenEvalTrue: "", //item.AssignedToTitle !== sourceUserInfo.Title
 }
 
+const EmptyButton : IQuickButton = {
+  str1: "Add Button Title here",
+  label: "{str1}",
+  primary: false,
+  confirm: "Are you sure you want: {str1}",
+  // alert: "We made our updates!",
+  console: "Updated item: {str1}",
+  panelMessage: "Updated item: {str1}",
+  // icon: "User",
+  updateItem: {
+    // DueDate: "[today+14]",
+    // AssignedToId: "[Me]",
+    // Status: "{str1}",
+    // ReviewDays: 99,
+    // Body: "Hi! It's [Today+3] and I'm $MyName$",
+    // Comments: "{{append rich stamp}}"
+  },
+  showWhenEvalTrue: "", //item.AssignedToTitle !== sourceUserInfo.Title
+}
+
 //IQuickCommands
 
 export function buildQuickCommands(  selected: IMinField[], ): IQuickCommands {
@@ -209,6 +236,7 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
 
   const buttons : IQuickButton[] = [];
 
+  //Do all choice column settings first because it can create multiple buttons
   selected.map( ( field: IMinField ) => {
     if ( field.commands.perChoice === true ) {
 
@@ -276,24 +304,21 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
           }
           thisButton.updateItem[ field.InternalName ] = `{str1}`;
           buttons.push( thisButton );
-
         }
 
       });
     }
   });
 
+  if ( buttons.length === 0 ) buttons.push( JSON.parse(JSON.stringify( EmptyButton)) );
+
   //Get filtered fields
   const eqUserFields : string[] = [];
   const neUserFields : string[] = [];
 
   //Get filtered fields
-  const eqTextFields : string[] = [];
-  const neTextFields : string[] = [];
-
-  //Get filtered fields
-  const gtTodayFields : string[] = [];
-  const ltTodayFields : string[] = [];
+  const gtTodayFields : string[] = [];  //Currently not supported in Drilldown functions
+  const ltTodayFields : string[] = [];  //Currently not supported in Drilldown functions
 
   selected.map( ( field: IMinField ) => {
    //Find any field that has a filter command
@@ -305,12 +330,11 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
       // if ( command.indexOf('show') === 0 ) { 
         if ( command === 'showToUser' ) { eqUserFields.push( field.InternalName ) ;  }
         else if ( command === 'hideFromUser' ) { neUserFields.push( field.InternalName ) ;  }
-        else if ( command === 'promoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
-        else if ( command === 'demoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
-        else if ( command === 'bracketChoice' ) { eqTextFields.push( field.InternalName ) ;  }
+        // else if ( command === 'promoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
+        // else if ( command === 'demoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
+        // else if ( command === 'bracketChoice' ) { eqTextFields.push( field.InternalName ) ;  }
         else if ( command === 'showIfFuture' ) { gtTodayFields.push( field.InternalName ) ;  }
         else if ( command === 'showIfPast' ) { ltTodayFields.push( field.InternalName ) ;  }
-
 
       // } if ( command.indexOf('hide') === 0 ) { neUserFields.push( field.InternalName ) ; }
     }
@@ -318,11 +342,68 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
 
   });
 
-  let filterText = '';
-
-  // //now go through all and add filters
+  /**
+   * This applies user filters defined above
+   */
   buttons.map( ( button: IQuickButton ) => {
+    eqUserFields.map( ( fieldName: string ) => {
+      button.showWhenEvalTrue = bumpEval( `item.${fieldName}Id === sourceUserInfo.Id`, '&&', button.showWhenEvalTrue , true ); 
+    });
+    neUserFields.map( ( fieldName: string ) => {
+      button.showWhenEvalTrue = bumpEval( `item.${fieldName}Id !== sourceUserInfo.Id`, '&&', button.showWhenEvalTrue , true ); 
+    });
+    // gtTodayFields.map( ( fieldName: string ) => {
+    //   button.showWhenEvalTrue = bumpEval( `item.${fieldName}Id !== sourceUserInfo.Id`, '&&', button.showWhenEvalTrue , true ); 
+    // });
+  });
 
+
+  const updateObject: any = {};
+
+  // const today = new Date();
+
+  selected.map( ( field: IMinField ) => {
+    //Find any field that has a filter command
+ 
+    const IntName = field.InternalName;
+    const IntNameId = `${IntName}Id`;
+    const TypeAsString = field.TypeAsString;
+    
+    //Go through all possible update actions
+    AllUpdateActions.map( ( action: IIconTableRow ) => {
+      if ( field.commands[ action.cmd ] === true ) {
+
+        /**
+         * NEED TO ADD ANY CHOICE SETTINGS NOT ALREADY DONE.
+         */
+        if ( action.cmd === 'setToday' ) { updateObject[ IntName ] = '[Today]' ;  }
+        else if ( action.cmd === 'set1Week' ) { updateObject[ IntName ] = '[Today+7]' ;  }
+        else if ( action.cmd === 'set1Month' ) { updateObject[ IntName ] = '[Today+30]' ;  }
+        else if ( action.cmd === 'clearDate' ) { updateObject[ IntName ] = null ;  }
+        else if ( action.cmd === 'replaceText' ) { updateObject[ IntName ] = `Hello world! It is [Today+3] and my name is [MyName] -  $MyName$ and I clicked '{str1}'` ;  }
+        else if ( action.cmd === 'promptText' ) { updateObject[ IntName ] = '{{stamp}}' ;  }
+        else if ( action.cmd === 'appendNote' ) { updateObject[ IntName ] = '{{append rich stamp}}' ;  }
+        else if ( action.cmd === 'replaceNote' ) { updateObject[ IntName ] = '{{rich stamp}}' ;  }
+        //These are all the user variants
+        else if ( action.cmd === 'setUser' && TypeAsString === 'UserMulti' )    { updateObject[ IntNameId ] = '{Me}' ;  }
+        else if ( action.cmd === 'setUser' && TypeAsString === 'User' )         { updateObject[ IntNameId ] = '[Me]' ;  }
+        else if ( action.cmd === 'addUser' && TypeAsString === 'UserMulti' )    { updateObject[ IntNameId ] = '{+Me}' ;  }
+        else if ( action.cmd === 'addUser' && TypeAsString === 'User' )         { updateObject[ IntNameId ] = '[Me]' ;  }
+        else if ( action.cmd === 'removeUser' && TypeAsString === 'UserMulti' ) { updateObject[ IntNameId ] = '{-Me}' ;  }
+        else if ( action.cmd === 'removeUser' && TypeAsString === 'User' )      { updateObject[ IntNameId ] = '[-Me]' ;  }
+        else if ( action.cmd === 'clearUsers' && TypeAsString === 'UserMulti' ) { updateObject[ IntNameId ] = '[]' ;  }
+        else if ( action.cmd === 'clearUsers' && TypeAsString === 'User' )      { updateObject[ IntNameId ] = '[]' ;  }
+
+      }
+    }); 
+   });
+ 
+   console.log( 'updateObject: ', updateObject  );
+
+  // Merge updateObject to all buttons
+  buttons.map( ( button: IQuickButton ) => {
+    // https://www.javascripttutorial.net/object/javascript-merge-objects/
+    button.updateItem = { ...button.updateItem, ...updateObject }
   });
 
   //now go through and do updates
@@ -343,6 +424,9 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
  * @returns 
  */
 export function bumpEval( showWhenEvalTrue: string , operator: '||' | '&&' , miniEval: string , surround: boolean ): string {
+
+  //
+  if ( !miniEval ) return showWhenEvalTrue;
 
   showWhenEvalTrue += showWhenEvalTrue ? ` ${operator} ` : '';
   if ( surround === true ) {
@@ -367,8 +451,8 @@ export function createFieldTableRows( heading: JSX.Element, firstColumnHeading: 
       { FieldActionIcons.map( icon => { 
         // eslint-disable-next-line no-eval
         const ignore = icon.ignore && eval( icon.ignore ) === true ? true : false;
-        return ignore === true ? <td> </td> : <td key={ icon.cmd }><Icon iconName={ field.commands[ icon.cmd ] === true ? icon.icon  : 'StatusCircleBlock2' } title={ icon.title }
-        data-fieldname={ field.InternalName } data-role= { icon.cmd } onClick= { onCmdFieldClick } className={ styles.selectIcon } /></td>;
+        return ignore === true ? <td> </td> : <td key={ icon.cmd }><Icon iconName={ field.commands[ icon.cmd ] === true ? icon.icon  : 'StatusCircleBlock2' } title={ icon.disabled === true ? `Disabled: ${icon.title}` : icon.title }
+        data-fieldname={ field.InternalName } data-role= { icon.cmd } onClick= { icon.disabled === true ? null : onCmdFieldClick } className={ styles.selectIcon } style={{ color: icon.disabled === true ? 'red' : '' }}/></td>;
       }) }
     </tr> );
   });
