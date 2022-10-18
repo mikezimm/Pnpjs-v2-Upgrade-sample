@@ -539,7 +539,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         }
       });
     }
-    this.setState( { listFields: listFields, selected: selected } );
+    this.setState( { listFields: listFields, selected: selected, designMode: true } );
   }
 
   private _onFilterClick2 = ( ev: React.MouseEvent<HTMLElement>  ): void => {

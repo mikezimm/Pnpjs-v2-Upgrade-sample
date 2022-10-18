@@ -213,21 +213,28 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
     if ( field.commands.perChoice === true ) {
 
       const filterButton = field.commands.demoteChoice === true ? 'demote' : field.commands.promoteChoice === true ? 'promote'  : field.commands.bracketChoice === true ? 'bracket' : 'none'; 
+      const catchNullEmpty = `!item.${field.InternalName}`;
 
       field.Choices.map( ( choice: string , idx: number ) => {
 
         const buttonIndex = idx === 0 ? 'first' : idx  === field.Choices.length -1 ? 'last' : 'middle';
+        const thisButton: IQuickButton = JSON.parse(JSON.stringify( ChoicePerButton ));
 
         if ( buttonIndex === 'last' && field.commands.rejectLast === true ) {
           // Always show this button - EXCEPT if this choice is already set
-          const thisButton: IQuickButton = JSON.parse(JSON.stringify( ChoicePerButton ));
+
           thisButton.str1 = choice;
           // Just don't show button when the status is the current one.
           thisButton.showWhenEvalTrue = `item.${field.InternalName} !== '${choice}'`;
+          thisButton.updateItem[ field.InternalName ] = `{str1}`;
           buttons.push( thisButton );
 
         } else if ( buttonIndex === 'first' && filterButton === 'promote' ) {
           //Skip this button since you can not demote the item any further
+          thisButton.str1 = choice;
+          thisButton.showWhenEvalTrue = catchNullEmpty;
+          thisButton.updateItem[ field.InternalName ] = `{str1}`;
+          buttons.push( thisButton );
 
         } else if ( buttonIndex === 'last' && filterButton === 'demote' ) {
           //Skip this button since you can not promote the item any further
@@ -237,7 +244,8 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
           const promoteFilter = idx === 0 ? '' : field.Choices[ idx -1 ];
           const demoteFilter = idx === field.Choices.length -1 ? '' : field.Choices[ idx +1 ];
 
-          const thisButton: IQuickButton = JSON.parse(JSON.stringify( ChoicePerButton ));
+          //This will enable the first button if the choice column is ever null/empty
+          thisButton.showWhenEvalTrue = buttonIndex === 'first' ? catchNullEmpty : '';
           thisButton.str1 = choice;
 
 
@@ -258,7 +266,7 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
 
           if ( filterButton === 'none' ) {
             //Just don't show button when the status is the current one.
-            thisButton.showWhenEvalTrue = `item.${field.InternalName} !== ${choice}`;
+            thisButton.showWhenEvalTrue = `item.${field.InternalName} !== '{str1}'`;
 
           } else { // Always exclude from showing when it's the current choice.  No need to set it to itself.
 
@@ -266,7 +274,7 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
             // thisButton.showWhenEvalTrue = `item.${field.InternalName} !== ${choice} ${ !thisButton.showWhenEvalTrue ? '' : ` && ( ${thisButton.showWhenEvalTrue} )` }`;
 
           }
-
+          thisButton.updateItem[ field.InternalName ] = `{str1}`;
           buttons.push( thisButton );
 
         }
