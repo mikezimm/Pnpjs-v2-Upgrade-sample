@@ -20,7 +20,7 @@ import ReactJson from 'react-json-view';
 import { filter } from 'lodash';
 
 
-export type IChoiceActionTypes = 'perChoice' | 'promoteChoice' | 'demoteChoice' | 'bracketChoice' ;
+export type IChoiceActionTypes = 'perChoice' | 'promoteChoice' | 'demoteChoice' | 'bracketChoice' | 'rejectLast' ;
 
 export type IUserActionTypes = 'showToUser' | 'hideFromUser' | 'setUser' | 'addUser'  ;
 
@@ -63,6 +63,7 @@ const ChoiceFieldActionIcons: IIconTableRow[] = [
   { group: '2', type: 'filter', cmd: 'promoteChoice', icon: 'Upload', head: 'Promote', title: 'Show button on Previous status - Able to only Promote' },
   { group: '2', type: 'filter', cmd: 'demoteChoice', icon: 'Download', head: 'Demote', title: 'Show button on Higher status - Able to only Demote' },
   { group: '2', type: 'filter', cmd: 'bracketChoice', icon: 'Sort', head: 'Both', title: 'Show button on Previous/Higher status - Able to only Promote/Demote' },
+  { group: '3', type: 'filter', cmd: 'rejectLast', icon: 'ReleaseGateError', head: 'Cancel', title: 'Always show last choice - aka Canceled' },
     // { cmd: '', icon: '', head: '', title: '' },
  ];
 
@@ -216,34 +217,21 @@ export function buildQuickCommands(  selected: IMinField[], ): IQuickButton[] {
           const thisButton: IQuickButton = JSON.parse(JSON.stringify( ChoicePerButton ));
           thisButton.str1 = choice;
 
-          
-          if ( filterButton === 'demote' || filterButton === 'bracket' ){
 
-            if ( demoteFilter ) {
-              thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
-              thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${demoteFilter}`;
-            }
+          if ( promoteFilter && ( filterButton === 'promote' || filterButton === 'bracket' ) ){
 
-            // if ( filterButton === 'bracket' && idx < field.Choices.length -1 && promoteFilter ) {
-            //   thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
-            //   thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${promoteFilter}`;
-            // }
-
+            thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === ${promoteFilter}` , false );
+            // thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
+            // thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${promoteFilter}`;
           }
 
-          if ( filterButton === 'promote' || filterButton === 'bracket' ){
+          if ( demoteFilter && ( filterButton === 'demote' || filterButton === 'bracket' ) ){
 
-            if ( promoteFilter ) {
-              thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
-              thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${promoteFilter}`;
-            }
-
-            // if ( filterButton === 'bracket' && idx > 0 && demoteFilter ) {
-            //   thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
-            //   thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${demoteFilter}`;
-            // }
-
+            thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === ${demoteFilter}` , false );
+              // thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
+              // thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${demoteFilter}`;
           }
+
 
           if ( filterButton === 'none' ) {
             //Just don't show button when the status is the current one.
@@ -312,6 +300,28 @@ export function buildQuickCommands(  selected: IMinField[], ): IQuickButton[] {
       
 
   return buttons;
+
+}
+
+/**
+ * This will take the eval string and add a new eval to it including having the operator and adding surround braces when required.
+ * @param showWhenEvalTrue 
+ * @param operator 
+ * @param miniEval 
+ * @param surround 
+ * @returns 
+ */
+export function bumpEval( showWhenEvalTrue: string , operator: '||' | '&&' , miniEval: string , surround: boolean ): string {
+
+  showWhenEvalTrue += showWhenEvalTrue ? ` ${operator} ` : '';
+  if ( surround === true ) {
+    showWhenEvalTrue += `( ${miniEval} )`;
+
+  } else {
+    showWhenEvalTrue += miniEval;
+  }
+
+  return showWhenEvalTrue;
 
 }
 

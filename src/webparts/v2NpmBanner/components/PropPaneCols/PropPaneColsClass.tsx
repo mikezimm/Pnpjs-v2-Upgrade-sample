@@ -49,9 +49,10 @@ export interface IMinFieldCmds {
   addUser?: boolean;  // Add current user to this field
 
   perChoice?: boolean;  // Use this field to create stack of buttons:  one button per choice is created, button hidden if it's selected choice, adds placeholder to show on certain status (same column)
-  promoteChoice?: boolean;  // Use this field to filter stack of buttons:  will hide button if this
-  demoteChoice?: boolean;  // Use this field to filter stack of buttons:  will hide button if this
-  bracketChoice?: boolean;  // Use this field to filter stack of buttons:  will hide button if this
+  promoteChoice?: boolean;  // Use this field to filter stack of buttons:  Will show this button when item choice is previous in order - allows to promote only
+  demoteChoice?: boolean;  // Use this field to filter stack of buttons:  Will show this button when item choice is next one in order - allows to demote only
+  bracketChoice?: boolean;  // Use this field to filter stack of buttons:  Will show this button when item choice is previous or next one in order
+  rejectLast?: boolean;  // Use this field to filter stack of buttons:  always show last choice - assuming like cancelled or rejected
 
   clearDate?: boolean;  // Clear date from this field
   setToday?: boolean;  // Add current date to this field
