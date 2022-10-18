@@ -20,10 +20,18 @@ import ReactJson from 'react-json-view';
 import { filter } from 'lodash';
 import { IActionProps } from '@pnp/spfx-controls-react';
 
+/**
+ * MEMO TO SELF... THESE TYPES ARE TIED DIRECTLY TO THE keys in the IMinFieldCmds Interface.
+ * 
+ * If you add one here, you need to also update that interface by hand.
+ * 
+ */
 
 export type IChoiceActionTypes = 'perChoice' | 'promoteChoice' | 'demoteChoice' | 'bracketChoice' | 'rejectLast' ;
 
-export type IUserActionTypes = 'showToUser' | 'hideFromUser' | 'setUser' | 'addUser' | 'removeUser' | 'clearUsers'   ;
+export type IYesNoActionTypes = 'showOnTrue' | 'showOnFalse' | 'showOnNull' | 'setTrue' | 'setFalse' | 'setToggle' ;
+
+export type IUserActionTypes = 'showToUser' | 'hideFromUser' | 'setUser' | 'addUser' | 'removeUser' | 'clearUsers' ;
 
 export type IDateActionTypes = 'setToday' | 'set1Week' | 'set1Month' | 'clearDate' | 'showIfPast' | 'showIfFuture';
 
@@ -31,8 +39,7 @@ export type ITextActionTypes = 'replaceText' | 'promptText'  ;
 
 export type INoteActionTypes = 'appendNote' | 'replaceNote'  ;
 
-
-export type IAllActionTypes = IChoiceActionTypes | IUserActionTypes | IDateActionTypes | ITextActionTypes | INoteActionTypes;
+export type IAllActionTypes = IChoiceActionTypes | IYesNoActionTypes | IUserActionTypes | IDateActionTypes | ITextActionTypes | INoteActionTypes ;
 
 export type IActionExecType = 'filter' | 'update' | 'special';
 
@@ -70,6 +77,19 @@ const ChoiceFieldActionIcons: IIconTableRow[] = [
 
  export const ChoiceActions = ChoiceFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
 
+ const YesNoFieldActionIcons: IIconTableRow[] = [ 
+  { group: '1', type: 'filter', cmd: 'showOnTrue', icon: 'AcceptMedium', head: 'onYes', title: 'Show if Field = Yes', },
+  { group: '1', type: 'filter', cmd: 'showOnFalse', icon: 'Cancel', head: 'onNo', title: 'Show if Field = No', },
+  { group: '1', type: 'filter', cmd: 'showOnNull', icon: 'Checkbox', head: 'onEmpty', title: 'Show if Field = Empty', },
+
+  { group: '2', type: 'update', cmd: 'setTrue', icon: 'CheckboxCompositeReversed', head: 'SetYes', title: 'Set Field to Yes' , ignore: 'field.ReadOnlyField === true', },
+  { group: '2', type: 'update', cmd: 'setFalse', icon: 'BoxMultiplySolid', head: 'SetNo', title: 'Set Field to No' , ignore: 'field.ReadOnlyField === true', }, //, disabled: true 
+  { group: '2', type: 'update', cmd: 'setToggle', icon: 'ToggleRight', head: 'Toggle', title: 'Toggle value' , ignore: 'field.ReadOnlyField === true', disabled: true }, //, disabled: true 
+ ];
+
+ export const YesNoActions = YesNoFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
+
+
 const UserFieldActionIcons: IIconTableRow[] = [ 
   { group: '1', type: 'filter', cmd: 'showToUser', icon: 'View', head: 'Show', title: 'Show buttons to these users' },
   { group: '1', type: 'filter', cmd: 'hideFromUser', icon: 'Hide3', head: 'Hide', title: 'Hide buttons for these users, Show takes precedance' },
@@ -106,7 +126,7 @@ const UserFieldActionIcons: IIconTableRow[] = [
 
  export const NoteActions = NoteFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );
 
-export const AllFieldActions = [ ...ChoiceFieldActionIcons, ...UserFieldActionIcons,  ...DateFieldActionIcons, ...TextFieldActionIcons, ...NoteFieldActionIcons ];
+export const AllFieldActions = [ ...ChoiceFieldActionIcons, ...YesNoFieldActionIcons, ...UserFieldActionIcons,  ...DateFieldActionIcons, ...TextFieldActionIcons, ...NoteFieldActionIcons ];
 
 export const AllUpdateActions = AllFieldActions.filter( field => { return field.type === 'update' });
 export const AllUpdateActionCmds = AllUpdateActions.map( field => { return field.cmd });
@@ -121,6 +141,9 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
 
   const userFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.User );
   const UserTable = createFieldTableRows( null, 'User fields', userFields, UserFieldActionIcons, onCmdFieldClick );
+
+  const yesNoFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.Boolean );
+  const YesNoTable = createFieldTableRows( null, 'Boolean fields', yesNoFields, YesNoFieldActionIcons, onCmdFieldClick );
 
   // filter out ReadOnlyFields because all functions apply to the field itself which can't be done.
   const dateFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.DateTime );
@@ -150,6 +173,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
     <div className={ styles.leftCommand}>
       { expandRightIcon }
       { ChoiceTable }
+      { YesNoTable }
       { UserTable }
       { DateTable }
       { TextTable }
@@ -317,6 +341,9 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
   const neUserFields : string[] = [];
 
   //Get filtered fields
+  const YesNoFields: string[] = [];
+
+  //Get filtered fields
   const gtTodayFields : string[] = [];  //Currently not supported in Drilldown functions
   const ltTodayFields : string[] = [];  //Currently not supported in Drilldown functions
 
@@ -326,13 +353,27 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
    //If filter command contains show, add to eqFields array else if contains hide, add to neFields array
    Object.keys( field.commands ).map( ( command: IAllActionTypes ) => {
 
+
     if ( field.commands[ command ] === true ) {
       // if ( command.indexOf('show') === 0 ) { 
-        if ( command === 'showToUser' ) { eqUserFields.push( field.InternalName ) ;  }
-        else if ( command === 'hideFromUser' ) { neUserFields.push( field.InternalName ) ;  }
+        // if ( command === 'showToUser' ) { eqUserFields.push( field.InternalName ) ;  }
+        // else if ( command === 'hideFromUser' ) { neUserFields.push( field.InternalName ) ;  }
+
+        if ( command === 'showToUser' && field.TypeAsString === 'User' ) { eqUserFields.push( `item.${field.InternalName}Id === sourceUserInfo.Id` ) ;  }
+        else if ( command === 'showToUser' && field.TypeAsString === 'UserMulti' ) { eqUserFields.push( `item.${field.InternalName}Id.indexOf( sourceUserInfo.Id ) > -1` ) ;  }
+        else if ( command === 'hideFromUser' && field.TypeAsString === 'User' ) { neUserFields.push( `item.${field.InternalName}Id !== sourceUserInfo.Id` ) ;  }
+        else if ( command === 'hideFromUser'&& field.TypeAsString === 'UserMulti'  ) { neUserFields.push( `item.${field.InternalName}Id.indexOf( sourceUserInfo.Id ) === -1` ) ;  }
         // else if ( command === 'promoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
         // else if ( command === 'demoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
         // else if ( command === 'bracketChoice' ) { eqTextFields.push( field.InternalName ) ;  }
+
+        //export type IYesNoActionTypes = 'showOnTrue' | 'showOnFalse' | 'showOnNull' | 'setTrue' | 'setFalse' | 'setToggle' ;
+        else if ( command === 'showOnTrue' ) { YesNoFields.push( `item.${field.InternalName} === true` ) ;  }
+        else if ( command === 'showOnFalse' ) { YesNoFields.push( `item.${field.InternalName} === false` ) ;  }
+        else if ( command === 'showOnNull' ) { YesNoFields.push( `item.${field.InternalName} === null` ) ;  }
+
+
+
         else if ( command === 'showIfFuture' ) { gtTodayFields.push( field.InternalName ) ;  }
         else if ( command === 'showIfPast' ) { ltTodayFields.push( field.InternalName ) ;  }
 
@@ -345,18 +386,23 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
   /**
    * This applies user filters defined above
    */
-  buttons.map( ( button: IQuickButton ) => {
-    eqUserFields.map( ( fieldName: string ) => {
-      button.showWhenEvalTrue = bumpEval( `item.${fieldName}Id === sourceUserInfo.Id`, '&&', button.showWhenEvalTrue , true ); 
-    });
-    neUserFields.map( ( fieldName: string ) => {
-      button.showWhenEvalTrue = bumpEval( `item.${fieldName}Id !== sourceUserInfo.Id`, '&&', button.showWhenEvalTrue , true ); 
-    });
-    // gtTodayFields.map( ( fieldName: string ) => {
-    //   button.showWhenEvalTrue = bumpEval( `item.${fieldName}Id !== sourceUserInfo.Id`, '&&', button.showWhenEvalTrue , true ); 
-    // });
-  });
+  const AllDetectedFilters : string[] = [ ...eqUserFields, ...neUserFields ];
 
+  const UserEvalFilters: string = AllDetectedFilters.length === 0 ? '' : `( ${AllDetectedFilters.join( ' && ')} )`;
+
+  const YesNoEvalFilters: string = YesNoFields.length === 0 ? '' : `( ${YesNoFields.join( ' && ')} )`;
+
+  if ( UserEvalFilters ) {
+    buttons.map( ( button: IQuickButton ) => {
+      button.showWhenEvalTrue = bumpEval( button.showWhenEvalTrue, '&&', UserEvalFilters , false ); 
+    });
+  }
+
+  if ( YesNoEvalFilters ) {
+    buttons.map( ( button: IQuickButton ) => {
+      button.showWhenEvalTrue = bumpEval( button.showWhenEvalTrue, '&&', YesNoEvalFilters , false ); 
+    });
+  }
 
   const updateObject: any = {};
 
@@ -393,6 +439,11 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
         else if ( action.cmd === 'removeUser' && TypeAsString === 'User' )      { updateObject[ IntNameId ] = '[-Me]' ;  }
         else if ( action.cmd === 'clearUsers' && TypeAsString === 'UserMulti' ) { updateObject[ IntNameId ] = '[]' ;  }
         else if ( action.cmd === 'clearUsers' && TypeAsString === 'User' )      { updateObject[ IntNameId ] = '[]' ;  }
+
+        ///export type IYesNoActionTypes = 'showOnTrue' | 'showOnFalse' | 'showOnNull' | 'setTrue' | 'setFalse' | 'setToggle' ;
+        else if ( action.cmd === 'setTrue' )      { updateObject[ IntNameId ] = true ;  }
+        else if ( action.cmd === 'setFalse' )     { updateObject[ IntNameId ] = false ;  }
+        // else if ( action.cmd === 'setToggle' )    { updateObject[ IntNameId ] = '[]' ;  }
 
       }
     }); 
@@ -497,6 +548,14 @@ export function updateSelectedCommands ( ev: React.MouseEvent<HTMLElement>, sele
 
         } else if ( NoteActions.indexOf( role as IUserActionTypes ) > -1 ) {
           commands = updateCommandSet( commands, role, newVal, NoteFieldActionIcons );
+
+        } else if ( YesNoActions.indexOf( role as IYesNoActionTypes ) > -1 ) {
+          commands = updateCommandSet( commands, role, newVal, YesNoFieldActionIcons );
+
+        /**
+         * Put other types above this one since CHOICE HAS SPECIAL CODING LOOP
+         * This allows for the UI to only have one field selected for a given command (like can not have more than one perChoice field selected)
+         */
 
         } else if ( ChoiceActions.indexOf( role as IChoiceActionTypes ) > -1 ) {
           commands = updateCommandSet( commands, role, newVal, ChoiceFieldActionIcons );

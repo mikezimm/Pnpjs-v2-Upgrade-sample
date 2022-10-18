@@ -41,6 +41,13 @@ import { getDirectionClicks, getKeeperClicks, selectAllofType } from './OnClickH
 export type IValidTemplate = 100 | 101;
 
 
+/**
+ * MEMO TO SELF... IMinFieldCmds Interface keys ARE TIED DIRECTLY TO THE IAllActionTypes types in CommandAccordion.tsx .
+ * 
+ * If you add one here, you need to also update that interface by hand.
+ * 
+ */
+
 export interface IMinFieldCmds {
   // userFilter?: boolean;  // Use this field to filter the button:  true will show button when current user is in this field
   showToUser?: boolean;
@@ -49,6 +56,13 @@ export interface IMinFieldCmds {
   addUser?: boolean;  // Add current user to this field
   removeUser?: boolean;  // Remove current User from field
   clearUsers?: boolean;  // Clear User field
+
+  showOnTrue?: boolean;  // Show command when field is true
+  showOnFalse?: boolean;  // Show command when field is false
+  showOnNull?: boolean;  //  Show command when field is not set
+  setTrue?: boolean;  //  set field as true
+  setFalse?: boolean;  //  set field as false
+  setToggle?: boolean;  //  toggle field from yes to no or no to yes
 
   perChoice?: boolean;  // Use this field to create stack of buttons:  one button per choice is created, button hidden if it's selected choice, adds placeholder to show on certain status (same column)
   promoteChoice?: boolean;  // Use this field to filter stack of buttons:  Will show this button when item choice is previous in order - allows to promote only

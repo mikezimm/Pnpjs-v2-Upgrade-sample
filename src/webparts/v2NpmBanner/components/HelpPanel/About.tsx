@@ -29,7 +29,7 @@ export function aboutTable( showRepoLinks: boolean ): { table: IHelpTable; } {
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
-    table.rows.push( createAboutRow('2022-10-14',"1.0.0.04","#12", showRepoLinks === true ? repoLink : null ) );
+    table.rows.push( createAboutRow('2022-10-14',"1.0.0.04","#12, #13, #14, #15", showRepoLinks === true ? repoLink : null ) );
 
     table.rows.push( createAboutRow('2022-10-14',"1.0.0.03","#3, #4, #6, #8, #9, #10", showRepoLinks === true ? repoLink : null ) );
     table.rows.push( createAboutRow('2022-10-14',"1.0.0.02","#2,", showRepoLinks === true ? repoLink : null ) );
