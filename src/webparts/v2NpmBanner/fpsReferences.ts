@@ -28,7 +28,7 @@
 // export { saveViewAnalytics } from './CoreFPS/Analytics';
 
 export { IUser } from '@mikezimm/npmfunctions/dist/Services/Users/IUserInterfaces';
-export { IQuickButton } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
+export { IQuickCommands, IQuickButton } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
 
 /***
  *    db    db d888888b d888888b db      d888888b d888888b d888888b d88888b .d8888. 

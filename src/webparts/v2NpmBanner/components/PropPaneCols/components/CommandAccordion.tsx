@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2, IQuickButton } from '../../../fpsReferences';
+import { getHighlightedText , getHelpfullErrorV2, IQuickButton, IQuickCommands } from '../../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,7 +15,7 @@ import styles from '../PropPaneCols.module.scss';
 
 import { IMinField, IMinFieldCmds } from "../PropPaneColsClass";
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
-import { IQuickCommands } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
+
 import ReactJson from 'react-json-view';
 import { filter } from 'lodash';
 
@@ -131,7 +131,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
     data-fieldtype= 'Commands' onClick= { onExpandRight } className={ styles.typeFilterIcon } />;
 
 
-  const QuickCommands = buildQuickCommands( selected ) ;
+  const QuickCommands: IQuickCommands = buildQuickCommands( selected ) ;
 
   const RightSide = <div>
     <h2>Command Set Title goes here</h2>
@@ -190,7 +190,22 @@ const ChoicePerButton : IQuickButton = {
   showWhenEvalTrue: "", //item.AssignedToTitle !== sourceUserInfo.Title
 }
 
-export function buildQuickCommands(  selected: IMinField[], ): IQuickButton[] {
+//IQuickCommands
+
+export function buildQuickCommands(  selected: IMinField[], ): IQuickCommands {
+
+  const QuickButtons: IQuickButton[] = buildQuickButtons( selected );
+
+  const QuickCommands: IQuickCommands = {
+    buttons: [ QuickButtons ],
+    fields: [],
+  };
+
+  return QuickCommands;
+
+}
+
+export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
 
   const buttons : IQuickButton[] = [];
 
@@ -203,7 +218,15 @@ export function buildQuickCommands(  selected: IMinField[], ): IQuickButton[] {
 
         const buttonIndex = idx === 0 ? 'first' : idx  === field.Choices.length -1 ? 'last' : 'middle';
 
-        if ( buttonIndex === 'first' && filterButton === 'promote' ) {
+        if ( buttonIndex === 'last' && field.commands.rejectLast === true ) {
+          // Always show this button - EXCEPT if this choice is already set
+          const thisButton: IQuickButton = JSON.parse(JSON.stringify( ChoicePerButton ));
+          thisButton.str1 = choice;
+          // Just don't show button when the status is the current one.
+          thisButton.showWhenEvalTrue = `item.${field.InternalName} !== '${choice}'`;
+          buttons.push( thisButton );
+
+        } else if ( buttonIndex === 'first' && filterButton === 'promote' ) {
           //Skip this button since you can not demote the item any further
 
         } else if ( buttonIndex === 'last' && filterButton === 'demote' ) {
@@ -220,14 +243,14 @@ export function buildQuickCommands(  selected: IMinField[], ): IQuickButton[] {
 
           if ( promoteFilter && ( filterButton === 'promote' || filterButton === 'bracket' ) ){
 
-            thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === ${promoteFilter}` , false );
+            thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === '${promoteFilter}'` , false );
             // thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
             // thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${promoteFilter}`;
           }
 
           if ( demoteFilter && ( filterButton === 'demote' || filterButton === 'bracket' ) ){
 
-            thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === ${demoteFilter}` , false );
+            thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === '${demoteFilter}'` , false );
               // thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
               // thisButton.showWhenEvalTrue += `item.${field.InternalName} === ${demoteFilter}`;
           }
