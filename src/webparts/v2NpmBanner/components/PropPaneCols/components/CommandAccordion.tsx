@@ -447,7 +447,7 @@ export function createFieldTableRows( heading: JSX.Element, firstColumnHeading: 
 
   fields.map( ( field: IMinField | any ) => {
     TableRows.push( <tr key={ field.InternalName } >
-      <td title={field.InternalName}>{ field.InternalName }</td>
+      <td title={field.InternalName}>{ field.Title }</td>
       { FieldActionIcons.map( icon => { 
         // eslint-disable-next-line no-eval
         const ignore = icon.ignore && eval( icon.ignore ) === true ? true : false;
