@@ -6,7 +6,7 @@ import { repoLink, } from '../../fpsReferences';
 
 import { createAboutRow } from '../../fpsReferences';
 
-export const panelVersionNumber = '2022-10-14 -  1.0.0.02'; //Added to show in panel
+export const panelVersionNumber = '2022-10-18 -  1.0.0.03'; //Added to show in panel
 
 export function aboutTable( showRepoLinks: boolean ): { table: IHelpTable; } {
 
