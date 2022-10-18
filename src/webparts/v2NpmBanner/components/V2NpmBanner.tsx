@@ -24,7 +24,7 @@ import { ensureUserInfo } from '@mikezimm/npmfunctions/dist/Services/Users/userS
 import { IPinMeState } from '../fpsReferences';
 
 import { IUser } from '../fpsReferences';
-import FieldPanel from './PropPaneColsClass';
+import FieldPanel from './PropPaneCols/PropPaneColsClass';
 
 //Use this to add more console.logs for this component
 const urlParams : URLSearchParams = new URLSearchParams( window.location.search );

@@ -28,6 +28,7 @@
 // export { saveViewAnalytics } from './CoreFPS/Analytics';
 
 export { IUser } from '@mikezimm/npmfunctions/dist/Services/Users/IUserInterfaces';
+export { IQuickCommands, IQuickButton } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
 
 /***
  *    db    db d888888b d888888b db      d888888b d888888b d888888b d88888b .d8888. 
@@ -100,7 +101,7 @@ import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 export { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
 
-export const repoLink: IRepoLinks = links.gitRepoCoreFPS115Small;
+export const repoLink: IRepoLinks = links.gitRepoPnpjsV2Small;
 export const trickyEmails = links.trickyEmails;
 
 /***

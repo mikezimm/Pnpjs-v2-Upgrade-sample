@@ -51,7 +51,7 @@ const SampleRelatedInfoProps =         {
 };
 
 
-export function putObjectIntoJSON ( obj: any, name: string = null ) {
+export function putObjectIntoJSON ( obj: any, name: string = null ): JSX.Element {
   // return <ReactJson src={ obj } name={ 'panelItem' } collapsed={ true } displayDataTypes={ true } displayObjectSize={ true } enableClipboard={ true } style={{ padding: '20px 0px' }}/>;
   return <ReactJson src={ obj } name={ name } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>;
 }
@@ -59,20 +59,20 @@ export function putObjectIntoJSON ( obj: any, name: string = null ) {
 const PleaseSeeWiki = <p>Please see the { repoLink.wiki }  for more information</p>;
 
 const tenantServiceRequestURL = `https://servicenow.${window.location.hostname}.com/`;
-const RequestStorageHere = <span>Please request storage <a href={tenantServiceRequestURL} target="_blank">here in Service Now.</a></span>;
+// const RequestStorageHere = <span>Please request storage <a href={tenantServiceRequestURL} target="_blank">here in Service Now.</a></span>;
 
-const LinkFindInternalName = <a href="https://tomriha.com/what-is-sharepoint-column-internal-name-and-where-to-find-it/" target="_blank">Finding Internal Name of a column</a>;
+// const LinkFindInternalName = <a href="https://tomriha.com/what-is-sharepoint-column-internal-name-and-where-to-find-it/" target="_blank">Finding Internal Name of a column</a>;
 
-const ShowCodeIcon = <Icon iconName={ 'Code' } title='ShowCode icon' style={ defaultBannerCommandStyles }/>;
-const CheckReferences = <Icon iconName={ 'PlugDisconnected' } title='Check Files' style={ defaultBannerCommandStyles }/>;
-const ShowRawHTML = <Icon iconName={ 'FileCode' } title='Show Raw HTML here' style={ defaultBannerCommandStyles }/>;
+// const ShowCodeIcon = <Icon iconName={ 'Code' } title='ShowCode icon' style={ defaultBannerCommandStyles }/>;
+// const CheckReferences = <Icon iconName={ 'PlugDisconnected' } title='Check Files' style={ defaultBannerCommandStyles }/>;
+// const ShowRawHTML = <Icon iconName={ 'FileCode' } title='Show Raw HTML here' style={ defaultBannerCommandStyles }/>;
 
-const padRight15: React.CSSProperties = { paddingRight: '15px' };
+// const padRight15: React.CSSProperties = { paddingRight: '15px' };
 const padRight40: React.CSSProperties = { paddingRight: '40px' };
 
 const ReactCSSPropsNote = <span style={{ color: 'darkred', fontWeight: 500 }}>React.CSSProperties string like (with quotes):</span>;
 
-export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
+export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ): JSX.Element {
 
   console.log( 'PropPaneHelp ~ sitePresets: ', sitePresets );
   const preSetsContent = SitePresetsInfo( sitePresets );
