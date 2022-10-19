@@ -25,10 +25,11 @@ import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/ViewAccordion';
 import { getDirectionClicks, getKeeperClicks, selectAllofType } from './OnClickHelpers';
 
-import { IFieldPanelProps, IFieldPanelState, IMinField, IsEditable } from './components/IPropPaneColsProps';
+import { IFieldPanelFetchState, IFieldPanelProps, IFieldPanelState, IMinField, IMinListProps, IsEditable } from './components/IPropPaneColsProps';
 
 import { IMainCallbacks, MainPane } from './components/MainPane';
 import { fetchErrorPanel, FetchPane } from './components/FetchPane';
+import { fetchFields } from './components/FetchFuncion';
 
 export default class FieldPanel extends React.Component< IFieldPanelProps, IFieldPanelState > {
 
@@ -374,7 +375,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   private async _clickFetchFields( ) : Promise<void> {
 
     const { lists, } = this.props;
-    const { webURL, listTitle, } = lists[this.state.listIdx] ;
+    const list: IMinListProps = lists[this.state.listIdx] ;
 
     const { status, listFields, } = this.state;
 
@@ -382,97 +383,104 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     this._updatePerformance( 'fetch4', 'start', 'fetchFields', null );
 
-    let fetchLength: number = 0;
+    // let fetchLength: number = 0;
     if ( fetch === true ) {
-      console.log( 'listFieldsHook: started', webURL, listTitle, fetch );
-      try {
-        if ( listTitle && webURL ) {
-          //setlistFields( await allAvailableFields( webURL, listTitle, ) );
-          // const fetchWebURL = getFullUrlFromSlashSitesUrl( webURL );
-          const fetchWebURL = webURL ;
-          const thisWebInstance : IWeb = Web(fetchWebURL);
-          const allFields : IMinField[] = await thisWebInstance.lists.getByTitle(listTitle).fields.orderBy("Title", true)();
-          const FilteredFields : IMinField[] = allFields.filter( field => field.Hidden !== true && field.Sealed !== true );
+      // console.log( 'listFieldsHook: started', webURL, listTitle, fetch );
 
-          const DefaultSelected: string[] = [ 'ID', 'Editor', 'Modified', 'Title', 'FileLeafRef' ];
-          const PreSelectedFields: IMinField[] = [];
-          const SelectedNames: string[] = [];
+      const fetchState: IFieldPanelFetchState = await fetchFields( list );
+
+      this._updatePerformance( 'fetch4', 'update', '', fetchState.filtered.length );
+
+      this.setState( fetchState );
+
+      // try {
+      //   if ( listTitle && webURL ) {
+      //     //setlistFields( await allAvailableFields( webURL, listTitle, ) );
+      //     // const fetchWebURL = getFullUrlFromSlashSitesUrl( webURL );
+      //     const fetchWebURL = webURL ;
+      //     const thisWebInstance : IWeb = Web(fetchWebURL);
+      //     const allFields : IMinField[] = await thisWebInstance.lists.getByTitle(listTitle).fields.orderBy("Title", true)();
+      //     const FilteredFields : IMinField[] = allFields.filter( field => field.Hidden !== true && field.Sealed !== true );
+
+      //     const DefaultSelected: string[] = [ 'ID', 'Editor', 'Modified', 'Title', 'FileLeafRef' ];
+      //     const PreSelectedFields: IMinField[] = [];
+      //     const SelectedNames: string[] = [];
           
-          let versionField = null;
-          let fileField = null;
+      //     let versionField = null;
+      //     let fileField = null;
 
 
 
-          FilteredFields.map( ( field, idx ) => {
-            field.idx = idx;
-            field.commands = {};
+      //     FilteredFields.map( ( field, idx ) => {
+      //       field.idx = idx;
+      //       field.commands = {};
 
-            field.searchTextLC = ['Title', 'InternalName', 'TypeDisplayName', 'Choices', 'Formula', 'DefaultValue' ].map( prop => {
-              const anyField : any = field;
-              return anyField[ prop ] ? `${prop}:${anyField[ prop ]}` : '';
-            }).join(' || ').toLocaleLowerCase();
+      //       field.searchTextLC = ['Title', 'InternalName', 'TypeDisplayName', 'Choices', 'Formula', 'DefaultValue' ].map( prop => {
+      //         const anyField : any = field;
+      //         return anyField[ prop ] ? `${prop}:${anyField[ prop ]}` : '';
+      //       }).join(' || ').toLocaleLowerCase();
 
-            let ReadOnly = field.ReadOnlyField === true ? 'IsReadOnly' : IsEditable.toLocaleLowerCase();
-            if ( field.InternalName === 'ContentType' ) ReadOnly = '';
-            field.searchTextLC += ` : ${ReadOnly}`;
+      //       let ReadOnly = field.ReadOnlyField === true ? 'IsReadOnly' : IsEditable.toLocaleLowerCase();
+      //       if ( field.InternalName === 'ContentType' ) ReadOnly = '';
+      //       field.searchTextLC += ` : ${ReadOnly}`;
 
-            if ( DefaultSelected.indexOf(field.InternalName) > -1 ) {
-              field.isKeeper = true;
-              field.isSelected = true;
-              PreSelectedFields.push( field ); 
-              SelectedNames.push( field.InternalName ) ; }
+      //       if ( DefaultSelected.indexOf(field.InternalName) > -1 ) {
+      //         field.isKeeper = true;
+      //         field.isSelected = true;
+      //         PreSelectedFields.push( field ); 
+      //         SelectedNames.push( field.InternalName ) ; }
 
-            if ( field.InternalName === '_UIVersionString' ) versionField = field;
-            if ( field.FileLeafRef  ) fileField = field;
+      //       if ( field.InternalName === '_UIVersionString' ) versionField = field;
+      //       if ( field.FileLeafRef  ) fileField = field;
 
-            // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName}
-            //     || Choices:${field.Choices} || Formula:${field.Formula} || DefaultValue:${field.DefaultValue}`.toLocaleLowerCase();
-          });
+      //       // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName}
+      //       //     || Choices:${field.Choices} || Formula:${field.Formula} || DefaultValue:${field.DefaultValue}`.toLocaleLowerCase();
+      //     });
 
-          //Add version column only if it's a library.
-          if ( fileField ) PreSelectedFields.push( versionField );
+      //     //Add version column only if it's a library.
+      //     if ( fileField ) PreSelectedFields.push( versionField );
 
-          const SortedPreSelectedFields: IMinField[] = [];
-          DefaultSelected.map( name => {
-            const idx: number = SelectedNames.indexOf( name ) ;
-            if ( idx > -1 ) { SortedPreSelectedFields.push( PreSelectedFields[ idx ] ); }
-          })
-          fetchLength = FilteredFields.length;
+      //     const SortedPreSelectedFields: IMinField[] = [];
+      //     DefaultSelected.map( name => {
+      //       const idx: number = SelectedNames.indexOf( name ) ;
+      //       if ( idx > -1 ) { SortedPreSelectedFields.push( PreSelectedFields[ idx ] ); }
+      //     })
+      //     fetchLength = FilteredFields.length;
 
-          this._updatePerformance( 'fetch4', 'update', '', fetchLength );
+      //     this._updatePerformance( 'fetch4', 'update', '', fetchLength );
 
-          this.setState({
-            listFields: FilteredFields,
-            filtered: FilteredFields,
-            selected: SortedPreSelectedFields,
-            status: 'Success - Fetched!',
-            fetched: true,
-            searchText: '',
-            searchProp: '',
-            errMessage: '',
-          });
+      //     this.setState({
+      //       listFields: FilteredFields,
+      //       filtered: FilteredFields,
+      //       selected: SortedPreSelectedFields,
+      //       status: 'Success - Fetched!',
+      //       fetched: true,
+      //       searchText: '',
+      //       searchProp: '',
+      //       errMessage: '',
+      //     });
 
 
-        } else { 
-          this._updatePerformance( 'fetch4', 'update', 'failed', fetchLength );
-          this.setState({
-            status: 'Failed to fetch columns!',
-            searchText: '',
-            searchProp: '',
-            errMessage: 'Missing Web URL or List Title',
-          });
+      //   } else { 
+      //     this._updatePerformance( 'fetch4', 'update', 'failed', fetchLength );
+      //     this.setState({
+      //       status: 'Failed to fetch columns!',
+      //       searchText: '',
+      //       searchProp: '',
+      //       errMessage: 'Missing Web URL or List Title',
+      //     });
 
-        }
+      //   }
 
-      } catch (e) {
-        this._updatePerformance( 'fetch4', 'update', 'did not', fetchLength );
-        this.setState({
-          status: 'Did not fetch columns!',
-          errMessage: getHelpfullErrorV2( e, false, true, `PropPaneColsClass ~ 292`, ),
-        });
-      }
+      // } catch (e) {
+      //   this._updatePerformance( 'fetch4', 'update', 'did not', fetchLength );
+      //   this.setState({
+      //     status: 'Did not fetch columns!',
+      //     errMessage: getHelpfullErrorV2( e, false, true, `PropPaneColsClass ~ 292`, ),
+      //   });
+      // }
 
-      console.log( 'listFieldsHook: finished!', status, listFields  );
+      console.log( 'fetchState: finished!', fetchState );
     }
   }
 
