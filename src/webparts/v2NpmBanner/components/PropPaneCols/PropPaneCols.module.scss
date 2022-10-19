@@ -38,6 +38,7 @@
   }
 
   .commandIcon {
+    @extend .selectIcon;
     background: #ffffff;
     border-radius: 5px;
   }

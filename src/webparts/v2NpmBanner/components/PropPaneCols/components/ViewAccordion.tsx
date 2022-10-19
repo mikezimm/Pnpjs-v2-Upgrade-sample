@@ -38,7 +38,7 @@ export function createViewBuilder( selected: IMinField[], onToggleAccordion: any
         enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
   </div>;
 
-  const viewTitle = <div style={{display: 'flex' }}>Build Views</div>;
+  const viewTitle = `Build Views`;
 
   const DesignViews: JSX.Element = <Accordion 
     title={ viewTitle }

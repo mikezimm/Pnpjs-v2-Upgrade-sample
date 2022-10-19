@@ -184,7 +184,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
     </div>
   </div>;
 
-  const commandTitle = <div style={{display: 'flex' }}>Build Commands </div>;
+  const commandTitle = `Build Commands`;
   
   const DesignCommands: JSX.Element = <Accordion 
     title={ commandTitle }
