@@ -47,8 +47,6 @@ export async function fetchFields(  list: IMinListProps ) : Promise<IFieldPanelF
         if ( field.InternalName === '_UIVersionString' ) versionField = field;
         if ( field.FileLeafRef  ) fileField = field;
 
-        // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName}
-        //     || Choices:${field.Choices} || Formula:${field.Formula} || DefaultValue:${field.DefaultValue}`.toLocaleLowerCase();
       });
 
       //Add version column only if it's a library.
@@ -88,7 +86,7 @@ export async function fetchFields(  list: IMinListProps ) : Promise<IFieldPanelF
       };
 
       return FieldPanelState;
-      
+
     }
 
   } catch (e) {

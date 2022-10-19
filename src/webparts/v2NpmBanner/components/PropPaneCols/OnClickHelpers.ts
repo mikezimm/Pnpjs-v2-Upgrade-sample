@@ -1,6 +1,32 @@
 import { IMinField } from "./components/IPropPaneColsProps";
 
 
+export interface ISelectedInfo {
+  listFields: IMinField[];
+  selected: IMinField[];
+  designMode: boolean;
+}
+
+export function  updateSelectedInfo ( ev: React.MouseEvent<HTMLElement>, listFields: IMinField[], selected: IMinField[], searchText: string  ): ISelectedInfo  {
+
+  if ( searchText ) {
+    const filteredFields: string[] = listFields.filter( field => field.searchTextLC.indexOf( searchText.toLocaleLowerCase() ) > -1 ).map ( field => { return field.InternalName });
+    listFields.map( field => {
+      if ( field.isSelected !== true && filteredFields.indexOf( field.InternalName ) > -1 ) {
+        // Question:  Does this mutate the state directly?  Is it an issue?
+        // If so, how would I do this properly?  Do I need to stringify/parse all these arrays every time?
+        field.isSelected = true ;
+        selected.push( field ); //Add to selected array
+      }
+    });
+  }
+
+  const result: ISelectedInfo = { listFields: listFields, selected: selected, designMode: true };
+
+  return result;
+
+}
+
 /**
  * Does not work as desired.... not using now.
  * @param ev

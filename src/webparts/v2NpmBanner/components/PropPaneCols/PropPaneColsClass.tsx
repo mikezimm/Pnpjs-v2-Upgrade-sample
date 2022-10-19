@@ -1,33 +1,20 @@
 import * as React from 'react';
 
-import { IWeb, Web, } from "@pnp/sp/presets/all";
+import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, } from "../../fpsReferences";
 
-import {  SearchBox, ISearchBoxStyles, } from 'office-ui-fabric-react/lib/SearchBox';
-import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
-import { Icon, } from 'office-ui-fabric-react/lib/Icon';
-
-import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, IPerformanceOp } from "../../fpsReferences";
-
-// import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2 } from '../../fpsReferences';
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
-// import { DisplayMode } from '@microsoft/sp-core-library';
-import ReactJson from "react-json-view";
-// import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './PropPaneCols.module.scss';
 import { createCommandBuilder, updateSelectedCommands } from './components/CommandAccordion';
-import { buildMainFieldTable, getMainSelectedItems } from './components/MainFieldTable';
+import { getMainSelectedItems } from './components/MainFieldTable';
 import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/ViewAccordion';
-import { getDirectionClicks, getKeeperClicks, selectAllofType } from './OnClickHelpers';
+import { getDirectionClicks, getKeeperClicks, ISelectedInfo, updateSelectedInfo, } from './OnClickHelpers';
 
-import { IFieldPanelFetchState, IFieldPanelProps, IFieldPanelState, IMinField, IMinListProps, IsEditable } from './components/IPropPaneColsProps';
+import { IFieldPanelFetchState, IFieldPanelProps, IFieldPanelState, IMinField, IMinListProps, } from './components/IPropPaneColsProps';
 
-import { IMainCallbacks, MainPane } from './components/MainPane';
+import { MainPane } from './components/MainPane';
 import { fetchErrorPanel, FetchPane } from './components/FetchPane';
 import { fetchFields } from './components/FetchFuncion';
 
@@ -87,25 +74,9 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   
     this._performance.ops.superOnInit = updatePerformanceEnd( this._performance.ops.superOnInit, true,666 );
 
-          // const Callbacks: IMainCallbacks = {
-            // const Callbacks: any = {
-            //   selectFiltered: this._selectFiltered,
-            //   onFilterClick2: this._onFilterClick2,
-            //   onTextSearch: this._onTextSearch.bind(this),
-            //   toggleDesign: this._toggleDesign(),
-            //   onSelectItem: this._onSelectItem,
-            //   onTypeClick: this._onTypeClick,  // onTypeClick( field, this ) 
-            // }
-
-
   }
 
-  
   public componentDidUpdate(prevProps: IFieldPanelProps) : boolean {
-    //Just rebuild the component
-
-    // this._maxFirst = this.state.slideCount === 0 ? 0 : Math.floor( this.props.items.length / this.state.slideCount ) * this.state.slideCount;
-    // this._maxLast = this._maxFirst + this.state.slideCount;
 
     let refresh: boolean = false;
 
@@ -140,75 +111,18 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
   public render(): React.ReactElement<IFieldPanelProps> {
 
-    const { lists, disableDesign } = this.props;
-    const { status, filtered, listFields, designMode, searchProp, searchText, fetched, errMessage, listIdx } = this.state;
-
-    // const fetch4: IPerformanceOp = this._performance.ops.fetch4 ;
-
-    // const fetchPerformance: JSX.Element = !fetch4 ? null : <div>
-
-    //   {
-    //     ['label', 'startStr', 'ms', 'c', 'a', ].map( ( key: any, idx: number)  => {
-    //       /**
-    //        * Get this error when using this shorthand syntax:
-    //         *   <div>{key}: { fetch4[ key ] }</div>
-
-    //           Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'IPerformanceOp'.
-    //           No index signature with a parameter of type 'string' was found on type 'IPerformanceOp'.ts(7053)
-
-    //           Need to turn this one-line of code....
-    //           <div>{key}: { fetch4[ key ] }</div>
-    //           into the 2 lines of code below :()
-    //        */
-
-    //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //       const fetch4Any: any = fetch4 as any;
-
-    //       return <div className={ styles.performanceRow } key={idx}><div>{key}</div> <div>{ fetch4Any[ key ] }</div></div>;
-    //     })
-    //   }
-
-    // </div>;
-
-
-    // const fetchButton: JSX.Element = <div className={ styles.button } onClick={ () => this._clickFetchFields() } >Fetch</div>;
-
-    // const fetchPane : JSX.Element = <div className={ [ styles.fetchPane, this.state.designMode === true ? styles.hideLeft : styles.showLeft ].join(' ') }>
-    //   { fetchButton }
-    //   <div style={{ margin: '20px', fontWeight: 'bolder', color: status.indexOf('Success') > -1 ? 'darkgreen': status.indexOf('Failed') > -1 ? 'red': '' }}>{ status }</div>
-    //   <div style={{ margin: '20px' }}>{ fetchPerformance }</div>
-    //   <ReactJson src={ this._performance } name={ 'performance' } collapsed={ true } displayDataTypes={ false } displayObjectSize={ false } 
-    //       enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
-    // </div>
+    const { lists, } = this.props;
+    const { status, designMode, errMessage, listIdx } = this.state;
 
     const fetchPane : JSX.Element = FetchPane( { 
       onClickFetchFields: this._clickFetchFields.bind(this),
-      // list: lists[ listIdx ],
-      // setState: this.setState,
-      // updatePerformance: this._updatePerformance.bind(this), 
       designMode: designMode,
       performance : this._performance,
       status: status,
     } );
 
-    // const siteLink: JSX.Element = <div style={{paddingBottom: '15px', fontSize: 'larger', fontWeight: 'bolder' }}>on this site:  
-    //     <span style = {{ color: 'darkblue',cursor: 'pointer', marginLeft: '25px' }} 
-    //       onClick={ () => { window.open(lists[this.state.listIdx].webURL, '_blank' )}}>{  lists[this.state.listIdx]?.webURL }
-    //     </span>
-    //   </div>;
-
     if ( this.state.errMessage ) {
       fetchErrorPanel( fetchPane, errMessage, lists[ listIdx ].webURL, lists[ listIdx ].listTitle );
-      //  const messages: string[] = this.state.errMessage.split('-- FULL ERROR MESSAGE:');
-
-      // return ( <div className={ styles.propPaneCols } >
-      //             <h2>There was an error trying to fetch fields for this list:</h2>
-      //             <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ lists[this.state.listIdx].listTitle }'` }</h3>
-      //             { siteLink }
-      //             <p style={{ fontWeight: 'bold' }}>{messages[0]}</p>
-      //             <p style={{ fontWeight: 'bold', color: 'red' }}>{ messages[1] }</p>
-      //             { fetchPane }
-      //           </div>);
 
     } else if ( lists.length === 0 ) {
       return ( <div className={ styles.propPaneCols } >
@@ -216,11 +130,6 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
               </div>);
 
     } else {
-
-
-      // const { listTitle, } = lists[this.state.listIdx] ;
-
-      // const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) );
 
       const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign, this._toggleFullDesign.bind(this) ) ;
 
@@ -235,8 +144,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             onTextSearch: this._onTextSearch.bind(this),
             toggleDesign: this._toggleDesign.bind(this),
             onSelectItem: this._onSelectItem,
-            onTypeClick: this._onTypeClick.bind(this),  // onTypeClick( field, this ) 
-            // MainFieldTable: MainFieldTable,
+            onTypeClick: this._onTypeClick.bind(this),
           } );
 
       let designPane: JSX.Element = null;
@@ -249,83 +157,12 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           </div>
       }
 
-      // const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { width: 200 } };
-
-      // const FieldSearchBox = <SearchBox
-      //   className={ '' }
-      //   styles={ searchBoxStyles }
-      //   placeholder="Search"
-      //   value={ this.state.searchText }
-      //   onSearch={ this._onTextSearch.bind(this) }
-      //   // onFocus={ () => console.log('this.state',  this.state) }
-      //   // onBlur={ () => console.log('onBlur called') }
-      //   onChange={ this._onTextSearch.bind(this) }
-      //   onClear={ this._onTextSearch.bind(this) }
-      // />;
-
-      // const DesignToggle: JSX.Element = this.state.fetched !== true ? null : <Toggle 
-      //     label={ 'Design' } 
-      //     inlineLabel={ true } 
-      //     onChange={ () => this._toggleDesign() } 
-      //     checked={ designMode }
-      //     disabled= { disableDesign }
-      //     styles={ { root: { width: 160, float: 'right' } } }
-      //     />;
-
-      // const SelectFiltered = <Icon iconName={ 'SkypeCircleArrow' } title={ 'Select All these columns'} style={{ color: this.state.searchText ? '' : 'lightgray' }}
-      //   data-fieldtype= '' onClick= { !fetched ? null : this._selectFiltered } className={ styles.typeFilterIcon } />;
-
-      // const DateFilterIcon = <Icon iconName={ 'DateTime' } title={ 'Filter for DateTime columns'} style={{  }}
-      //   data-fieldtype= 'Date and Time' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const UserFilterIcon = <Icon iconName={ 'Contact' } title={ 'Filter for User columns'} style={{  }}
-      //   data-fieldtype= 'Person or Group' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const TextFilterIcon = <Icon iconName={ 'TextField' } title={ 'Filter for Text columns'} style={{  }}
-      //   data-fieldtype= 'Text' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const ChoiceFilterIcon = <Icon iconName={ 'Stack' } title={ 'Filter for Choice columns'} style={{  }}
-      //   data-fieldtype= 'Choice' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const NumberFilterIcon = <Icon iconName={ 'Number' } title={ 'Filter for Number columns'} style={{  }}
-      //   data-fieldtype= 'Number' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const YesNoFilterIcon = <Icon iconName={ 'CheckboxComposite' } title={ 'Filter for Number columns'} style={{  }}
-      //   data-fieldtype= 'Yes/No' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const LookupFilterIcon = <Icon iconName={ 'Relationship' } title={ 'Filter for Lookup columns'} style={{  }}
-      //   data-fieldtype= 'Lookup' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const UrlFilterIcon = <Icon iconName={ 'Link' } title={ 'Filter for Link columns'} style={{  }}
-      //   data-fieldtype= 'Hyperlink or Picture' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const EditableFilterIcon = <Icon iconName={ 'Edit' } title={ 'All Editable'} style={{  }}
-      //   data-fieldtype= { IsEditable } onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const CalculatedFilterIcon = <Icon iconName={ 'Variable' } title={ 'Calculated columns'} style={{  }}
-      //   data-fieldtype= 'Calculated' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
-
-      // const FilterButtons = <div style={{display: 'flex', marginLeft: '50px' }}>
-      //   {SelectFiltered}{DateFilterIcon}{UserFilterIcon}{TextFilterIcon}
-      //   {ChoiceFilterIcon}{NumberFilterIcon}{CalculatedFilterIcon}
-      //   {YesNoFilterIcon}{LookupFilterIcon}{UrlFilterIcon}{EditableFilterIcon}
-      //   </div>;
-
       return (
 
         <div className={ [ styles.propPaneCols, styles.colsResults, this.state.fullDesign === true ? styles.fullDesign : null ].join( ' ' ) } >
           { fetchPane }
           { designPane }
           { MainPanel }
-
-
-          {/* <div className={ styles.rightSide }>
-            <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }{DesignToggle}</h3>
-            { siteLink }
-            <div style={{paddingBottom: '15px', display: 'flex', alignContent: 'space-between' }}>{ FieldSearchBox }{ FilterButtons }</div>
-            <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Add</b> to add to Top of list, Click <b>Type</b> to filter on column type</div>
-            { MainFieldTable }
-          </div> */}
         </div>
       );
 
@@ -337,38 +174,9 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     const fullDesign : boolean = this.state.fullDesign === true ? false : true;
     this.setState({ fullDesign: fullDesign });
   }
-    
+
   private _onCmdFieldClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-
     const newSelected: IMinField [] = updateSelectedCommands( ev, this.state.selected );
-    // const target: any = ev.target;
-
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    // const itemName: string = target.dataset.fieldname;
-    // const role: string = target.dataset.role;
-
-    // // let thisSelected : IMinField = null;
-    // const newSelected: IMinField [] = [ ];
-    // this.state.selected.map( field => {  //Find selected item
-    //   if ( field.InternalName === itemName ) { 
-    //     if ( role === 'PerChoice' ) {
-    //       field.commands.perChoice = field.commands.perChoice === true ? false : true;
-    //     } else if ( role === 'FilterUser' ) {
-    //       field.commands.userFilter = field.commands.userFilter === true ? false : true;
-    //     } else if ( role === 'SetUser' ) {
-    //       field.commands.setUser = field.commands.setUser === true ? false : true;
-    //     } else if ( role === 'AddUser' ) {
-    //       field.commands.addUser = field.commands.addUser === true ? false : true;
-    //     // } else if ( role === '' ) {
-
-    //     // } else if ( role === '' ) {
-
-    //     }
-    //   }
-    //   newSelected.push( field );
-    // });
-
     this.setState({ selected: newSelected });
   };
 
@@ -376,114 +184,18 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     const { lists, } = this.props;
     const list: IMinListProps = lists[this.state.listIdx] ;
-
-    const { status, listFields, } = this.state;
-
     const fetch = true;
 
-    this._updatePerformance( 'fetch4', 'start', 'fetchFields', null );
-
-    // let fetchLength: number = 0;
     if ( fetch === true ) {
-      // console.log( 'listFieldsHook: started', webURL, listTitle, fetch );
-
+      this._updatePerformance( 'fetch4', 'start', 'fetchFields', null );
       const fetchState: IFieldPanelFetchState = await fetchFields( list );
-
       this._updatePerformance( 'fetch4', 'update', '', fetchState.filtered.length );
 
       this.setState( fetchState );
-
-      // try {
-      //   if ( listTitle && webURL ) {
-      //     //setlistFields( await allAvailableFields( webURL, listTitle, ) );
-      //     // const fetchWebURL = getFullUrlFromSlashSitesUrl( webURL );
-      //     const fetchWebURL = webURL ;
-      //     const thisWebInstance : IWeb = Web(fetchWebURL);
-      //     const allFields : IMinField[] = await thisWebInstance.lists.getByTitle(listTitle).fields.orderBy("Title", true)();
-      //     const FilteredFields : IMinField[] = allFields.filter( field => field.Hidden !== true && field.Sealed !== true );
-
-      //     const DefaultSelected: string[] = [ 'ID', 'Editor', 'Modified', 'Title', 'FileLeafRef' ];
-      //     const PreSelectedFields: IMinField[] = [];
-      //     const SelectedNames: string[] = [];
-          
-      //     let versionField = null;
-      //     let fileField = null;
-
-
-
-      //     FilteredFields.map( ( field, idx ) => {
-      //       field.idx = idx;
-      //       field.commands = {};
-
-      //       field.searchTextLC = ['Title', 'InternalName', 'TypeDisplayName', 'Choices', 'Formula', 'DefaultValue' ].map( prop => {
-      //         const anyField : any = field;
-      //         return anyField[ prop ] ? `${prop}:${anyField[ prop ]}` : '';
-      //       }).join(' || ').toLocaleLowerCase();
-
-      //       let ReadOnly = field.ReadOnlyField === true ? 'IsReadOnly' : IsEditable.toLocaleLowerCase();
-      //       if ( field.InternalName === 'ContentType' ) ReadOnly = '';
-      //       field.searchTextLC += ` : ${ReadOnly}`;
-
-      //       if ( DefaultSelected.indexOf(field.InternalName) > -1 ) {
-      //         field.isKeeper = true;
-      //         field.isSelected = true;
-      //         PreSelectedFields.push( field ); 
-      //         SelectedNames.push( field.InternalName ) ; }
-
-      //       if ( field.InternalName === '_UIVersionString' ) versionField = field;
-      //       if ( field.FileLeafRef  ) fileField = field;
-
-      //       // `Title:${field.Title} || name:${field.InternalName} || Type:${field.TypeDisplayName}
-      //       //     || Choices:${field.Choices} || Formula:${field.Formula} || DefaultValue:${field.DefaultValue}`.toLocaleLowerCase();
-      //     });
-
-      //     //Add version column only if it's a library.
-      //     if ( fileField ) PreSelectedFields.push( versionField );
-
-      //     const SortedPreSelectedFields: IMinField[] = [];
-      //     DefaultSelected.map( name => {
-      //       const idx: number = SelectedNames.indexOf( name ) ;
-      //       if ( idx > -1 ) { SortedPreSelectedFields.push( PreSelectedFields[ idx ] ); }
-      //     })
-      //     fetchLength = FilteredFields.length;
-
-      //     this._updatePerformance( 'fetch4', 'update', '', fetchLength );
-
-      //     this.setState({
-      //       listFields: FilteredFields,
-      //       filtered: FilteredFields,
-      //       selected: SortedPreSelectedFields,
-      //       status: 'Success - Fetched!',
-      //       fetched: true,
-      //       searchText: '',
-      //       searchProp: '',
-      //       errMessage: '',
-      //     });
-
-
-      //   } else { 
-      //     this._updatePerformance( 'fetch4', 'update', 'failed', fetchLength );
-      //     this.setState({
-      //       status: 'Failed to fetch columns!',
-      //       searchText: '',
-      //       searchProp: '',
-      //       errMessage: 'Missing Web URL or List Title',
-      //     });
-
-      //   }
-
-      // } catch (e) {
-      //   this._updatePerformance( 'fetch4', 'update', 'did not', fetchLength );
-      //   this.setState({
-      //     status: 'Did not fetch columns!',
-      //     errMessage: getHelpfullErrorV2( e, false, true, `PropPaneColsClass ~ 292`, ),
-      //   });
-      // }
-
       console.log( 'fetchState: finished!', fetchState );
     }
-  }
 
+  }
 
   private _toggleDesign ( ): void {
     const designMode : boolean = this.state.designMode === true ? false : true;
@@ -491,24 +203,10 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   }
 
 
-
-
   private _selectFiltered = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-
     const { listFields, selected, searchText } = this.state;
-
-    if ( searchText ) {
-      const filteredFields: string[] = listFields.filter( field => field.searchTextLC.indexOf( searchText.toLocaleLowerCase() ) > -1 ).map ( field => { return field.InternalName });
-      listFields.map( field => {
-        if ( field.isSelected !== true && filteredFields.indexOf( field.InternalName ) > -1 ) {
-          // Question:  Does this mutate the state directly?  Is it an issue?
-          // If so, how would I do this properly?  Do I need to stringify/parse all these arrays every time?
-          field.isSelected = true ;
-          selected.push( field ); //Add to selected array
-        }
-      });
-    }
-    this.setState( { listFields: listFields, selected: selected, designMode: true } );
+    const selectedInfo: ISelectedInfo = updateSelectedInfo( ev, listFields, selected, searchText );
+    this.setState( selectedInfo );
   }
 
   private _onFilterClick2 = ( ev: React.MouseEvent<HTMLElement>  ): void => {
@@ -518,24 +216,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
     const fieldtype: string = this.state?.searchText === target.dataset?.fieldtype.toLocaleLowerCase() ? '' : target.dataset.fieldtype;
     this._onSearchChange( fieldtype , '' );
-    // if ( ctrlKey === true || altKey === true ) {
-    //   const newSelected: IMinField [] = selectAllofType( ev, this.state.listFields, this.state.selected );
-    //   this.setState({ selected: newSelected });
-    // }
-
   }
-
-  private _onFilterClick ( searchText: string ): void {
-    const filterType : string = this.state.searchText === searchText.toLocaleLowerCase() ? '' : searchText;
-    this._onSearchChange( filterType , '' );
-  }
-
-  
-
-  // private _onExpandRight ( view: string ): void {
-  //   const filterType : string = this.state.expandDesign ? '' : field.TypeDisplayName;
-  //   this._onSearchChange( '' , filterType );
-  // }
 
   private _onTypeClick ( field: IMinField ): void {
     const filterType : string = this.state.searchProp ? '' : field.TypeDisplayName;
@@ -553,7 +234,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this._onSearchChange( SearchValue , '' );
   }
 
-  private _onSearchChange ( input: string, property: string = '' ): void{
+  private _onSearchChange ( input: string, property: string = '' ): void {
 
     const SearchValue = input.toLocaleLowerCase();
 
@@ -574,218 +255,14 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     }
   }
 
-  // private _buildMainFieldTable( filtered: IMinField[], designMode: boolean, heading: string, searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any ) : any[] {
-
-  //   const fieldRows: any[] = [];
-  //   fieldRows.push( 
-  //     <tr>
-  //       <th style={{ display: designMode === true ? '' : 'none' }}>Add</th>
-  //       <th>Title</th>
-  //       <th>InternalName</th>
-  //       <th>Type</th>
-  //       <th>{heading}</th>
-  //     </tr>
-  //   );
-
-  //   filtered.map( ( field: IMinField ) => {
-
-  //     let detailValue = field.Description;
-
-  //     if ( searchProp === 'Choice' || ( !detailValue && field.TypeAsString === 'Choice' ) ) {
-  //       detailValue = JSON.stringify(field.Choices);
-
-  //     } else if ( searchProp === 'Calculated' || ( !detailValue && field.Formula ) ) {
-  //       detailValue = JSON.stringify(field.Formula);
-  //       detailValue = detailValue.slice(1, detailValue.length - 1);  //Remove extra quotes around formula
-
-  //     } else { detailValue = field.Description; }
-
-  //     const SelectIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } onClick= { onSelectItem } 
-  //       iconName={ field.isSelected === true ? 'SkypeCircleCheck' : 'StatusCircleRing' }/>;
-
-  //     const row = <tr>
-  //       <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
-  //       <td>{ getHighlightedText (field.Title , searchText ) }</td>
-  //       <td title={field.InternalName}>{ getHighlightedText (field.InternalName , searchText ) }</td>
-  //       <td onClick={ () => onTypeClick( field, this ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
-  //       <td title={detailValue}>{ getHighlightedText (detailValue , searchText ) }</td>
-  //     </tr>;
-  //     fieldRows.push( row );
-
-  //   });
-  //   return fieldRows;
-
-  // }
-
-
   private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    // const target: any = ev.target;
-
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    // const itemName: string = target.dataset.fieldname;
-
-    // // let thisSelected : IMinField = null;
-    // const newSelected: IMinField [] = [ ];
-    // this.state.selected.map( field => {  //Find selected item
-    //   if ( field.InternalName === itemName ) { 
-    //     field.isKeeper = field.isKeeper === true ? false : true;
-    //   }
-    //   newSelected.push( field );
-    // });
-
     const newSelected: IMinField[] = getKeeperClicks( ev, this.state.selected );
     this.setState({ selected: newSelected });
   };
 
   private _onDirectionClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    // const target: any = ev.target;
-    // // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    // const itemName: string = target.dataset.fieldname;
-    // const direction: string = target.dataset.direction;
-    // const ctrlKey : boolean = ev.ctrlKey;
-
-    // const { selected } = this.state;
-    // let idx: number = -1;
-
-    // selected.map( ( field:IMinField, i: number) => {  //Find selected item
-    //   if ( field.InternalName === itemName ) {  idx = i; }
-    // });
-    // const currentPick = selected[idx];
-
-    // if ( idx === - 1 ){
-    //   alert('Something went wrong :(');
-
-    // } else {
-    //   let newSelected: IMinField [] = [];
-
-    //   if ( ctrlKey === true ) {
-    //     if ( direction === 'up' ) newSelected.push( currentPick );
-
-    //     selected.map( ( field:IMinField, i: number) => {  //Find selected item
-    //       if ( field.InternalName !== itemName ) {  newSelected.push( field ) ; }
-    //     });
-
-    //     if ( direction === 'down' ) newSelected.push( currentPick );
-
-    //   } else if ( direction === 'up' ) {
-    //     const part1: IMinField[] = idx === 1 ? [] : selected.slice( 0, idx - 1  );
-    //     const part2: IMinField[] = idx === selected.length -1 ? [] :selected.slice( idx + 1 );
-    //     newSelected = [ ...part1, ...[ currentPick ], ...[ selected[ idx - 1 ] ]  , ...part2 ];
-
-    //   } else {
-    //     const part1: IMinField[] = idx === 0 ? [] : selected.slice( 0, idx );
-    //     const part2: IMinField[] = idx === selected.length -2 ? [] : selected.slice( idx + 2 );
-    //     newSelected = [ ...part1, ...[ selected[ idx + 1 ] ], ...[ currentPick ]  , ...part2 ];
-
-    //   }
-
     const newSelected: IMinField[] = getDirectionClicks( ev, this.state.selected );
     this.setState({ selected: newSelected });
-    // }
   };
 
-
-  // private _buildSelectedFieldTable( selected: IMinField[], onKeeperClick: any, onDirectionClick: any ) : any[] {
-
-  //   const fieldRows: any[] = [];
-  //   fieldRows.push( 
-  //     <tr>
-  //       <th style={{ }}>Keep</th>
-  //       <th>Title</th>
-  //       <th>Type</th>
-  //       <th>Up</th>
-  //       <th>Down</th>
-  //     </tr>
-  //   );
-
-  //   selected.map( ( field: IMinField, idx: number ) => {
-
-  //     const disableUp : boolean = idx === 0 ? true : false;
-  //     const disableDown : boolean = idx === selected.length -1 ? true : false;
-
-  //     const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }
-  //       onClick= { onKeeperClick } iconName={ field.isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
-
-  //     const UpIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'up' } style={{ color: disableUp === true ? 'dimgray' : '' }}
-  //       onClick= { disableUp !== true ? onDirectionClick : null } iconName={ disableUp === false ? 'Up' : 'StatusCircleBlock2' }/>;
-
-  //     const DownIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'down' } style={{ color: disableDown === true ? 'dimgray' : '' }}
-  //       onClick= { disableDown !== true ? onDirectionClick : null } iconName={ disableDown === false ? 'Down': 'StatusCircleBlock2'  }/>;
-
-  //     const row = <tr>
-  //       <td>{KeeperIcon}</td>
-  //       <td>{ field.Title }</td>
-  //       <td title={field.TypeAsString}>{ field.TypeAsString }</td>
-  //       <td>{ UpIcon }</td>
-  //       <td>{ DownIcon }</td>
-  //     </tr>;
-  //     fieldRows.push( row );
-
-  //   });
-  //   return fieldRows;
-
-  // }
-
 }
-
-
-// //export async function provisionTestPage( makeThisPage:  IContentsFieldInfo, readOnly: boolean, setProgress: any, markComplete: any ): Promise<IServiceLog[]>{
-//   export async function allAvailableFields( webURL: string, listTitle: string, ): Promise<IMinField[] | any> { //addTheseFieldsToState: any, 
-
-//     webURL = getFullUrlFromSlashSitesUrl( webURL );
-
-//     let allFields : IMinField[] = [];
-
-//     let thisWebInstance : IWeb = Web(webURL);
-//     allFields= await thisWebInstance.lists.getByTitle(listTitle).fields.orderBy("Title", true).get();
-//     allFields = allFields.filter( field => field.Hidden !== true );
-
-//     return allFields;
-
-//     // try {
-//     //   if ( listTitle != '' ) {
-//     //     thisWebInstance = Web(webURL);
-//     //     allFields= await thisWebInstance.lists.getByTitle(listTitle).fields.orderBy("Title", true).get();
-//     //     allFields = allFields.filter( field => field.Hidden !== true )
-
-//     //   }
-//     // } catch (e) {
-//     //     errMessage = getHelpfullErrorV2(e, false, true, [  , 'Failed', 'get allFields ~ 106' ].join('|') );
-
-//     // }
-
-//     // return { allFields: allFields, scope: scope, errMessage: errMessage } ;
-
-// }
-
-
-
-// export async function GetFieldPanel( fieldPanel: IFieldPanelProps ) {
-//   const fields = await allAvailableFields( fieldPanel.webURL, fieldPanel.listTitle, null );
-//   const fieldRows : any [] = [];
-
-//   fieldRows.push( 
-//     <tr>
-//       <th>Type</th>
-//       <th>Title</th>
-//       <th>InternalName</th>
-//       <th>Description</th>
-//     </tr>
-
-//   )
-//   fields.map( ( field: IMinField ) => {
-//     const row = <tr>
-//       <td>{field.TypeDisplayName}</td>
-//       <td>{field.Title}</td>
-//       <td>{field.InternalName}</td>
-//       <td>{field.Description}</td>
-//     </tr>;
-
-//     fieldRows.push( row );
-
-//   });
-
-//   return fieldRows;
-
-// }
