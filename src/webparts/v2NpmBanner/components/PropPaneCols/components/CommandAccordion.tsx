@@ -503,7 +503,7 @@ export function createFieldTableRows( heading: JSX.Element, firstColumnHeading: 
         // eslint-disable-next-line no-eval
         const ignore = icon.ignore && eval( icon.ignore ) === true ? true : false;
         return ignore === true ? <td> </td> : <td key={ icon.cmd }><Icon iconName={ field.commands[ icon.cmd ] === true ? icon.icon  : 'StatusCircleBlock2' } title={ icon.disabled === true ? `Disabled: ${icon.title}` : icon.title }
-        data-fieldname={ field.InternalName } data-role= { icon.cmd } onClick= { icon.disabled === true ? null : onCmdFieldClick } className={ styles.selectIcon } style={{ color: icon.disabled === true ? 'red' : '' }}/></td>;
+        data-fieldname={ field.InternalName } data-role= { icon.cmd } onClick= { icon.disabled === true ? null : onCmdFieldClick } className={ styles.commandIcon } style={{ color: icon.disabled === true ? 'red' : '' }}/></td>;
       }) }
     </tr> );
   });

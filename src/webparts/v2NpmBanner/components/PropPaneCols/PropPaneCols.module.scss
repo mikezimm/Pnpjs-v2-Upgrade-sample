@@ -34,12 +34,20 @@
     font-size: large;
     cursor: pointer;
     padding: 3px;
+
   }
 
+  .commandIcon {
+    background: #ffffff;
+    border-radius: 5px;
+  }
+  
   .typeFilterIcon {
     @extend .selectIcon;
-    margin-left: 20px;
+    margin-left: 15px;
     font-size: x-large;
+    background: white;
+    border-radius: 5px;
   }
 
   .button {
