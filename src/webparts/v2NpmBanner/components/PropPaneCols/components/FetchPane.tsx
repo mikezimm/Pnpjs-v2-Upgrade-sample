@@ -6,10 +6,33 @@ import { ILoadPerformance, IPerformanceOp } from '../../../fpsReferences';
 import styles from '../PropPaneCols.module.scss';
 
 import ReactJson from 'react-json-view';
+import { mainSiteLink } from './MainPane';
+import { IMinListProps } from './IPropPaneColsProps';
+// import { fetchFields } from './FetchFuncion';
+
+export function fetchErrorPanel( fetchPane: JSX.Element, errMessage: string, webURL: string, listTitle: string ) {
+
+  const siteLink = mainSiteLink( webURL );
+  const messages: string[] = errMessage.split('-- FULL ERROR MESSAGE:');
+
+  return ( <div className={ styles.propPaneCols } >
+              <h2>There was an error trying to fetch fields for this list:</h2>
+              <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }</h3>
+              { siteLink }
+              <p style={{ fontWeight: 'bold' }}>{messages[0]}</p>
+              <p style={{ fontWeight: 'bold', color: 'red' }}>{ messages[1] }</p>
+              { fetchPane }
+            </div>);
+
+}
+
 
 export interface IFetchPaneProps {
 
   onClickFetchFields: any;
+  // list: IMinListProps, 
+  // setState: any, 
+  // updatePerformance: any
   designMode: boolean;
   performance : ILoadPerformance;
   status: string;
@@ -18,7 +41,8 @@ export interface IFetchPaneProps {
 
 export function FetchPane ( props: IFetchPaneProps ): JSX.Element {
 
-  const { performance, onClickFetchFields, designMode, status } = props;
+  // const { list, setState, updatePerformance } = props;
+  const { performance, designMode, status, onClickFetchFields } = props;
   const fetch4: IPerformanceOp = performance.ops.fetch4 ;
 
   const fetchPerformance: JSX.Element = !fetch4 ? null : <div>
@@ -46,6 +70,9 @@ export function FetchPane ( props: IFetchPaneProps ): JSX.Element {
 
   </div>;
 
+  //This works when I pass in this._onClick...bind(this)
+  // const fetchButton: JSX.Element = <div className={ styles.button } onClick={ () => onClickFetchFields() } >Fetch</div>;
+  // This also works when I pass in this._onClick...bind(this)
   const fetchButton: JSX.Element = <div className={ styles.button } onClick={ onClickFetchFields } >Fetch</div>;
 
   return ( <div className={ [ styles.fetchPane, designMode === true ? styles.hideLeft : styles.showLeft ].join(' ') }>

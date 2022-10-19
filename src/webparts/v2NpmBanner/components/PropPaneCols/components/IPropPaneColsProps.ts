@@ -15,16 +15,28 @@ export interface IFieldPanelProps {
   disableDesign?: boolean; //Default is false
 }
 
-export interface IFieldPanelState {
+
+/**
+ *  IFieldPanelFetchState was split off to easily return back object from the fetch
+ */
+export interface IFieldPanelFetchState {
+
+  listFields: IMinField[];
+  filtered: IMinField[];
+  selected: IMinField[];
+
   status: string;
   fetched: boolean,
   searchText: string;
   searchProp: string;
-  listFields: IMinField[];
-  filtered: IMinField[];
-  selected: IMinField[];
-  listIdx: number;
+
   errMessage: string;
+}
+
+export interface IFieldPanelState extends IFieldPanelFetchState {
+
+  listIdx: number;
+
   designMode: boolean;
   fullDesign: boolean;
 }
