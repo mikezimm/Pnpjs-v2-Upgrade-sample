@@ -13,7 +13,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import styles from '../PropPaneCols.module.scss';
 
-import { IMinField } from "../PropPaneColsClass";
+import { IMinField } from "./IPropPaneColsProps";
 
 export function buildMainFieldTable( filtered: IMinField[], designMode: boolean, listFields: IMinField[], searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any ) : JSX.Element {
 

@@ -13,7 +13,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import styles from '../PropPaneCols.module.scss';
 
-import { IMinField } from "../PropPaneColsClass";
+import { IMinField } from "./IPropPaneColsProps";
 import { createThisViewField } from './ViewFields';
 import ReactJson from 'react-json-view';
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';

@@ -1,7 +1,7 @@
 
 import { IFPSCorePinMeReactComponentProps, IFPSCorePinMeReactComponentState, ILoadPerformance } from '../fpsReferences';
 import { IWebpartHistory } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistory/Interface';
-import { IMinListProps } from './PropPaneCols/PropPaneColsClass';
+import { IMinListProps } from './PropPaneCols/components/IPropPaneColsProps';
 
 export interface IV2NpmBannerProps  extends IFPSCorePinMeReactComponentProps {
 

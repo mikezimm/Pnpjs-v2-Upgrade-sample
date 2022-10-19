@@ -41,7 +41,7 @@ export interface IMainCallbacks {
   onSelectItem: any;
   onTypeClick: any;
 
-  // MainFieldTable: JSX.Element;
+  MainFieldTable: JSX.Element;
 
 }
 
@@ -49,7 +49,11 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
 
   const { selectFiltered, onFilterClick2, onSelectItem, } = callbacks;
   const { onTextSearch, onTypeClick, } = callbacks;
+  // const { onTextSearch,} = callbacks;
   const { toggleDesign } = callbacks;
+
+  // const onTextSearch: any = null;
+  // const toggleDesign: any = null;
 
   const { lists, disableDesign } = props;
   const { status, filtered, listFields, designMode, searchProp, searchText, fetched, listIdx } = state;
@@ -71,7 +75,7 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
   const DesignToggle: JSX.Element = fetched !== true ? null : <Toggle 
       label={ 'Design' } 
       inlineLabel={ true } 
-      // onChange={ () => this._toggleDesign() } 
+      // onChange={ () => toggleDesign() } 
       onChange={ toggleDesign } 
       checked={ designMode }
       disabled= { disableDesign }
@@ -117,7 +121,7 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
       { YesNoFilterIcon } { LookupFilterIcon } { UrlFilterIcon } { EditableFilterIcon }
     </div>;
 
-  const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, onSelectItem, onTypeClick );
+  // const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, onSelectItem, onTypeClick );
 
   const { listTitle, } = lists[ listIdx ] ;
   return (
@@ -126,7 +130,7 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
       { mainSiteLink( lists[ listIdx ].webURL ) }
       <div style={{paddingBottom: '15px', display: 'flex', alignContent: 'space-between' }}>{ FieldSearchBox  } {  FilterButtons }</div>
       <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Add</b> to add to Top of list, Click <b>Type</b> to filter on column type</div>
-      { MainFieldTable }
+      { callbacks.MainFieldTable }
   </div> )
 
 }

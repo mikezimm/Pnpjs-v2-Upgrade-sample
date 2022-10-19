@@ -27,6 +27,8 @@ import { getDirectionClicks, getKeeperClicks, selectAllofType } from './OnClickH
 
 import { IFieldPanelProps, IFieldPanelState, IMinField, IsEditable } from './components/IPropPaneColsProps';
 
+import { IMainCallbacks, MainPane } from './components/MainPane';
+
 export default class FieldPanel extends React.Component< IFieldPanelProps, IFieldPanelState > {
 
   private _performance: ILoadPerformance = null;
@@ -82,6 +84,17 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     };
   
     this._performance.ops.superOnInit = updatePerformanceEnd( this._performance.ops.superOnInit, true,666 );
+
+          // const Callbacks: IMainCallbacks = {
+            // const Callbacks: any = {
+            //   selectFiltered: this._selectFiltered,
+            //   onFilterClick2: this._onFilterClick2,
+            //   onTextSearch: this._onTextSearch.bind(this),
+            //   toggleDesign: this._toggleDesign(),
+            //   onSelectItem: this._onSelectItem,
+            //   onTypeClick: this._onTypeClick,  // onTypeClick( field, this ) 
+            // }
+
 
   }
 
@@ -192,7 +205,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     } else {
 
 
-      const { listTitle, } = lists[this.state.listIdx] ;
+      // const { listTitle, } = lists[this.state.listIdx] ;
 
       const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) );
 
@@ -201,6 +214,17 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       const DesignViews: JSX.Element = createViewBuilder( this.state.selected, null, this._toggleFullDesign.bind(this) );
 
       const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
+
+      const MainPanel: JSX.Element = MainPane( this.props, this.state, 
+        {
+            selectFiltered: this._selectFiltered,
+            onFilterClick2: this._onFilterClick2,
+            onTextSearch: this._onTextSearch.bind(this),
+            toggleDesign: this._toggleDesign.bind(this),
+            onSelectItem: this._onSelectItem,
+            onTypeClick: this._onTypeClick,  // onTypeClick( field, this ) 
+            MainFieldTable: MainFieldTable,
+          } );
 
       let designPane: JSX.Element = null;
       if ( designMode === true ) {
@@ -212,80 +236,83 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           </div>
       }
 
-      const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { width: 200 } };
+      // const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { width: 200 } };
 
-      const FieldSearchBox = <SearchBox
-        className={ '' }
-        styles={ searchBoxStyles }
-        placeholder="Search"
-        value={ this.state.searchText }
-        onSearch={ this._onTextSearch.bind(this) }
-        // onFocus={ () => console.log('this.state',  this.state) }
-        // onBlur={ () => console.log('onBlur called') }
-        onChange={ this._onTextSearch.bind(this) }
-        onClear={ this._onTextSearch.bind(this) }
-      />;
+      // const FieldSearchBox = <SearchBox
+      //   className={ '' }
+      //   styles={ searchBoxStyles }
+      //   placeholder="Search"
+      //   value={ this.state.searchText }
+      //   onSearch={ this._onTextSearch.bind(this) }
+      //   // onFocus={ () => console.log('this.state',  this.state) }
+      //   // onBlur={ () => console.log('onBlur called') }
+      //   onChange={ this._onTextSearch.bind(this) }
+      //   onClear={ this._onTextSearch.bind(this) }
+      // />;
 
-      const DesignToggle: JSX.Element = this.state.fetched !== true ? null : <Toggle 
-          label={ 'Design' } 
-          inlineLabel={ true } 
-          onChange={ () => this._toggleDesign() } 
-          checked={ designMode }
-          disabled= { disableDesign }
-          styles={ { root: { width: 160, float: 'right' } } }
-          />;
+      // const DesignToggle: JSX.Element = this.state.fetched !== true ? null : <Toggle 
+      //     label={ 'Design' } 
+      //     inlineLabel={ true } 
+      //     onChange={ () => this._toggleDesign() } 
+      //     checked={ designMode }
+      //     disabled= { disableDesign }
+      //     styles={ { root: { width: 160, float: 'right' } } }
+      //     />;
 
-      const SelectFiltered = <Icon iconName={ 'SkypeCircleArrow' } title={ 'Select All these columns'} style={{ color: this.state.searchText ? '' : 'lightgray' }}
-        data-fieldtype= '' onClick= { !fetched ? null : this._selectFiltered } className={ styles.typeFilterIcon } />;
+      // const SelectFiltered = <Icon iconName={ 'SkypeCircleArrow' } title={ 'Select All these columns'} style={{ color: this.state.searchText ? '' : 'lightgray' }}
+      //   data-fieldtype= '' onClick= { !fetched ? null : this._selectFiltered } className={ styles.typeFilterIcon } />;
 
-      const DateFilterIcon = <Icon iconName={ 'DateTime' } title={ 'Filter for DateTime columns'} style={{  }}
-        data-fieldtype= 'Date and Time' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const DateFilterIcon = <Icon iconName={ 'DateTime' } title={ 'Filter for DateTime columns'} style={{  }}
+      //   data-fieldtype= 'Date and Time' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const UserFilterIcon = <Icon iconName={ 'Contact' } title={ 'Filter for User columns'} style={{  }}
-        data-fieldtype= 'Person or Group' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const UserFilterIcon = <Icon iconName={ 'Contact' } title={ 'Filter for User columns'} style={{  }}
+      //   data-fieldtype= 'Person or Group' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const TextFilterIcon = <Icon iconName={ 'TextField' } title={ 'Filter for Text columns'} style={{  }}
-        data-fieldtype= 'Text' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const TextFilterIcon = <Icon iconName={ 'TextField' } title={ 'Filter for Text columns'} style={{  }}
+      //   data-fieldtype= 'Text' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const ChoiceFilterIcon = <Icon iconName={ 'Stack' } title={ 'Filter for Choice columns'} style={{  }}
-        data-fieldtype= 'Choice' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const ChoiceFilterIcon = <Icon iconName={ 'Stack' } title={ 'Filter for Choice columns'} style={{  }}
+      //   data-fieldtype= 'Choice' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const NumberFilterIcon = <Icon iconName={ 'Number' } title={ 'Filter for Number columns'} style={{  }}
-        data-fieldtype= 'Number' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const NumberFilterIcon = <Icon iconName={ 'Number' } title={ 'Filter for Number columns'} style={{  }}
+      //   data-fieldtype= 'Number' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const YesNoFilterIcon = <Icon iconName={ 'CheckboxComposite' } title={ 'Filter for Number columns'} style={{  }}
-        data-fieldtype= 'Yes/No' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const YesNoFilterIcon = <Icon iconName={ 'CheckboxComposite' } title={ 'Filter for Number columns'} style={{  }}
+      //   data-fieldtype= 'Yes/No' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const LookupFilterIcon = <Icon iconName={ 'Relationship' } title={ 'Filter for Lookup columns'} style={{  }}
-        data-fieldtype= 'Lookup' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const LookupFilterIcon = <Icon iconName={ 'Relationship' } title={ 'Filter for Lookup columns'} style={{  }}
+      //   data-fieldtype= 'Lookup' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const UrlFilterIcon = <Icon iconName={ 'Link' } title={ 'Filter for Link columns'} style={{  }}
-        data-fieldtype= 'Hyperlink or Picture' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const UrlFilterIcon = <Icon iconName={ 'Link' } title={ 'Filter for Link columns'} style={{  }}
+      //   data-fieldtype= 'Hyperlink or Picture' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const EditableFilterIcon = <Icon iconName={ 'Edit' } title={ 'All Editable'} style={{  }}
-        data-fieldtype= { IsEditable } onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const EditableFilterIcon = <Icon iconName={ 'Edit' } title={ 'All Editable'} style={{  }}
+      //   data-fieldtype= { IsEditable } onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const CalculatedFilterIcon = <Icon iconName={ 'Variable' } title={ 'Calculated columns'} style={{  }}
-        data-fieldtype= 'Calculated' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
+      // const CalculatedFilterIcon = <Icon iconName={ 'Variable' } title={ 'Calculated columns'} style={{  }}
+      //   data-fieldtype= 'Calculated' onClick= { !fetched ? null :this._onFilterClick2 } className={ styles.typeFilterIcon } />;
 
-      const FilterButtons = <div style={{display: 'flex', marginLeft: '50px' }}>
-        {SelectFiltered}{DateFilterIcon}{UserFilterIcon}{TextFilterIcon}
-        {ChoiceFilterIcon}{NumberFilterIcon}{CalculatedFilterIcon}
-        {YesNoFilterIcon}{LookupFilterIcon}{UrlFilterIcon}{EditableFilterIcon}
-        </div>;
+      // const FilterButtons = <div style={{display: 'flex', marginLeft: '50px' }}>
+      //   {SelectFiltered}{DateFilterIcon}{UserFilterIcon}{TextFilterIcon}
+      //   {ChoiceFilterIcon}{NumberFilterIcon}{CalculatedFilterIcon}
+      //   {YesNoFilterIcon}{LookupFilterIcon}{UrlFilterIcon}{EditableFilterIcon}
+      //   </div>;
 
       return (
 
         <div className={ [ styles.propPaneCols, styles.colsResults, this.state.fullDesign === true ? styles.fullDesign : null ].join( ' ' ) } >
           { fetchPane }
           { designPane }
-          <div className={ styles.rightSide }>
+          { MainPanel }
+
+
+          {/* <div className={ styles.rightSide }>
             <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }{DesignToggle}</h3>
             { siteLink }
             <div style={{paddingBottom: '15px', display: 'flex', alignContent: 'space-between' }}>{ FieldSearchBox }{ FilterButtons }</div>
             <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Add</b> to add to Top of list, Click <b>Type</b> to filter on column type</div>
             { MainFieldTable }
-          </div>
+          </div> */}
         </div>
       );
 

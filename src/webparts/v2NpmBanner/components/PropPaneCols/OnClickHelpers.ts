@@ -1,4 +1,4 @@
-import { IMinField } from "./PropPaneColsClass";
+import { IMinField } from "./components/IPropPaneColsProps";
 
 
 /**
