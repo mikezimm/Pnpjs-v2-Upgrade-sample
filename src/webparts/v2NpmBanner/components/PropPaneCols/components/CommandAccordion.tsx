@@ -13,7 +13,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import styles from '../PropPaneCols.module.scss';
 
-import { IMinField, IMinFieldCmds } from "../PropPaneColsClass";
+import { IMinField, IMinFieldCmds } from "./IPropPaneColsProps";
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
 
 import ReactJson from 'react-json-view';
@@ -426,7 +426,7 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
         else if ( action.cmd === 'set1Week' ) { updateObject[ IntName ] = '[Today+7]' ;  }
         else if ( action.cmd === 'set1Month' ) { updateObject[ IntName ] = '[Today+30]' ;  }
         else if ( action.cmd === 'clearDate' ) { updateObject[ IntName ] = null ;  }
-        else if ( action.cmd === 'replaceText' ) { updateObject[ IntName ] = `Hello world! It is [Today+3] and my name is [MyName] -  $MyName$ and I clicked '{str1}'` ;  }
+        else if ( action.cmd === 'replaceText' ) { updateObject[ IntName ] = `Hello world! It is [Today] and my name is [MyName] - and I clicked '{str1}'` ;  }
         else if ( action.cmd === 'promptText' ) { updateObject[ IntName ] = '{{stamp}}' ;  }
         else if ( action.cmd === 'appendNote' ) { updateObject[ IntName ] = '{{append rich stamp}}' ;  }
         else if ( action.cmd === 'replaceNote' ) { updateObject[ IntName ] = '{{rich stamp}}' ;  }
