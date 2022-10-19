@@ -41,7 +41,7 @@ export interface IMainCallbacks {
   onSelectItem: any;
   onTypeClick: any;
 
-  MainFieldTable: JSX.Element;
+  MainFieldTable?: JSX.Element;
 
 }
 
@@ -121,7 +121,7 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
       { YesNoFilterIcon } { LookupFilterIcon } { UrlFilterIcon } { EditableFilterIcon }
     </div>;
 
-  // const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, onSelectItem, onTypeClick );
+  const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, onSelectItem, onTypeClick );
 
   const { listTitle, } = lists[ listIdx ] ;
   return (
@@ -130,7 +130,8 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
       { mainSiteLink( lists[ listIdx ].webURL ) }
       <div style={{paddingBottom: '15px', display: 'flex', alignContent: 'space-between' }}>{ FieldSearchBox  } {  FilterButtons }</div>
       <div style={{paddingBottom: '15px', fontSize: 'smaller' }}>CTRL-click <b>Add</b> to add to Top of list, Click <b>Type</b> to filter on column type</div>
-      { callbacks.MainFieldTable }
+      {/* { callbacks.MainFieldTable } */}
+      { MainFieldTable }
   </div> )
 
 }

@@ -207,7 +207,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       // const { listTitle, } = lists[this.state.listIdx] ;
 
-      const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) );
+      // const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, this._onSelectItem, this._onTypeClick.bind(this) );
 
       const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign, this._toggleFullDesign.bind(this) ) ;
 
@@ -223,7 +223,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             toggleDesign: this._toggleDesign.bind(this),
             onSelectItem: this._onSelectItem,
             onTypeClick: this._onTypeClick,  // onTypeClick( field, this ) 
-            MainFieldTable: MainFieldTable,
+            // MainFieldTable: MainFieldTable,
           } );
 
       let designPane: JSX.Element = null;
