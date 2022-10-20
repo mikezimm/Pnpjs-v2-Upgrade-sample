@@ -1,5 +1,6 @@
 import * as React from 'react';
-
+import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
+import ReactJson from 'react-json-view';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getHighlightedText , getHelpfullErrorV2 } from '../../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -65,10 +66,11 @@ export function buildMainFieldTable( filtered: IMinField[], designMode: boolean,
 
     const row = <tr>
       <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
-      <td>{ getHighlightedText (field.Title , searchText ) }</td>
+      <td data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { showFieldPanel } >
+        { getHighlightedText (field.Title , searchText ) }</td>
 
       {/* showFieldPanel */}
-      <td title={field.InternalName} data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { showFieldPanel } >
+      <td title={field.InternalName} >
           { getHighlightedText (field.InternalName , searchText ) }</td>
 
       <td onClick={ () => onTypeClick( field, this ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
@@ -125,3 +127,22 @@ export function  getMainSelectedItems ( ev: React.MouseEvent<HTMLElement>, listF
 
   return newSelected;
 }
+
+export function getSelectedItemPanel( panelItem: IMinField, onClosePanel: any ) : JSX.Element {
+
+  const AttachPanel: JSX.Element = !panelItem ? null : <Panel
+          isOpen={ panelItem ? true : false }
+          type={ PanelType.medium }
+          onDismiss={ onClosePanel }
+          headerText={ `${ panelItem.Title } - ${ panelItem.InternalName }` }
+          closeButtonAriaLabel="Close"
+          isLightDismiss={ true }
+      >
+        <ReactJson src={ panelItem } name={ 'Field Details' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+          enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+    </Panel>;
+
+  return AttachPanel;
+
+}
+

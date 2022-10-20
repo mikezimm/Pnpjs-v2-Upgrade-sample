@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
+
 import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, } from "../../fpsReferences";
 
 import "@pnp/sp/webs";
@@ -7,7 +9,7 @@ import "@pnp/sp/clientside-pages/web";
 
 import styles from './PropPaneCols.module.scss';
 import { createCommandBuilder, updateSelectedCommands } from './components/CommandAccordion';
-import { getMainSelectedItems } from './components/MainFieldTable';
+import { getMainSelectedItems, getSelectedItemPanel } from './components/MainFieldTable';
 import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/ViewAccordion';
 import { getDirectionClicks, getKeeperClicks, ISelectedInfo, updateSelectedInfo, } from './OnClickHelpers';
@@ -113,7 +115,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   public render(): React.ReactElement<IFieldPanelProps> {
 
     const { lists, } = this.props;
-    const { status, designMode, errMessage, listIdx } = this.state;
+    const { status, designMode, errMessage, listIdx, panelItem } = this.state;
 
     const fetchPane : JSX.Element = FetchPane( { 
       onClickFetchFields: this._clickFetchFields.bind(this),
@@ -159,13 +161,14 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           </div>
       }
 
+
       return (
 
         <div className={ [ styles.propPaneCols, styles.colsResults, this.state.fullDesign === true ? styles.fullDesign : null ].join( ' ' ) } >
           { fetchPane }
           { designPane }
           { MainPanel }
-
+          { getSelectedItemPanel( panelItem, this._onClosePanel.bind(this) ) }
         </div>
       );
 
@@ -268,13 +271,17 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this.setState({ selected: newSelected });
   };
 
+  private _onClosePanel = () : void => {
+    this.setState({ panelItem: null });
+  }
+
   private _showFieldPanel = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const target: any = ev.target;
+    const currentTarget: any = ev.currentTarget;
   
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    const fieldName: string = target.dataset?.fieldname ? '' : target.dataset.fieldname;
-    const index: number = target.dataset?.fieldindex ? -1 : target.dataset.fieldindex;
+    const fieldName: string = currentTarget.dataset?.fieldname ? currentTarget.dataset.fieldname : '';
+    const index: number = currentTarget.dataset?.fieldindex ? currentTarget.dataset.fieldindex : -1 ;
     const panelItem: IMinField = this.state.listFields[ index ];
     console.log('Selected field: ', fieldName, panelItem );
     this.setState({ panelItem: panelItem });
