@@ -12,13 +12,15 @@ import { createCommandBuilder, updateSelectedCommands } from './components/Comma
 import { getMainSelectedItems, getSelectedItemPanel } from './components/MainFieldTable';
 import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/ViewAccordion';
-import { getDirectionClicks, getKeeperClicks, ISelectedInfo, updateSelectedInfo, } from './OnClickHelpers';
+import { getDirectionClicks, getKeeperClicks, ISelectedInfo, updateSelectedInfo, } from './components/OnClickHelpers';
 
 import { IFieldPanelFetchState, IFieldPanelProps, IFieldPanelState, IMinField, IMinListProps, } from './components/IPropPaneColsProps';
 
 import { MainPane } from './components/MainPane';
 import { fetchErrorPanel, FetchPane } from './components/FetchPane';
 import { fetchFields } from './components/FetchFuncion';
+
+import SelectedTableHook from './components/SelectedTableHook';
 
 require('./components/PropPaneCols.css');
 
@@ -144,6 +146,13 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, 
           this._onDirectionClick, this._showFieldPanel.bind(this) );
 
+      const selectedHook: JSX.Element = <SelectedTableHook 
+        onDirectionClick={ this._onDirectionClick }
+        onKeeperClick={ this._onKeeperClick }
+        selected={ this.state.selected }
+        showFieldPanel={ this._showFieldPanel.bind(this) }
+      />;
+
       const MainPanel: JSX.Element = MainPane( this.props, this.state, 
         {
             selectFiltered: this._selectFiltered,
@@ -161,6 +170,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             { DesignCommands }
             { DesignViews }
             <div style={{paddingBottom: '5px', fontSize: 'smaller' }}>CTRL-click <b>Arrows</b> to move to Top or Bottom</div>
+            { selectedHook }
             { SelectedTable }
           </div>
       }

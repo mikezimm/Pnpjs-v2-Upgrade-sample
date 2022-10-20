@@ -1,4 +1,4 @@
-import { IMinField } from "./components/IPropPaneColsProps";
+import { IMinField } from "./IPropPaneColsProps";
 
 
 export interface ISelectedInfo {
