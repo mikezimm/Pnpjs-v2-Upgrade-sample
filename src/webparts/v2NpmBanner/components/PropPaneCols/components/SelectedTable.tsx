@@ -16,7 +16,7 @@ import styles from '../PropPaneCols.module.scss';
 import { IMinField } from "./IPropPaneColsProps";
 
 
-export function buildSelectedFieldTable( selected: IMinField[], onKeeperClick: any, onDirectionClick: any ) : JSX.Element {
+export function buildSelectedFieldTable( selected: IMinField[], onKeeperClick: any, onDirectionClick: any , showFieldPanel: any) : JSX.Element {
 
   const tableRows: any[] = [];
   tableRows.push( 
@@ -52,7 +52,10 @@ export function buildSelectedFieldTable( selected: IMinField[], onKeeperClick: a
     const row = <tr>
       <td>{ isKeeper === true ? selectedIndex : ''}</td>
       <td>{KeeperIcon}</td>
-      <td style={{ fontWeight: isKeeper === true ? 700 : 400 }}title={ field.InternalName }>{ field.Title }</td>
+
+      <td style={{ fontWeight: isKeeper === true ? 700 : 400 }} title={ field.InternalName }
+        data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { () => showFieldPanel( field, this ) } >{ field.Title }</td>
+
       <td title={field.TypeAsString}>{ field.TypeAsString }</td>
       <td>{ UpIcon }</td>
       <td>{ DownIcon }</td>

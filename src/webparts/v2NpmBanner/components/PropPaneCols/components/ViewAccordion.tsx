@@ -49,9 +49,9 @@ export function createViewBuilder( selected: IMinField[], onToggleAccordion: any
     // toggleCallback = { onToggleAccordion }
   />;
 
-    return DesignViews;
+  return DesignViews;
 
-  }
+}
 
 
 

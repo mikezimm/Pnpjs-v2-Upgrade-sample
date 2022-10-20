@@ -134,28 +134,28 @@ export const AllUpdateActionCmds = AllUpdateActions.map( field => { return field
 
 export const AllActions = AllFieldActions.map( ( action: IIconTableRow ) => { return action.cmd } );
 
-export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null, expanded: boolean, onExpandRight: any = null ) : JSX.Element { //onCmdFieldClick: any
+export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null, expanded: boolean, showFieldPanel: any, onExpandRight: any = null ) : JSX.Element { //onCmdFieldClick: any
 
   const choiceFields: IMinField[] = selected.filter( field =>field.FieldTypeKind === FieldTypes.Choice );
-  const ChoiceTable = createFieldTableRows( null, 'Choice fields', choiceFields, ChoiceFieldActionIcons, onCmdFieldClick );
+  const ChoiceTable = createFieldTableRows( null, 'Choice fields', choiceFields, ChoiceFieldActionIcons, onCmdFieldClick, showFieldPanel );
 
   const userFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.User );
-  const UserTable = createFieldTableRows( null, 'User fields', userFields, UserFieldActionIcons, onCmdFieldClick );
+  const UserTable = createFieldTableRows( null, 'User fields', userFields, UserFieldActionIcons, onCmdFieldClick, showFieldPanel );
 
   const yesNoFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.Boolean );
-  const YesNoTable = createFieldTableRows( null, 'Boolean fields', yesNoFields, YesNoFieldActionIcons, onCmdFieldClick );
+  const YesNoTable = createFieldTableRows( null, 'Boolean fields', yesNoFields, YesNoFieldActionIcons, onCmdFieldClick, showFieldPanel );
 
   // filter out ReadOnlyFields because all functions apply to the field itself which can't be done.
   const dateFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.DateTime );
-  const DateTable = createFieldTableRows( null, 'Date fields', dateFields, DateFieldActionIcons, onCmdFieldClick );
+  const DateTable = createFieldTableRows( null, 'Date fields', dateFields, DateFieldActionIcons, onCmdFieldClick, showFieldPanel );
 
   // filter out ReadOnlyFields because all functions apply to the field itself which can't be done.
   const textFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.Text );
-  const TextTable = createFieldTableRows( null, 'Text fields', textFields, TextFieldActionIcons, onCmdFieldClick );
+  const TextTable = createFieldTableRows( null, 'Text fields', textFields, TextFieldActionIcons, onCmdFieldClick, showFieldPanel );
 
   // filter out ReadOnlyFields because all functions apply to the field itself which can't be done.
   const noteFields: IMinField[] = selected.filter( field => field.FieldTypeKind === FieldTypes.Note );
-  const NoteTable = createFieldTableRows( null, 'Note fields', noteFields, NoteFieldActionIcons, onCmdFieldClick );
+  const NoteTable = createFieldTableRows( null, 'Note fields', noteFields, NoteFieldActionIcons, onCmdFieldClick, showFieldPanel );
 
   const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{ float: 'right' }}
     data-fieldtype= 'Commands' onClick= { onExpandRight } className={ styles.typeFilterIcon } />;
@@ -491,14 +491,14 @@ export function bumpEval( showWhenEvalTrue: string , operator: '||' | '&&' , min
 
 }
 
-export function createFieldTableRows( heading: JSX.Element, firstColumnHeading: string, fields: IMinField[], FieldActionIcons: IIconTableRow[], onCmdFieldClick: any): JSX.Element {
+export function createFieldTableRows( heading: JSX.Element, firstColumnHeading: string, fields: IMinField[], FieldActionIcons: IIconTableRow[], onCmdFieldClick: any, showFieldPanel: any ): JSX.Element {
 
   const TableRows: JSX.Element[] = [];
   TableRows.push( <tr key='TableHeader'><th>{firstColumnHeading}</th> { FieldActionIcons.map( h => { return <th key={h.head} >{h.head}</th> } ) } </tr> );
 
   fields.map( ( field: IMinField | any ) => {
     TableRows.push( <tr key={ field.InternalName } >
-      <td title={field.InternalName}>{ field.Title }</td>
+      <td title={field.InternalName} onClick= { () => showFieldPanel( field, this )  } >{ field.Title }</td>
       { FieldActionIcons.map( icon => { 
         // eslint-disable-next-line no-eval
         const ignore = icon.ignore && eval( icon.ignore ) === true ? true : false;

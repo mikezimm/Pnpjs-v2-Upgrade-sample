@@ -6,7 +6,7 @@ import { getHighlightedText , getHelpfullErrorV2 } from '../../../fpsReferences'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
+import { IFieldInfo, FieldTypes, Field } from "@pnp/sp/presets/all";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 
@@ -66,7 +66,7 @@ export function buildMainFieldTable( filtered: IMinField[], designMode: boolean,
 
     const row = <tr>
       <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
-      <td data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { showFieldPanel } >
+      <td data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { () => showFieldPanel( field, this )  } >
         { getHighlightedText (field.Title , searchText ) }</td>
 
       {/* showFieldPanel */}
@@ -129,7 +129,7 @@ export function  getMainSelectedItems ( ev: React.MouseEvent<HTMLElement>, listF
 }
 
 export function getSelectedItemPanel( panelItem: IMinField, onClosePanel: any ) : JSX.Element {
-
+  const panelItemAny: any = panelItem;
   const AttachPanel: JSX.Element = !panelItem ? null : <Panel
           isOpen={ panelItem ? true : false }
           type={ PanelType.medium }
@@ -137,7 +137,13 @@ export function getSelectedItemPanel( panelItem: IMinField, onClosePanel: any ) 
           headerText={ `${ panelItem.Title } - ${ panelItem.InternalName }` }
           closeButtonAriaLabel="Close"
           isLightDismiss={ true }
-      >
+      > 
+        <ul>
+          { ['Description', 'TypeAsString', 'Group', 'Required', 'EnforceUniqueValues', 'FillInChoice', 'Choices', 'Formula', 'ReadOnlyField', 'Indexed', 'IndexStatus',  ].map( prop => {
+            return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null : 
+              <li key={prop}>{prop} - { JSON.stringify( panelItemAny [prop] ) }</li>;
+          }) }
+        </ul>
         <ReactJson src={ panelItem } name={ 'Field Details' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
           enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
     </Panel>;

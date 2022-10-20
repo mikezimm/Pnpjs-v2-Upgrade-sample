@@ -134,11 +134,13 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     } else {
 
-      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign, this._toggleFullDesign.bind(this) ) ;
+      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign, 
+          this._showFieldPanel.bind(this), this._toggleFullDesign.bind(this) ) ;
 
       const DesignViews: JSX.Element = createViewBuilder( this.state.selected, null, this._toggleFullDesign.bind(this) );
 
-      const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, this._onDirectionClick );
+      const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, 
+          this._onDirectionClick, this._showFieldPanel.bind(this) );
 
       const MainPanel: JSX.Element = MainPane( this.props, this.state, 
         {
@@ -148,7 +150,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             toggleDesign: this._toggleDesign.bind(this),
             onSelectItem: this._onSelectItem,
             onTypeClick: this._onTypeClick.bind(this),
-            showFieldPanel: this._showFieldPanel,
+            showFieldPanel: this._showFieldPanel.bind(this),
           } );
 
       let designPane: JSX.Element = null;
@@ -275,16 +277,18 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this.setState({ panelItem: null });
   }
 
-  private _showFieldPanel = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const currentTarget: any = ev.currentTarget;
+  //field: IMinField
+  // private _showFieldPanel = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+  private _showFieldPanel = ( item: IMinField  ): void => {
+    // const currentTarget: any = ev.currentTarget;
   
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    const fieldName: string = currentTarget.dataset?.fieldname ? currentTarget.dataset.fieldname : '';
-    const index: number = currentTarget.dataset?.fieldindex ? currentTarget.dataset.fieldindex : -1 ;
-    const panelItem: IMinField = this.state.listFields[ index ];
-    console.log('Selected field: ', fieldName, panelItem );
-    this.setState({ panelItem: panelItem });
+    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    // const fieldName: string = currentTarget.dataset?.fieldname ? currentTarget.dataset.fieldname : '';
+    // const index: number = currentTarget.dataset?.fieldindex ? currentTarget.dataset.fieldindex : -1 ;
+    // const panelItem: IMinField = this.state.listFields[ index ];
+    // console.log('Selected field: ', fieldName, panelItem );
+    this.setState({ panelItem: item });
   }
 
 }

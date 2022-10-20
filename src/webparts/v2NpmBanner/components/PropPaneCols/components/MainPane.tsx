@@ -2,9 +2,9 @@
 import * as React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
+// import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
+// import { IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 import {  SearchBox, ISearchBoxStyles, } from 'office-ui-fabric-react/lib/SearchBox';
@@ -13,13 +13,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import styles from '../PropPaneCols.module.scss';
 
-import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
-
-import ReactJson from 'react-json-view';
-import { filter } from 'lodash';
-import { IActionProps } from '@pnp/spfx-controls-react';
-
-import { IFieldPanelProps, IFieldPanelState, IMinField, IsEditable } from './IPropPaneColsProps';
+import { IFieldPanelProps, IFieldPanelState, IsEditable } from './IPropPaneColsProps';
 
 import { buildMainFieldTable } from './MainFieldTable';
 
