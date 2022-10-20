@@ -11,7 +11,7 @@ import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import styles from '../PropPaneCols.module.scss';
+// import styles from '../PropPaneCols.module.scss';
 
 import { IMinField, IMinFieldCmds } from "./IPropPaneColsProps";
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
@@ -158,7 +158,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
   const NoteTable = createFieldTableRows( null, 'Note fields', noteFields, NoteFieldActionIcons, onCmdFieldClick, showFieldPanel );
 
   const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{ float: 'right' }}
-    data-fieldtype= 'Commands' onClick= { onExpandRight } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Commands' onClick= { onExpandRight } className={ 'type-filter-icon' } />;
 
 
   const QuickCommands: IQuickCommands = buildQuickCommands( selected ) ;
@@ -169,8 +169,8 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
         enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
   </div>;
 
-  const commandElement: JSX.Element = <div className={ styles.commandTables }>
-    <div className={ styles.leftCommand}>
+  const commandElement: JSX.Element = <div className={ 'command-tables' }>
+    <div className={ 'left-command' }>
       { expandRightIcon }
       { ChoiceTable }
       { YesNoTable }
@@ -179,7 +179,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
       { TextTable }
       { NoteTable }
     </div>
-    <div className={ expanded === true ? styles.rightCommand : styles.collapseCommand }>
+    <div className={ expanded === true ? 'right-command' : 'collapse-command' }>
       { RightSide }
     </div>
   </div>;
@@ -503,7 +503,7 @@ export function createFieldTableRows( heading: JSX.Element, firstColumnHeading: 
         // eslint-disable-next-line no-eval
         const ignore = icon.ignore && eval( icon.ignore ) === true ? true : false;
         return ignore === true ? <td> </td> : <td key={ icon.cmd }><Icon iconName={ field.commands[ icon.cmd ] === true ? icon.icon  : 'StatusCircleBlock2' } title={ icon.disabled === true ? `Disabled: ${icon.title}` : icon.title }
-        data-fieldname={ field.InternalName } data-role= { icon.cmd } onClick= { icon.disabled === true ? null : onCmdFieldClick } className={ styles.commandIcon } style={{ color: icon.disabled === true ? 'red' : '' }}/></td>;
+        data-fieldname={ field.InternalName } data-role= { icon.cmd } onClick= { icon.disabled === true ? null : onCmdFieldClick } className={ 'command-icon' } style={{ color: icon.disabled === true ? 'red' : '' }}/></td>;
       }) }
     </tr> );
   });

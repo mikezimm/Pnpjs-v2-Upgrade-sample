@@ -12,7 +12,7 @@ import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import styles from '../PropPaneCols.module.scss';
+// import styles from '../PropPaneCols.module.scss';
 
 import { IMinField } from "./IPropPaneColsProps";
 
@@ -55,13 +55,13 @@ export function buildMainFieldTable( filtered: IMinField[], designMode: boolean,
 
     } else { detailValue = field.Description; }
 
-    const SelectIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } onClick= { onSelectItem } 
+    const SelectIcon = <Icon className={ 'select-icon' } data-fieldname={ field.InternalName } onClick= { onSelectItem } 
       iconName={ field.isSelected === true ? 'SkypeCircleCheck' : 'StatusCircleRing' }/>;
 
 
       // const fieldName: string = target.dataset?.fieldname ? '' : target.dataset.fieldname;
       // const index: number = target.dataset?.fieldindex ? -1 : target.dataset.fieldindex;
-      // const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }  
+      // const KeeperIcon = <Icon className={ 'selectIcon } data-fieldname={ field.InternalName }  
       //   onClick= { onKeeperClick } iconName={ isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
 
     const row = <tr>
@@ -80,7 +80,7 @@ export function buildMainFieldTable( filtered: IMinField[], designMode: boolean,
 
   });
 
-  const MainFieldTable: JSX.Element = <table className={ styles.fieldTable }>
+  const MainFieldTable: JSX.Element = <table className={ 'field-table' }>
         { tableRows }
       </table>;
 

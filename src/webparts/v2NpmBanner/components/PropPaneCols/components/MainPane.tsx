@@ -11,7 +11,7 @@ import {  SearchBox, ISearchBoxStyles, } from 'office-ui-fabric-react/lib/Search
 
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import styles from '../PropPaneCols.module.scss';
+// import styles from '../PropPaneCols.module.scss';
 
 import { IFieldPanelProps, IFieldPanelState, IsEditable } from './IPropPaneColsProps';
 
@@ -78,37 +78,37 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
     />;
 
   const SelectFiltered = <Icon iconName={ 'SkypeCircleArrow' } title={ 'Select All these columns'} style={{ color: searchText ? '' : 'lightgray' }}
-    data-fieldtype= '' onClick= { !fetched ? null : selectFiltered } className={ styles.typeFilterIcon } />;
+    data-fieldtype= '' onClick= { !fetched ? null : selectFiltered } className={ 'type-filter-icon' } />;
 
   const DateFilterIcon = <Icon iconName={ 'DateTime' } title={ 'Filter for DateTime columns'} style={{  }}
-    data-fieldtype= 'Date and Time' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Date and Time' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const UserFilterIcon = <Icon iconName={ 'Contact' } title={ 'Filter for User columns'} style={{  }}
-    data-fieldtype= 'Person or Group' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Person or Group' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const TextFilterIcon = <Icon iconName={ 'TextField' } title={ 'Filter for Text columns'} style={{  }}
-    data-fieldtype= 'Text' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Text' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const ChoiceFilterIcon = <Icon iconName={ 'Stack' } title={ 'Filter for Choice columns'} style={{  }}
-    data-fieldtype= 'Choice' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Choice' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const NumberFilterIcon = <Icon iconName={ 'Number' } title={ 'Filter for Number columns'} style={{  }}
-    data-fieldtype= 'Number' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Number' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const YesNoFilterIcon = <Icon iconName={ 'CheckboxComposite' } title={ 'Filter for Number columns'} style={{  }}
-    data-fieldtype= 'Yes/No' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Yes/No' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const LookupFilterIcon = <Icon iconName={ 'Relationship' } title={ 'Filter for Lookup columns'} style={{  }}
-    data-fieldtype= 'Lookup' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Lookup' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const UrlFilterIcon = <Icon iconName={ 'Link' } title={ 'Filter for Link columns'} style={{  }}
-    data-fieldtype= 'Hyperlink or Picture' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Hyperlink or Picture' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const EditableFilterIcon = <Icon iconName={ 'Edit' } title={ 'All Editable'} style={{  }}
-    data-fieldtype= { IsEditable } onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= { IsEditable } onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const CalculatedFilterIcon = <Icon iconName={ 'Variable' } title={ 'Calculated columns'} style={{  }}
-    data-fieldtype= 'Calculated' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Calculated' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const FilterButtons = <div style={{display: 'flex', marginLeft: '50px' }}>
       { SelectFiltered } { DateFilterIcon } { UserFilterIcon } { TextFilterIcon }
@@ -120,7 +120,7 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
 
   const { listTitle, } = lists[ listIdx ] ;
   return (
-    <div className={ styles.rightSide }>
+    <div className={ 'right-side' }>
       <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'`  } { DesignToggle}</h3>
       { mainSiteLink( lists[ listIdx ].webURL ) }
       <div style={{paddingBottom: '15px', display: 'flex', alignContent: 'space-between' }}>{ FieldSearchBox  } {  FilterButtons }</div>

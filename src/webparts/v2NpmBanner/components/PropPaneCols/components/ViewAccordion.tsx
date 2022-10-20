@@ -11,7 +11,7 @@ import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import styles from '../PropPaneCols.module.scss';
+// import styles from '../PropPaneCols.module.scss';
 
 import { IMinField } from "./IPropPaneColsProps";
 import { createThisViewField } from './ViewFields';
@@ -29,7 +29,7 @@ export function createViewBuilder( selected: IMinField[], onToggleAccordion: any
   });
 
   const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{  }}
-    data-fieldtype= 'Commands' onClick= { onExpandRight } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Commands' onClick= { onExpandRight } className={ 'type-filter-icon' } />;
 
   const viewElement: JSX.Element = <div>
     { expandRightIcon }

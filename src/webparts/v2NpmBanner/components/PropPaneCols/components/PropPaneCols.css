@@ -1,0 +1,262 @@
+/* @import '~office-ui-fabric-react/dist/sass/References.scss'; */
+@import '~office-ui-fabric-react/dist/css/fabric.min.css';
+
+.prop-pane-cols {
+  padding:20px;
+  background: #ececec;
+
+  display: grid;
+  grid-gap: 3em;
+
+  min-height: 50vh;
+
+}
+  .prop-pane-cols .fetch-pane, .design-pane{
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .prop-pane-cols .right-side {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .prop-pane-cols .show-left {
+    transition:all 0.4s ease;
+    opacity: 1;
+  }
+
+  .prop-pane-cols .hide-left {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
+
+  .prop-pane-cols .select-icon {
+    font-size: large;
+    cursor: pointer;
+    padding: 3px;
+
+  }
+
+  .prop-pane-cols .command-icon {
+
+    background: #ffffff;
+    border-radius: 5px;
+
+    /* @extend .selectIcon; */
+    font-size: large;
+    cursor: pointer;
+    padding: 3px;
+
+  }
+  
+  .prop-pane-cols .type-filter-icon {
+
+    margin-left: 15px;
+    font-size: x-large;
+    background: white;
+    border-radius: 5px;
+
+    /* @extend .selectIcon; */
+    cursor: pointer;
+    padding: 6px 5px 5px;
+  
+
+  }
+
+  .prop-pane-cols .button {
+    padding: 10px;
+
+    min-width: 80px;
+  
+    background-color: lightgray;
+    border-color: lightgray;
+  
+    -webkit-font-smoothing: antialiased;
+    /* font-size: $ms-font-size-m; */
+    font-size: 16px;
+
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+
+    margin: 0 4px;
+    font-weight: 600;
+    /* font-size: $ms-font-size-xl; */
+    font-size: 24px;
+
+  }
+
+  .prop-pane-cols .button.is-selected {
+    /* background-color: $ms-color-themePrimary;
+    border-color: $ms-color-themePrimary;
+    color: $ms-color-white; */
+    background-color: #005495;
+    border-color: #005495;
+    color: white;
+  }
+
+  .prop-pane-cols .performance-row {
+    display: flex;
+  }
+    .prop-pane-cols .performance-row  div:nth-child(1) {
+      min-width: 70px;
+    }
+
+    .prop-pane-cols .performance-row  div:nth-child(2) {
+      color: 'darkblue';
+      font-weight: 600;
+    }
+
+
+.full-design {
+  justify-content: start;
+  grid-gap: 0;
+
+}
+  .full-design .right-side {
+    display: none;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
+  .full-design .design-pane{
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+
+.selected-table th {
+    width: 50px;
+  }
+
+  .selected-table td:nth-child(1) { 
+    width: 20px;
+    font-size: smaller;
+    font-weight: 600;
+    float: right;
+  }
+
+  .selected-table td:nth-child(3) { 
+    width: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+
+  .selected-table th:nth-child(3) { 
+    min-width: 170px;
+    white-space: nowrap;
+  }
+  
+  .selected-table th:nth-child(4) { 
+    min-width: 75px;
+    white-space: nowrap;
+  }
+
+
+
+  .cols-results table {
+    border-spacing: 5px;
+
+  }
+
+  .cols-results table th {
+      text-align: start;
+      margin-bottom: 15px;
+      text-decoration: underline;
+      font-size: larger;
+    }
+
+    .cols-results table tr {
+      margin-bottom: 15px;
+    }
+
+
+
+
+  .field-table th {
+      width: 200px;
+    }
+
+    .field-table th:nth-child(2) { 
+      color: darkred;
+    }
+
+    .field-table th:nth-child(3) { 
+      color: darkgreen;
+
+    }
+
+    .field-table td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 20px;
+    }
+
+    .field-table td:nth-child(1) { 
+      max-width: 25px;
+    }
+    .field-table td:nth-child(2) { 
+      max-width: 150px;
+      cursor: pointer;
+    }
+    .field-table td:nth-child(3) { 
+      display: list-item;
+      max-width: 150px;
+    }
+    .field-table td:nth-child(4) { 
+      max-width: 130px;
+      cursor: pointer;
+    }
+    .field-table td:nth-child(5) { 
+      max-width: 150px;
+    }
+
+
+
+.command-tables {
+
+  display: grid;
+  grid-gap: 3em;
+  font-size: small;
+}
+
+.command-tables .left-command{
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .command-tables .right-command {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .command-tables .collapse-command {
+    grid-column: 1;
+    grid-row: 1;
+    display: none;
+    overflow: hidden;
+  }
+
+  .command-tables th {
+    width: 50px;
+  }
+
+  .command-tables th:nth-child(1) { 
+    min-width: 150px;
+    white-space: nowrap;
+    font-size: larger;
+  }
+
+  .command-tables td:nth-child(1) { 
+    min-width: 150px;
+    white-space: nowrap;
+    font-size: larger;
+    cursor: pointer;
+  }

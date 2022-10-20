@@ -11,7 +11,7 @@ import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import styles from '../PropPaneCols.module.scss';
+// import styles from '../PropPaneCols.module.scss';
 
 import { IMinField } from "./IPropPaneColsProps";
 
@@ -38,14 +38,14 @@ export function buildSelectedFieldTable( selected: IMinField[], onKeeperClick: a
     const isKeeper: boolean = field.isKeeper;
     if ( isKeeper === true ) selectedIndex ++;
 
-    const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }  
+    const KeeperIcon = <Icon className={ 'select-icon' } data-fieldname={ field.InternalName }  
       onClick= { onKeeperClick } iconName={ isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
 
-    const UpIcon = <Icon className={ styles.commandIcon } data-fieldname={ field.InternalName } data-direction={ 'up' } 
+    const UpIcon = <Icon className={ 'command-icon' } data-fieldname={ field.InternalName } data-direction={ 'up' } 
       style={{ color: disableUp === true ? 'dimgray' : '' }}
       onClick= { disableUp !== true ? onDirectionClick : null } iconName={ disableUp === false ? 'Up' : 'StatusCircleBlock2' }/>;
 
-    const DownIcon = <Icon className={ styles.commandIcon } data-fieldname={ field.InternalName } data-direction={ 'down' } 
+    const DownIcon = <Icon className={ 'command-icon' } data-fieldname={ field.InternalName } data-direction={ 'down' } 
       style={{ color: disableDown === true ? 'dimgray' : '' }}
       onClick= { disableDown !== true ? onDirectionClick : null } iconName={ disableDown === false ? 'Down': 'StatusCircleBlock2'  }/>;
 
@@ -64,7 +64,7 @@ export function buildSelectedFieldTable( selected: IMinField[], onKeeperClick: a
 
   });
 
-  const SelectedTable: JSX.Element = <table className={ styles.selectedTable}>
+  const SelectedTable: JSX.Element = <table className={ 'selected-table'}>
         { tableRows }
       </table>;
 

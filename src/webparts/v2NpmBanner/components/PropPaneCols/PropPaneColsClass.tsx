@@ -20,6 +20,8 @@ import { MainPane } from './components/MainPane';
 import { fetchErrorPanel, FetchPane } from './components/FetchPane';
 import { fetchFields } from './components/FetchFuncion';
 
+require('./components/PropPaneCols.css');
+
 export default class FieldPanel extends React.Component< IFieldPanelProps, IFieldPanelState > {
 
   private _performance: ILoadPerformance = null;
@@ -128,7 +130,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       fetchErrorPanel( fetchPane, errMessage, lists[ listIdx ].webURL, lists[ listIdx ].listTitle );
 
     } else if ( lists.length === 0 ) {
-      return ( <div className={ styles.propPaneCols } >
+      return ( <div className={ 'prop-pane-cols' } >
                   <h3>There are no lists to show columns for.</h3>
               </div>);
 
@@ -155,7 +157,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       let designPane: JSX.Element = null;
       if ( designMode === true ) {
-        designPane = <div className={ styles.designPane }>
+        designPane = <div className={ 'design-pane' }>
             { DesignCommands }
             { DesignViews }
             <div style={{paddingBottom: '5px', fontSize: 'smaller' }}>CTRL-click <b>Arrows</b> to move to Top or Bottom</div>
@@ -166,7 +168,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       return (
 
-        <div className={ [ styles.propPaneCols, styles.colsResults, this.state.fullDesign === true ? styles.fullDesign : null ].join( ' ' ) } >
+        <div className={ [ 'prop-pane-cols', 'cols-results', this.state.fullDesign === true ? 'full-design' : null ].join( ' ' ) } >
           { fetchPane }
           { designPane }
           { MainPanel }
