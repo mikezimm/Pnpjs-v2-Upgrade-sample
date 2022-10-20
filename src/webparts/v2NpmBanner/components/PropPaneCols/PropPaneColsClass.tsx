@@ -70,6 +70,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       errMessage: '',
       designMode: false,
       fullDesign: false,
+      panelItem: null,
     };
   
     this._performance.ops.superOnInit = updatePerformanceEnd( this._performance.ops.superOnInit, true,666 );
@@ -145,6 +146,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             toggleDesign: this._toggleDesign.bind(this),
             onSelectItem: this._onSelectItem,
             onTypeClick: this._onTypeClick.bind(this),
+            showFieldPanel: this._showFieldPanel,
           } );
 
       let designPane: JSX.Element = null;
@@ -163,6 +165,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           { fetchPane }
           { designPane }
           { MainPanel }
+
         </div>
       );
 
@@ -264,5 +267,17 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     const newSelected: IMinField[] = getDirectionClicks( ev, this.state.selected );
     this.setState({ selected: newSelected });
   };
+
+  private _showFieldPanel = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+    const target: any = ev.target;
+  
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+    const fieldName: string = target.dataset?.fieldname ? '' : target.dataset.fieldname;
+    const index: number = target.dataset?.fieldindex ? -1 : target.dataset.fieldindex;
+    const panelItem: IMinField = this.state.listFields[ index ];
+    console.log('Selected field: ', fieldName, panelItem );
+    this.setState({ panelItem: panelItem });
+  }
 
 }

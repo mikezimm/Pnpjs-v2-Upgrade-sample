@@ -28,13 +28,12 @@ export function createViewBuilder( selected: IMinField[], onToggleAccordion: any
     }
   });
 
-  
   const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{  }}
     data-fieldtype= 'Commands' onClick= { onExpandRight } className={ styles.typeFilterIcon } />;
 
   const viewElement: JSX.Element = <div>
     { expandRightIcon }
-    <ReactJson src={ viewFields } name={ 'viewFields' } collapsed={ true } displayDataTypes={ false } displayObjectSize={ false } 
+    <ReactJson src={ viewFields } name={ 'viewFields' } collapsed={ 1 } displayDataTypes={ false } displayObjectSize={ false } 
         enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
   </div>;
 

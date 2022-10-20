@@ -39,6 +39,8 @@ export interface IFieldPanelState extends IFieldPanelFetchState {
 
   designMode: boolean;
   fullDesign: boolean;
+
+  panelItem: IMinField;
 }
 
 export const IsEditable: string = 'IsEditable';

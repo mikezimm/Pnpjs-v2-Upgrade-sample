@@ -15,7 +15,7 @@ import styles from '../PropPaneCols.module.scss';
 
 import { IMinField } from "./IPropPaneColsProps";
 
-export function buildMainFieldTable( filtered: IMinField[], designMode: boolean, listFields: IMinField[], searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any ) : JSX.Element {
+export function buildMainFieldTable( filtered: IMinField[], designMode: boolean, listFields: IMinField[], searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any, showFieldPanel: any ) : JSX.Element {
 
   let heading: string = '';
 
@@ -57,10 +57,20 @@ export function buildMainFieldTable( filtered: IMinField[], designMode: boolean,
     const SelectIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } onClick= { onSelectItem } 
       iconName={ field.isSelected === true ? 'SkypeCircleCheck' : 'StatusCircleRing' }/>;
 
+
+      // const fieldName: string = target.dataset?.fieldname ? '' : target.dataset.fieldname;
+      // const index: number = target.dataset?.fieldindex ? -1 : target.dataset.fieldindex;
+      // const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }  
+      //   onClick= { onKeeperClick } iconName={ isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
+
     const row = <tr>
       <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
       <td>{ getHighlightedText (field.Title , searchText ) }</td>
-      <td title={field.InternalName}>{ getHighlightedText (field.InternalName , searchText ) }</td>
+
+      {/* showFieldPanel */}
+      <td title={field.InternalName} data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { showFieldPanel } >
+          { getHighlightedText (field.InternalName , searchText ) }</td>
+
       <td onClick={ () => onTypeClick( field, this ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
       <td title={detailValue}>{ getHighlightedText (detailValue , searchText ) }</td>
     </tr>;
