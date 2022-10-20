@@ -1,7 +1,7 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
 .propPaneCols {
-  padding:20px 50px;
+  padding:20px;
   background: #ececec;
 
   display: grid;
@@ -34,11 +34,21 @@
     font-size: large;
     cursor: pointer;
     padding: 3px;
+
   }
 
+  .commandIcon {
+    @extend .selectIcon;
+    background: #ffffff;
+    border-radius: 5px;
+  }
+  
   .typeFilterIcon {
     @extend .selectIcon;
-    margin-left: 20px;
+    margin-left: 15px;
+    font-size: x-large;
+    background: white;
+    border-radius: 5px;
   }
 
   .button {
@@ -120,12 +130,27 @@
     width: 50px;
   }
 
-  th:nth-child(2) { //This is the fetchLabel
-    min-width: 150px;
+  td:nth-child(1) { //This is the fetchLabel
+    width: 20px;
+    font-size: smaller;
+    font-weight: 600;
+    float: right;
+  }
+
+  td:nth-child(3) { //This is the fetchLabel
+    width: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+
+  th:nth-child(3) { //This is the fetchLabel
+    min-width: 170px;
     white-space: nowrap;
   }
   
-  th:nth-child(3) { //This is the fetchLabel
+  th:nth-child(4) { //This is the fetchLabel
     min-width: 75px;
     white-space: nowrap;
   }
@@ -178,6 +203,7 @@
     }
     td:nth-child(2) { //This is the fetchProp
       max-width: 150px;
+      cursor: pointer;
     }
     td:nth-child(3) { //This is the fetchProp
       display: list-item;
@@ -235,5 +261,6 @@
     min-width: 150px;
     white-space: nowrap;
     font-size: larger;
+    cursor: pointer;
   }
 }

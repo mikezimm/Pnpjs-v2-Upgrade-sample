@@ -13,14 +13,15 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import styles from '../PropPaneCols.module.scss';
 
-import { IMinField } from "../PropPaneColsClass";
+import { IMinField } from "./IPropPaneColsProps";
 
 
-export function buildSelectedFieldTable( selected: IMinField[], onKeeperClick: any, onDirectionClick: any ) : JSX.Element {
+export function buildSelectedFieldTable( selected: IMinField[], onKeeperClick: any, onDirectionClick: any , showFieldPanel: any) : JSX.Element {
 
   const tableRows: any[] = [];
   tableRows.push( 
     <tr>
+      <th/>
       <th style={{ }}>Keep</th>
       <th>Title</th>
       <th>Type</th>
@@ -29,23 +30,32 @@ export function buildSelectedFieldTable( selected: IMinField[], onKeeperClick: a
     </tr>
   );
 
+  let selectedIndex: number = -1;
   selected.map( ( field: IMinField, idx: number ) => {
 
     const disableUp : boolean = idx === 0 ? true : false;
     const disableDown : boolean = idx === selected.length -1 ? true : false;
+    const isKeeper: boolean = field.isKeeper;
+    if ( isKeeper === true ) selectedIndex ++;
 
-    const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }
-      onClick= { onKeeperClick } iconName={ field.isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
+    const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }  
+      onClick= { onKeeperClick } iconName={ isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
 
-    const UpIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'up' } style={{ color: disableUp === true ? 'dimgray' : '' }}
+    const UpIcon = <Icon className={ styles.commandIcon } data-fieldname={ field.InternalName } data-direction={ 'up' } 
+      style={{ color: disableUp === true ? 'dimgray' : '' }}
       onClick= { disableUp !== true ? onDirectionClick : null } iconName={ disableUp === false ? 'Up' : 'StatusCircleBlock2' }/>;
 
-    const DownIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } data-direction={ 'down' } style={{ color: disableDown === true ? 'dimgray' : '' }}
+    const DownIcon = <Icon className={ styles.commandIcon } data-fieldname={ field.InternalName } data-direction={ 'down' } 
+      style={{ color: disableDown === true ? 'dimgray' : '' }}
       onClick= { disableDown !== true ? onDirectionClick : null } iconName={ disableDown === false ? 'Down': 'StatusCircleBlock2'  }/>;
 
     const row = <tr>
+      <td>{ isKeeper === true ? selectedIndex : ''}</td>
       <td>{KeeperIcon}</td>
-      <td title={ field.InternalName }>{ field.Title }</td>
+
+      <td style={{ fontWeight: isKeeper === true ? 700 : 400 }} title={ field.InternalName }
+        data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { () => showFieldPanel( field, this ) } >{ field.Title }</td>
+
       <td title={field.TypeAsString}>{ field.TypeAsString }</td>
       <td>{ UpIcon }</td>
       <td>{ DownIcon }</td>

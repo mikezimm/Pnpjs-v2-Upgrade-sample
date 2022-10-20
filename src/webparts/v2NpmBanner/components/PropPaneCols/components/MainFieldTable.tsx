@@ -1,11 +1,12 @@
 import * as React from 'react';
-
+import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
+import ReactJson from 'react-json-view';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getHighlightedText , getHelpfullErrorV2 } from '../../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
+import { IFieldInfo, FieldTypes, Field } from "@pnp/sp/presets/all";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 
@@ -13,9 +14,9 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import styles from '../PropPaneCols.module.scss';
 
-import { IMinField } from "../PropPaneColsClass";
+import { IMinField } from "./IPropPaneColsProps";
 
-export function buildMainFieldTable( filtered: IMinField[], designMode: boolean, listFields: IMinField[], searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any ) : JSX.Element {
+export function buildMainFieldTable( filtered: IMinField[], designMode: boolean, listFields: IMinField[], searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any, showFieldPanel: any ) : JSX.Element {
 
   let heading: string = '';
 
@@ -57,10 +58,21 @@ export function buildMainFieldTable( filtered: IMinField[], designMode: boolean,
     const SelectIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName } onClick= { onSelectItem } 
       iconName={ field.isSelected === true ? 'SkypeCircleCheck' : 'StatusCircleRing' }/>;
 
+
+      // const fieldName: string = target.dataset?.fieldname ? '' : target.dataset.fieldname;
+      // const index: number = target.dataset?.fieldindex ? -1 : target.dataset.fieldindex;
+      // const KeeperIcon = <Icon className={ styles.selectIcon } data-fieldname={ field.InternalName }  
+      //   onClick= { onKeeperClick } iconName={ isKeeper === true ? 'CheckboxComposite' : 'Checkbox' }/>;
+
     const row = <tr>
       <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
-      <td>{ getHighlightedText (field.Title , searchText ) }</td>
-      <td title={field.InternalName}>{ getHighlightedText (field.InternalName , searchText ) }</td>
+      <td data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { () => showFieldPanel( field, this )  } >
+        { getHighlightedText (field.Title , searchText ) }</td>
+
+      {/* showFieldPanel */}
+      <td title={field.InternalName} >
+          { getHighlightedText (field.InternalName , searchText ) }</td>
+
       <td onClick={ () => onTypeClick( field, this ) } >{ getHighlightedText (field.TypeDisplayName , searchText ) }</td>
       <td title={detailValue}>{ getHighlightedText (detailValue , searchText ) }</td>
     </tr>;
@@ -115,3 +127,28 @@ export function  getMainSelectedItems ( ev: React.MouseEvent<HTMLElement>, listF
 
   return newSelected;
 }
+
+export function getSelectedItemPanel( panelItem: IMinField, onClosePanel: any ) : JSX.Element {
+  const panelItemAny: any = panelItem;
+  const AttachPanel: JSX.Element = !panelItem ? null : <Panel
+          isOpen={ panelItem ? true : false }
+          type={ PanelType.medium }
+          onDismiss={ onClosePanel }
+          headerText={ `${ panelItem.Title } - ${ panelItem.InternalName }` }
+          closeButtonAriaLabel="Close"
+          isLightDismiss={ true }
+      > 
+        <ul>
+          { ['Description', 'TypeAsString', 'Group', 'Required', 'EnforceUniqueValues', 'FillInChoice', 'Choices', 'Formula', 'ReadOnlyField', 'Indexed', 'IndexStatus',  ].map( prop => {
+            return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null : 
+              <li key={prop}>{prop} - { JSON.stringify( panelItemAny [prop] ) }</li>;
+          }) }
+        </ul>
+        <ReactJson src={ panelItem } name={ 'Field Details' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+          enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+    </Panel>;
+
+  return AttachPanel;
+
+}
+
