@@ -14,17 +14,20 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 // import styles from '../PropPaneCols.module.scss';
 
 import { IMinField } from "./IPropPaneColsProps";
+import { getSelectedItemPanel } from "./MainFieldTable";
 
 
 export interface ISelectedTableHookProps {
   selected: IMinField[];
   onKeeperClick: any;
   onDirectionClick: any;
-  showFieldPanel: any;
+  // showFieldPanel: any;
 }
 
 // export const SelectedTableHook( selected: IMinField[], onKeeperClick: any, onDirectionClick: any , showFieldPanel: any) : JSX.Element {
 const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
+
+  const [ panelItem, setPanelItem ] = useState<IMinField>(null);
 
   const tableRows: any[] = [];
   tableRows.push( 
@@ -38,7 +41,17 @@ const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
     </tr>
   );
 
-  const { selected, onKeeperClick, onDirectionClick, showFieldPanel } = props;
+  const { selected, onKeeperClick, onDirectionClick, } = props;
+
+
+  const showFieldPanel = ( item: IMinField ) : void => {
+    setPanelItem( item );
+  }
+
+  const onClosePanel = (  ) : void => {
+    setPanelItem( null );
+  }
+
 
   let selectedIndex: number = -1;
   selected.map( ( field: IMinField, idx: number ) => {
@@ -64,7 +77,7 @@ const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
       <td>{KeeperIcon}</td>
 
       <td style={{ fontWeight: isKeeper === true ? 700 : 400 }} title={ field.InternalName }
-        data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { () => showFieldPanel( field, this ) } >{ field.Title }</td>
+        data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { () => showFieldPanel( field ) } >{ field.Title }</td>
 
       <td title={field.TypeAsString}>{ field.TypeAsString }</td>
       <td>{ UpIcon }</td>
@@ -74,9 +87,12 @@ const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
 
   });
 
-  const SelectedTable: JSX.Element = <table className={ 'selected-table'}>
+  const SelectedTable: JSX.Element = <div>
+      { getSelectedItemPanel( panelItem, onClosePanel.bind(this) ) }
+      <table className={ 'selected-table'}>
         { tableRows }
-      </table>;
+      </table>
+    </div>;
 
   return ( SelectedTable );
 

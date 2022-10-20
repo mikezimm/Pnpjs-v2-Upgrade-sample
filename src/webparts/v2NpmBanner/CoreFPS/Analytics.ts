@@ -81,9 +81,9 @@ export function saveViewAnalytics( Title: string, Result: string, thisProps: IV2
       const zzzRichText2Obj: any = null;
       const zzzRichText3Obj: any = null;
 
-      console.log( 'zzzRichText1Obj:', zzzRichText1Obj);
-      console.log( 'zzzRichText2Obj:', zzzRichText2Obj);
-      console.log( 'zzzRichText3Obj:', zzzRichText3Obj);
+      // console.log( 'zzzRichText1Obj:', zzzRichText1Obj);
+      // console.log( 'zzzRichText2Obj:', zzzRichText2Obj);
+      // console.log( 'zzzRichText3Obj:', zzzRichText3Obj);
 
       const performance : string = getMinPerformanceString( performanceObj );
 
@@ -100,9 +100,9 @@ export function saveViewAnalytics( Title: string, Result: string, thisProps: IV2
       if ( zzzRichText2Obj ) { zzzRichText2 = JSON.stringify( zzzRichText2Obj ); }
       if ( zzzRichText3Obj ) { zzzRichText3 = JSON.stringify( zzzRichText3Obj ); }
 
-      console.log('zzzRichText1 length:', zzzRichText1 ? zzzRichText1.length : 0 );
-      console.log('zzzRichText2 length:', zzzRichText2 ? zzzRichText2.length : 0 );
-      console.log('zzzRichText3 length:', zzzRichText3 ? zzzRichText3.length : 0 );
+      // console.log('zzzRichText1 length:', zzzRichText1 ? zzzRichText1.length : 0 );
+      // console.log('zzzRichText2 length:', zzzRichText2 ? zzzRichText2.length : 0 );
+      // console.log('zzzRichText3 length:', zzzRichText3 ? zzzRichText3.length : 0 );
 
       const FPSProps = JSON.stringify( FPSPropsObj );
 
@@ -137,7 +137,7 @@ export function saveViewAnalytics( Title: string, Result: string, thisProps: IV2
         zzzRichText3: zzzRichText3,
 
         performance: performance,
-        
+
         FPSProps: FPSProps,
 
       };

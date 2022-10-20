@@ -150,7 +150,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         onDirectionClick={ this._onDirectionClick }
         onKeeperClick={ this._onKeeperClick }
         selected={ this.state.selected }
-        showFieldPanel={ this._showFieldPanel.bind(this) }
+        // showFieldPanel={ this._showFieldPanel.bind(this) }
       />;
 
       const MainPanel: JSX.Element = MainPane( this.props, this.state, 
