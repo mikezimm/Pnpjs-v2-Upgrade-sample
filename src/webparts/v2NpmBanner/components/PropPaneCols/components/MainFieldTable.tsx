@@ -16,6 +16,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 // import styles from '../PropPaneCols.module.scss';
 
 import { IMinField } from "./IPropPaneColsProps";
+import SelectedItemPanelHook from "./FieldPanel";
 
 export interface IMainFieldTableHookProps {
   // selected: IMinField[];
@@ -29,7 +30,7 @@ export interface IMainFieldTableHookProps {
   searchText: string;
   onSelectItem: any;
   onTypeClick: any;
-  showFieldPanel: any;
+  // showFieldPanel: any;
 
   // showFieldPanel: any;
 }
@@ -37,7 +38,19 @@ export interface IMainFieldTableHookProps {
 // export function buildMainFieldTable( filtered: IMinField[], designMode: boolean, listFields: IMinField[], searchProp: string, searchText: string, onSelectItem: any, onTypeClick: any, showFieldPanel: any ) : JSX.Element {
 const MainFieldTableHook: React.FC<IMainFieldTableHookProps> = ( props ) => {
 
-  const { filtered, designMode, listFields, searchProp, searchText, onSelectItem, onTypeClick, showFieldPanel } = props;
+  const { filtered, designMode, listFields, searchProp, searchText, onSelectItem, onTypeClick, } = props;
+
+  const [ panelItem, setPanelItem ] = useState<IMinField>(null);
+
+  const showFieldPanel = ( item: IMinField ) : void => {
+    setPanelItem( item );
+  }
+
+  const onClosePanel = (  ) : void => {
+    setPanelItem( null );
+  }
+
+
   let heading: string = '';
 
   if ( listFields.length > 0 ) {
@@ -86,7 +99,7 @@ const MainFieldTableHook: React.FC<IMainFieldTableHookProps> = ( props ) => {
 
     const row = <tr>
       <td style={{ display: designMode === true ? '' : 'none' }}>{SelectIcon}</td>
-      <td data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { () => showFieldPanel( field, this )  } >
+      <td data-fieldname={ field.InternalName } data-fieldindex={ field.idx } onClick= { () => showFieldPanel( field )  } >
         { getHighlightedText (field.Title , searchText ) }</td>
 
       {/* showFieldPanel */}
@@ -101,6 +114,11 @@ const MainFieldTableHook: React.FC<IMainFieldTableHookProps> = ( props ) => {
   });
 
   const MainFieldTable: JSX.Element = <table className={ 'field-table' }>
+        < SelectedItemPanelHook 
+          panelItem= { panelItem }
+          searchText={ searchText }
+          onClosePanel= {onClosePanel.bind(this) }
+          />
         { tableRows }
       </table>;
 

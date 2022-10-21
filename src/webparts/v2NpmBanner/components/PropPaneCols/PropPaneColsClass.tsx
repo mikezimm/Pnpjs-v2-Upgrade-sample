@@ -11,7 +11,7 @@ import styles from './PropPaneCols.module.scss';
 import { createCommandBuilder, updateSelectedCommands } from './components/CommandAccordion';
 import { getMainSelectedItems, } from './components/OnClickHelpers';
 import SelectedItemPanelHook from './components/FieldPanel';
-import { buildSelectedFieldTable } from './components/SelectedTable';
+// import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/ViewAccordion';
 import { getDirectionClicks, getKeeperClicks, ISelectedInfo, updateSelectedInfo, } from './components/OnClickHelpers';
 
@@ -144,8 +144,8 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       const DesignViews: JSX.Element = createViewBuilder( this.state.selected, null, this._toggleFullDesign.bind(this) );
 
-      const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick,
-          this._onDirectionClick, this._showFieldPanel.bind(this) );
+      // const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick,
+      //     this._onDirectionClick, this._showFieldPanel.bind(this) );
 
       const selectedHook: JSX.Element = <SelectedTableHook 
         onDirectionClick={ this._onDirectionClick }
@@ -162,7 +162,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             toggleDesign: this._toggleDesign.bind(this),
             onSelectItem: this._onSelectItem,
             onTypeClick: this._onTypeClick.bind(this),
-            showFieldPanel: this._showFieldPanel.bind(this),
+            // showFieldPanel: this._showFieldPanel.bind(this),
           } );
 
       let designPane: JSX.Element = null;
@@ -172,7 +172,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             { DesignViews }
             <div style={{paddingBottom: '5px', fontSize: 'smaller' }}>CTRL-click <b>Arrows</b> to move to Top or Bottom</div>
             { selectedHook }
-            { SelectedTable }
+            {/* { SelectedTable } */}
           </div>
       }
 

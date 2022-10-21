@@ -35,7 +35,7 @@ export interface IMainCallbacks {
   toggleDesign: any;
   onSelectItem: any;
   onTypeClick: any;
-  showFieldPanel: any;
+  // showFieldPanel: any;
 
   MainFieldTable?: JSX.Element;
 
@@ -43,7 +43,7 @@ export interface IMainCallbacks {
 
 export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, callbacks: IMainCallbacks ): JSX.Element {
 
-  const { selectFiltered, onFilterClick2, onSelectItem, showFieldPanel } = callbacks;
+  const { selectFiltered, onFilterClick2, onSelectItem, } = callbacks;
   const { onTextSearch, onTypeClick, } = callbacks;
   // const { onTextSearch,} = callbacks;
   const { toggleDesign } = callbacks;
@@ -125,7 +125,7 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
     searchText={ searchText }
     onSelectItem={ onSelectItem }
     onTypeClick={ onTypeClick }
-    showFieldPanel={ showFieldPanel }
+    // showFieldPanel={ showFieldPanel }
   />;
 
   const { listTitle, } = lists[ listIdx ] ;

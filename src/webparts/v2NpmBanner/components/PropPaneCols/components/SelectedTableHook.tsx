@@ -43,8 +43,6 @@ const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
     </tr>
   );
 
-
-
   const showFieldPanel = ( item: IMinField ) : void => {
     setPanelItem( item );
   }
