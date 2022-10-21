@@ -195,11 +195,11 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           { designPane }
           { MainPanel }
           {/* { SelectedItemPanelHook( { panelItem: panelItem, searchText: searchText, onClosePanel: this._onClosePanel.bind(this) } ) } */}
-          < SelectedItemPanelHook 
+          {/* < SelectedItemPanelHook 
               panelItem= { panelItem }
               searchText={ this.state.searchText }
               onClosePanel= { this._onClosePanel.bind(this) }
-            />
+            /> */}
         </div>
       );
 
@@ -302,9 +302,9 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this.setState({ selected: newSelected });
   };
 
-  private _onClosePanel = () : void => {
-    this.setState({ panelItem: null });
-  }
+  // private _onClosePanel = () : void => {
+  //   this.setState({ panelItem: null });
+  // }
 
   //field: IMinField
   // private _showFieldPanel = ( ev: React.MouseEvent<HTMLElement>  ): void => {

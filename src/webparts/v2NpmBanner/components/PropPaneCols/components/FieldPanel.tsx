@@ -75,7 +75,7 @@ const SelectedItemPanelHook: React.FC<IPanelItemProps> = ( props ) => {
           { ['Description', 'TypeAsString', 'Group', 'FillInChoice', 'Choices', 'Formula', 'DefaultValue' ].map( ( prop: string, idx: number ) => {
             return fieldRow( prop, idx );
             // const color: string = randomColors [ Math.floor( randomColors.length / ( idx + 1 ) ) ];
-            // return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null : 
+            // return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null :
             //   <li key={prop}>{prop} - <span style={{ color: color }}>{ JSON.stringify( panelItemAny [prop] ) }</span></li>;
           }) }
         </ul>
@@ -84,17 +84,18 @@ const SelectedItemPanelHook: React.FC<IPanelItemProps> = ( props ) => {
           { [ 'Required', 'EnforceUniqueValues', 'ReadOnlyField', 'Indexed', 'IndexStatus',  ].map( ( prop: string, idx: number ) => {
             return fieldRow( prop, idx );
             // const color: string = randomColors [ Math.floor( randomColors.length / ( idx + 1 ) ) ];
-            // return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null : 
+            // return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null :
             //   <li key={prop}>{prop} - <span style={{ color: color }}>{ JSON.stringify( panelItemAny [prop] ) }</span></li>;
           }) }
         </ul>
 
         <ul>
           { [ 'searchTextLC',  ].map( ( prop: string, idx: number ) => {
-            return <li key={prop}>{prop} : <span style={{ color: 'purple' }}>{ getHighlightedText( JSON.stringify( panelItemAny [prop] ), searchText.toLowerCase() )  }</span></li>
+            return <li key={prop}>{prop} : <span style={{ color: 'purple' }}>
+                { getHighlightedText( JSON.stringify( panelItemAny [prop] ), searchText.toLowerCase() )  }</span></li>
             // return fieldRow( prop, idx + 3 );
             // const color: string = randomColors [ Math.floor( randomColors.length / ( idx + 1 ) ) ];
-            // return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null : 
+            // return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null :
             //   <li key={prop}>{prop} - <span style={{ color: color }}>{ JSON.stringify( panelItemAny [prop] ) }</span></li>;
           }) }
         </ul>
