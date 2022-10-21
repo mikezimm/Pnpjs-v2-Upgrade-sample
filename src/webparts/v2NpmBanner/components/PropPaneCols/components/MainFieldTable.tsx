@@ -35,7 +35,7 @@ export function buildMainFieldTable( filtered: IMinField[], designMode: boolean,
   tableRows.push( 
     <tr>
       <th style={{ display: designMode === true ? '' : 'none' }}>Add</th>
-      <th>Title</th>
+      <th>Title ( { filtered.length } )</th>
       <th>InternalName</th>
       <th>Type</th>
       <th>{heading}</th>

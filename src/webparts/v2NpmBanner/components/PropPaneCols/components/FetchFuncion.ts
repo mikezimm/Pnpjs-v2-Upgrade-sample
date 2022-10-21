@@ -29,10 +29,11 @@ export async function fetchFields(  list: IMinListProps ) : Promise<IFieldPanelF
         field.idx = idx;
         field.commands = {};
 
-        field.searchTextLC = ['Title', 'InternalName', 'TypeDisplayName', 'Choices', 'Formula', 'DefaultValue' ].map( prop => {
+        // field.searchTextLC:  = ['Title', 'InternalName', 'TypeDisplayName', 'Description', 'Choices', 'Formula', 'DefaultValue' ].map( prop => {
+          field.searchTextLC = ['Title', 'InternalName', 'TypeDisplayName', 'Description', 'Choices', 'Formula', 'DefaultValue' ].map( prop => {
           const anyField : any = field;
           return anyField[ prop ] ? `${prop}:${anyField[ prop ]}` : '';
-        }).join(' || ').toLocaleLowerCase();
+        }).filter( str  => str && str !== '' ).join(' || ').toLocaleLowerCase();
 
         let ReadOnly = field.ReadOnlyField === true ? 'IsReadOnly' : IsEditable.toLocaleLowerCase();
         if ( field.InternalName === 'ContentType' ) ReadOnly = '';

@@ -14,7 +14,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 // import styles from '../PropPaneCols.module.scss';
 
 import { IMinField } from "./IPropPaneColsProps";
-import { getSelectedItemPanel } from "./MainFieldTable";
+import SelectedItemPanelHook from "./FieldPanel";
 
 
 export interface ISelectedTableHookProps {
@@ -27,6 +27,8 @@ export interface ISelectedTableHookProps {
 // export const SelectedTableHook( selected: IMinField[], onKeeperClick: any, onDirectionClick: any , showFieldPanel: any) : JSX.Element {
 const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
 
+  const { selected, onKeeperClick, onDirectionClick, } = props;
+
   const [ panelItem, setPanelItem ] = useState<IMinField>(null);
 
   const tableRows: any[] = [];
@@ -34,14 +36,13 @@ const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
     <tr>
       <th/>
       <th style={{ }}>Keep</th>
-      <th>Title</th>
+      <th>Title ( { selected.length } )</th>
       <th>Type</th>
       <th>Up</th>
       <th>Down</th>
     </tr>
   );
 
-  const { selected, onKeeperClick, onDirectionClick, } = props;
 
 
   const showFieldPanel = ( item: IMinField ) : void => {
@@ -88,7 +89,7 @@ const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
   });
 
   const SelectedTable: JSX.Element = <div>
-      { getSelectedItemPanel( panelItem, onClosePanel.bind(this) ) }
+      { SelectedItemPanelHook( { panelItem: panelItem, searchText: '', onClosePanel: onClosePanel.bind(this) } ) }
       <table className={ 'selected-table'}>
         { tableRows }
       </table>

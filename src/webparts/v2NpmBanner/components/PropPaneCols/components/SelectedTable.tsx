@@ -23,7 +23,7 @@ export function buildSelectedFieldTable( selected: IMinField[], onKeeperClick: a
     <tr>
       <th/>
       <th style={{ }}>Keep</th>
-      <th>Title</th>
+      <th>Title ( { selected.length } )</th>
       <th>Type</th>
       <th>Up</th>
       <th>Down</th>

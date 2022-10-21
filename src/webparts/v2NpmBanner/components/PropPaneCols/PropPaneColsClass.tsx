@@ -9,7 +9,8 @@ import "@pnp/sp/clientside-pages/web";
 
 import styles from './PropPaneCols.module.scss';
 import { createCommandBuilder, updateSelectedCommands } from './components/CommandAccordion';
-import { getMainSelectedItems, getSelectedItemPanel } from './components/MainFieldTable';
+import { getMainSelectedItems, } from './components/MainFieldTable';
+import SelectedItemPanelHook from './components/FieldPanel';
 import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/ViewAccordion';
 import { getDirectionClicks, getKeeperClicks, ISelectedInfo, updateSelectedInfo, } from './components/OnClickHelpers';
@@ -119,7 +120,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   public render(): React.ReactElement<IFieldPanelProps> {
 
     const { lists, } = this.props;
-    const { status, designMode, errMessage, listIdx, panelItem } = this.state;
+    const { status, designMode, errMessage, listIdx, panelItem, searchText } = this.state;
 
     const fetchPane : JSX.Element = FetchPane( { 
       onClickFetchFields: this._clickFetchFields.bind(this),
@@ -182,7 +183,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           { fetchPane }
           { designPane }
           { MainPanel }
-          { getSelectedItemPanel( panelItem, this._onClosePanel.bind(this) ) }
+          { SelectedItemPanelHook( { panelItem: panelItem, searchText: searchText, onClosePanel: this._onClosePanel.bind(this) } ) }
         </div>
       );
 
@@ -234,7 +235,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    const fieldtype: string = this.state?.searchText === target.dataset?.fieldtype.toLocaleLowerCase() ? '' : target.dataset.fieldtype;
+    const fieldtype: string = this.state?.searchText.toLocaleLowerCase() === target.dataset?.fieldtype.toLocaleLowerCase() ? '' : target.dataset.fieldtype;
     this._onSearchChange( fieldtype , '' );
   }
 
@@ -254,21 +255,21 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this._onSearchChange( SearchValue , '' );
   }
 
-  private _onSearchChange ( input: string, property: string = '' ): void {
+  private _onSearchChange ( SearchValue: string, property: string = '' ): void {
 
-    const SearchValue = input.toLocaleLowerCase();
+    const SearchValueLc = SearchValue.toLocaleLowerCase();
 
     const filtered: IMinField[] = [];
 
     this.state.listFields.map( ( field: IMinField) => {
-      const textFound: number = !SearchValue ? 0 : field.searchTextLC.indexOf( SearchValue ) ;
+      const textFound: number = !SearchValueLc ? 0 : field.searchTextLC.indexOf( SearchValueLc ) ;
       const propertyFound: boolean = !property ? true : field.TypeDisplayName === property;
       if ( textFound > -1 && propertyFound === true ) filtered.push( field );
     });
 
     const searchText: string = `${SearchValue}${ property ? property : ''}`;
 
-    if ( !SearchValue ) {
+    if ( !SearchValueLc ) {
       this.setState({ filtered: filtered, searchText: searchText, searchProp: property });
     } else {
       this.setState({ filtered: filtered, searchText: searchText, searchProp: property });
