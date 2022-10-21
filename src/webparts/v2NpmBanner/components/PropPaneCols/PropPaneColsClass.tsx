@@ -8,7 +8,8 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 
 import styles from './PropPaneCols.module.scss';
-import { createCommandBuilder, updateSelectedCommands } from './components/CommandAccordion';
+import { updateSelectedCommands } from './components/CommandAccordion';
+import CommandBuilderHook from './components/CommandAccordion';
 import { getMainSelectedItems, } from './components/OnClickHelpers';
 import SelectedItemPanelHook from './components/FieldPanel';
 // import { buildSelectedFieldTable } from './components/SelectedTable';
@@ -139,8 +140,19 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     } else {
 
-      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign,
-          this._showFieldPanel.bind(this), this._toggleFullDesign.bind(this) ) ;
+      const DesignCommands: JSX.Element = <CommandBuilderHook
+        selected={ this.state.selected }
+        onCmdFieldClick={ this._onCmdFieldClick }
+        expanded={ this.state.fullDesign }
+        onExpandRight={ this._toggleFullDesign.bind(this) }
+      />;
+      
+      // createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign,
+      //     this._showFieldPanel.bind(this), this._toggleFullDesign.bind(this) ) ;
+
+
+
+
 
       const DesignViews: JSX.Element = createViewBuilder( this.state.selected, null, this._toggleFullDesign.bind(this) );
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getHighlightedText , getHelpfullErrorV2, IQuickButton, IQuickCommands } from '../../../fpsReferences';
@@ -135,7 +136,33 @@ export const AllUpdateActionCmds = AllUpdateActions.map( field => { return field
 
 export const AllActions = AllFieldActions.map( ( action: IIconTableRow ) => { return action.cmd } );
 
-export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null, expanded: boolean, showFieldPanel: any, onExpandRight: any = null ) : JSX.Element { //onCmdFieldClick: any
+export interface ICommandBuilderHookProps {
+  selected: IMinField[];
+
+  onCmdFieldClick : any;
+  expanded: boolean;
+  // showFieldPanel: any;
+  onExpandRight: any;
+
+}
+
+
+// export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null, expanded: boolean, showFieldPanel: any, onExpandRight: any = null ) : JSX.Element { //onCmdFieldClick: any
+
+const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
+
+  const { selected, onCmdFieldClick, expanded, onExpandRight } = props;
+
+  const [ panelItem, setPanelItem ] = useState<IMinField>(null);
+
+  const showFieldPanel = ( item: IMinField ) : void => {
+    setPanelItem( item );
+  }
+
+  const onClosePanel = (  ) : void => {
+    setPanelItem( null );
+  }
+
 
   const choiceFields: IMinField[] = selected.filter( field =>field.FieldTypeKind === FieldTypes.Choice );
   const ChoiceTable = createFieldTableRows( null, 'Choice fields', choiceFields, ChoiceFieldActionIcons, onCmdFieldClick, showFieldPanel );
@@ -171,6 +198,11 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
   </div>;
 
   const commandElement: JSX.Element = <div className={ 'command-tables' }>
+    < SelectedItemPanelHook 
+      panelItem= { panelItem }
+      searchText={ '' }
+      onClosePanel= { onClosePanel.bind(this) }
+    />
     <div className={ 'left-command' }>
       { expandRightIcon }
       { ChoiceTable }
@@ -197,7 +229,7 @@ export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : 
     // toggleCallback = { onToggleAccordion }
   />;
 
-  return DesignCommands ;
+  return ( DesignCommands ) ;
 
 }
 
@@ -256,6 +288,7 @@ export function buildQuickCommands(  selected: IMinField[], ): IQuickCommands {
   return QuickCommands;
 
 }
+
 
 export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
 
@@ -499,7 +532,7 @@ export function createFieldTableRows( heading: JSX.Element, firstColumnHeading: 
 
   fields.map( ( field: IMinField | any ) => {
     TableRows.push( <tr key={ field.InternalName } >
-      <td title={field.InternalName} onClick= { () => showFieldPanel( field, this )  } >{ field.Title }</td>
+      <td title={field.InternalName} onClick= { () => showFieldPanel( field )  } >{ field.Title }</td>
       { FieldActionIcons.map( icon => { 
         // eslint-disable-next-line no-eval
         const ignore = icon.ignore && eval( icon.ignore ) === true ? true : false;
@@ -602,3 +635,6 @@ export function updateCommandSet( commands: IMinFieldCmds, role: IAllActionTypes
     return commands;
 
 }
+
+
+export default CommandBuilderHook;
