@@ -9,7 +9,7 @@ import "@pnp/sp/clientside-pages/web";
 
 import styles from './PropPaneCols.module.scss';
 import { createCommandBuilder, updateSelectedCommands } from './components/CommandAccordion';
-import { getMainSelectedItems, } from './components/MainFieldTable';
+import { getMainSelectedItems, } from './components/OnClickHelpers';
 import SelectedItemPanelHook from './components/FieldPanel';
 import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/ViewAccordion';
@@ -139,12 +139,12 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
     } else {
 
-      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign, 
+      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign,
           this._showFieldPanel.bind(this), this._toggleFullDesign.bind(this) ) ;
 
       const DesignViews: JSX.Element = createViewBuilder( this.state.selected, null, this._toggleFullDesign.bind(this) );
 
-      const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, 
+      const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick,
           this._onDirectionClick, this._showFieldPanel.bind(this) );
 
       const selectedHook: JSX.Element = <SelectedTableHook 
@@ -176,7 +176,6 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           </div>
       }
 
-
       return (
 
         <div className={ [ 'prop-pane-cols', 'cols-results', this.state.fullDesign === true ? 'full-design' : null ].join( ' ' ) } >
@@ -187,7 +186,6 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           < SelectedItemPanelHook 
               panelItem= { panelItem }
               searchText={ this.state.searchText }
-
               onClosePanel= { this._onClosePanel.bind(this) }
             />
         </div>
