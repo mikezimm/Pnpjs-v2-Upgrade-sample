@@ -186,7 +186,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           {/* { SelectedItemPanelHook( { panelItem: panelItem, searchText: searchText, onClosePanel: this._onClosePanel.bind(this) } ) } */}
           < SelectedItemPanelHook 
               panelItem= { panelItem }
-              searchText=''
+              searchText={ this.state.searchText }
 
               onClosePanel= { this._onClosePanel.bind(this) }
             />

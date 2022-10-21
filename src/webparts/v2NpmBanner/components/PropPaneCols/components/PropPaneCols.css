@@ -40,7 +40,7 @@
 
   }
 
-  .prop-pane-cols .command-icon {
+  .prop-pane-cols .command-icon, .panel-command-icon {
 
     background: #ffffff;
     border-radius: 5px;

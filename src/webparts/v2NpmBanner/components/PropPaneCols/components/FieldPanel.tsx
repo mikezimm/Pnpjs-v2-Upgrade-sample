@@ -27,12 +27,22 @@ const SelectedItemPanelHook: React.FC<IPanelItemProps> = ( props ) => {
 
   const { panelItem, searchText, onClosePanel } = props; //onClosePanel
 
-  // const [ expand, setExpand ] = useState<boolean>( props.expand );
+  const [ type, setSide ] = useState<PanelType>( PanelType.custom );
+  const [ blocking, setBlock ] = useState<boolean>( true );
 
-  // const onClosePanel = (  ) : void => {
-  //   // setExpand( false );
-  // }
+  const shiftSide = (  ) : void => {
+    setSide( type === PanelType.customNear ? PanelType.custom : PanelType.customNear );
+  }
 
+  const changeBlocking = (  ) : void => {
+    setBlock( blocking === true ? false : true );
+  }
+
+  const shiftIcon = type === PanelType.custom ? 'OpenPane' : 'OpenPaneMirrored';
+  const blockIcon = blocking === true ? 'F12DevTools' : 'DeviceOff';
+
+  const shiftTitle = type === PanelType.custom ? 'Left Panel' : 'Right Panel';
+  const blockTitle = blocking === true ? 'Disable Blocking' : 'Enable Blocking';
 
   const panelItemAny: any = panelItem;
 
@@ -44,11 +54,12 @@ const SelectedItemPanelHook: React.FC<IPanelItemProps> = ( props ) => {
     <li key={prop} style={{ marginBottom: '3px' }}>{prop} : <span style={{ fontWeight: 500, color: color }}>{ JSON.stringify( panelItemAny [prop] ) }</span></li>;
   }
 
+  const IconStyles: React.CSSProperties = { cursor: 'pointer', fontSize: 'x-large', marginLeft: '20px' };
   const AttachPanel: JSX.Element = !panelItem ? null : 
       <Panel
           isOpen={ panelItem ? true : false }
-          type={ PanelType.customNear }
-          isBlocking={ true }
+          type={ type }
+          isBlocking={ blocking }
           // onDismiss={ onClosePanel }
           onDismiss={ () => onClosePanel() }
           headerText={ `${ panelItem.Title } - ${ panelItem.InternalName }` }
@@ -57,8 +68,8 @@ const SelectedItemPanelHook: React.FC<IPanelItemProps> = ( props ) => {
           customWidth={ '700px' }
       >
         <div style={{ float: 'right', display: 'flex' }}>
-          <Icon iconName="Down" style={{ float: 'right' }}/>
-          <Icon iconName="Down" style={{ float: 'right' }}/>
+          <Icon title={ shiftTitle } iconName={ shiftIcon } className={ 'panel-command-icon' } style={ IconStyles } onClick= { () => shiftSide() }/>
+          <Icon title={ blockTitle } iconName={ blockIcon } className={ 'panel-command-icon' } style={ IconStyles } onClick= { () => changeBlocking() }/>
         </div>
         <ul style={{ marginBottom: '30px'}}>
           { ['Description', 'TypeAsString', 'Group', 'FillInChoice', 'Choices', 'Formula', 'DefaultValue' ].map( ( prop: string, idx: number ) => {
@@ -80,7 +91,7 @@ const SelectedItemPanelHook: React.FC<IPanelItemProps> = ( props ) => {
 
         <ul>
           { [ 'searchTextLC',  ].map( ( prop: string, idx: number ) => {
-            return <li key={prop}>{prop} : <span style={{ color: 'purple' }}>{ getHighlightedText( JSON.stringify( panelItemAny [prop] ), searchText)  }</span></li>
+            return <li key={prop}>{prop} : <span style={{ color: 'purple' }}>{ getHighlightedText( JSON.stringify( panelItemAny [prop] ), searchText.toLowerCase() )  }</span></li>
             // return fieldRow( prop, idx + 3 );
             // const color: string = randomColors [ Math.floor( randomColors.length / ( idx + 1 ) ) ];
             // return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null : 
@@ -88,7 +99,7 @@ const SelectedItemPanelHook: React.FC<IPanelItemProps> = ( props ) => {
           }) }
         </ul>
 
-        <ReactJson src={ panelItem } name={ 'Field Details' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+        <ReactJson src={ panelItem } name={ 'Field Details' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false }
           enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
     </Panel>;
 
