@@ -183,7 +183,13 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
           { fetchPane }
           { designPane }
           { MainPanel }
-          { SelectedItemPanelHook( { panelItem: panelItem, searchText: searchText, onClosePanel: this._onClosePanel.bind(this) } ) }
+          {/* { SelectedItemPanelHook( { panelItem: panelItem, searchText: searchText, onClosePanel: this._onClosePanel.bind(this) } ) } */}
+          < SelectedItemPanelHook 
+              panelItem= { panelItem }
+              searchText=''
+
+              onClosePanel= { this._onClosePanel.bind(this) }
+            />
         </div>
       );
 

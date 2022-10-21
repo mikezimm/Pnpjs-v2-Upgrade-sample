@@ -17,7 +17,7 @@ export interface IPanelItemProps {
   panelItem: IMinField;
   searchText: string;
   onClosePanel: any;
-  expand?: boolean;
+  // expand?: boolean;
 }
 
 
@@ -25,12 +25,12 @@ export interface IPanelItemProps {
 // export function getSelectedItemPanel( panelItem: IMinField, onClosePanel: any, searchText: string ) : JSX.Element {
 const SelectedItemPanelHook: React.FC<IPanelItemProps> = ( props ) => {
 
-  const { panelItem, searchText, onClosePanel } = props;
+  const { panelItem, searchText, onClosePanel } = props; //onClosePanel
 
-  const [ expand, setExpand ] = useState<boolean>( props.expand ? props.expand : true );
+  // const [ expand, setExpand ] = useState<boolean>( props.expand );
 
   // const onClosePanel = (  ) : void => {
-  //   setExpand( false );
+  //   // setExpand( false );
   // }
 
 
@@ -44,13 +44,13 @@ const SelectedItemPanelHook: React.FC<IPanelItemProps> = ( props ) => {
     <li key={prop} style={{ marginBottom: '3px' }}>{prop} : <span style={{ fontWeight: 500, color: color }}>{ JSON.stringify( panelItemAny [prop] ) }</span></li>;
   }
 
-  const AttachPanel: JSX.Element = expand === false || !panelItem ? null : 
+  const AttachPanel: JSX.Element = !panelItem ? null : 
       <Panel
           isOpen={ panelItem ? true : false }
           type={ PanelType.customNear }
-          isBlocking={ false }
-          onDismiss={ onClosePanel }
-          // onDismiss={ () => onClosePanel() }
+          isBlocking={ true }
+          // onDismiss={ onClosePanel }
+          onDismiss={ () => onClosePanel() }
           headerText={ `${ panelItem.Title } - ${ panelItem.InternalName }` }
           closeButtonAriaLabel="Close"
           isLightDismiss={ true }

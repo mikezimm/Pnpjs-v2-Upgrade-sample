@@ -89,7 +89,12 @@ const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
   });
 
   const SelectedTable: JSX.Element = <div>
-      { SelectedItemPanelHook( { panelItem: panelItem, searchText: '', onClosePanel: onClosePanel.bind(this) } ) }
+      {/* { SelectedItemPanelHook( { panelItem: panelItem, searchText: '', onClosePanel: onClosePanel.bind(this) } ) } */}
+      < SelectedItemPanelHook 
+          panelItem= { panelItem }
+          searchText=''
+          onClosePanel= {onClosePanel.bind(this) }
+          />
       <table className={ 'selected-table'}>
         { tableRows }
       </table>
