@@ -7,6 +7,49 @@ export interface ISelectedInfo {
   designMode: boolean;
 }
 
+
+export function  getMainSelectedItems ( ev: React.MouseEvent<HTMLElement>, listFields: IMinField[], selected: IMinField[]  ): IMinField []  {
+  const target: any = ev.target;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
+
+  const itemName: string = target.dataset.fieldname;
+  let thisSelected : IMinField = null;
+
+  listFields.map( field => {  //Find selected item
+    if ( field.InternalName === itemName ) { 
+      field.isSelected = field.isSelected === true ? false : true;
+      field.isKeeper = true;
+      thisSelected = field;
+    }
+  });
+
+  let selectedIdx : number = -1;
+  selected.map( ( pick: IMinField, idx : number ) => {
+    if ( pick.InternalName === thisSelected.InternalName ) selectedIdx = idx;
+  });
+
+  let newSelected: IMinField [] = [];
+
+  if ( selectedIdx === -1 ) {  //Add to selected list
+    
+    if ( ctrlKey === true ) {
+      newSelected = [ ...[ thisSelected ], ...selected ];
+    } else {
+      newSelected = [ ...selected, ...[ thisSelected ] ];
+    }
+
+  } else { //Remove from selected list
+    newSelected = selected.filter( (field) => { return field.InternalName !== thisSelected.InternalName } )
+  }
+
+  console.log('_onSelectItem:', itemName, target, newSelected );
+
+  return newSelected;
+}
+
+
 export function  updateSelectedInfo ( ev: React.MouseEvent<HTMLElement>, listFields: IMinField[], selected: IMinField[], searchText: string  ): ISelectedInfo  {
 
   if ( searchText ) {

@@ -15,7 +15,8 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { IFieldPanelProps, IFieldPanelState, IsEditable } from './IPropPaneColsProps';
 
-import { buildMainFieldTable } from './MainFieldTable';
+// import { buildMainFieldTable } from './MainFieldTable';
+import MainFieldTableHook  from './MainFieldTable';
 
 export function mainSiteLink( webURL: string ): JSX.Element {
   return (<div style={{paddingBottom: '15px', fontSize: 'larger', fontWeight: 'bolder' }}>on this site:  
@@ -116,7 +117,16 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
       { YesNoFilterIcon } { LookupFilterIcon } { UrlFilterIcon } { EditableFilterIcon }
     </div>;
 
-  const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, onSelectItem, onTypeClick, showFieldPanel );
+  const MainFieldTable : JSX.Element = <MainFieldTableHook
+    filtered={ filtered }
+    designMode={ designMode }
+    listFields={ listFields }
+    searchProp={ searchProp }
+    searchText={ searchText }
+    onSelectItem={ onSelectItem }
+    onTypeClick={ onTypeClick }
+    showFieldPanel={ showFieldPanel }
+  />;
 
   const { listTitle, } = lists[ listIdx ] ;
   return (
