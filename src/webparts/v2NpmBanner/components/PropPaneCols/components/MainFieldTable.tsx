@@ -128,27 +128,3 @@ export function  getMainSelectedItems ( ev: React.MouseEvent<HTMLElement>, listF
   return newSelected;
 }
 
-export function getSelectedItemPanel( panelItem: IMinField, onClosePanel: any ) : JSX.Element {
-  const panelItemAny: any = panelItem;
-  const AttachPanel: JSX.Element = !panelItem ? null : <Panel
-          isOpen={ panelItem ? true : false }
-          type={ PanelType.medium }
-          onDismiss={ onClosePanel }
-          headerText={ `${ panelItem.Title } - ${ panelItem.InternalName }` }
-          closeButtonAriaLabel="Close"
-          isLightDismiss={ true }
-      > 
-        <ul>
-          { ['Description', 'TypeAsString', 'Group', 'Required', 'EnforceUniqueValues', 'FillInChoice', 'Choices', 'Formula', 'ReadOnlyField', 'Indexed', 'IndexStatus',  ].map( prop => {
-            return panelItemAny [prop] === undefined || panelItemAny [prop] === '' || panelItemAny [prop] === null ? null : 
-              <li key={prop}>{prop} - { JSON.stringify( panelItemAny [prop] ) }</li>;
-          }) }
-        </ul>
-        <ReactJson src={ panelItem } name={ 'Field Details' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
-          enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
-    </Panel>;
-
-  return AttachPanel;
-
-}
-

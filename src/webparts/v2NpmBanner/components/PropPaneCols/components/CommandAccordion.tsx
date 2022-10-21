@@ -15,6 +15,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { IMinField, IMinFieldCmds } from "./IPropPaneColsProps";
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
+import SelectedItemPanelHook from "./FieldPanel";
 
 import ReactJson from 'react-json-view';
 import { filter } from 'lodash';
