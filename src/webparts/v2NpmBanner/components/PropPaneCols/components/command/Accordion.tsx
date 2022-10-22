@@ -38,8 +38,6 @@ import { buildQuickCommands } from './logic';
 
 export interface ICommandBuilderHookProps {
   selected: IMinField[];
-
-  onCmdFieldClick : any;
   expanded: boolean;
   // showFieldPanel: any;
   onExpandRight: any;
@@ -51,7 +49,7 @@ export interface ICommandBuilderHookProps {
 
 const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
 
-  const { selected, onCmdFieldClick, expanded, onExpandRight } = props;
+  const { selected, expanded, onExpandRight } = props;
 
   const [ panelItem, setPanelItem ] = useState<IMinField>(null);
 
@@ -62,6 +60,12 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
   const onClosePanel = (  ) : void => {
     setPanelItem( null );
   }
+
+  
+  const onCmdFieldClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+    const newSelected: IMinField [] = updateSelectedCommands( ev, selected );
+    this.setState({ selected: newSelected });
+  };
 
 
   const choiceFields: IMinField[] = selected.filter( field =>field.FieldTypeKind === FieldTypes.Choice );

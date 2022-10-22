@@ -140,7 +140,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       const DesignCommands: JSX.Element = <CommandBuilderHook
         selected={ this.state.selected }
-        onCmdFieldClick={ this._onCmdFieldClick }
+        // onCmdFieldClick={ this._onCmdFieldClick }
         expanded={ this.state.fullDesign }
         onExpandRight={ this._toggleFullDesign.bind(this) }
       />;
