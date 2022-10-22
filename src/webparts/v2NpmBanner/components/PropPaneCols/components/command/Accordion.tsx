@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getHighlightedText , getHelpfullErrorV2, IQuickButton, IQuickCommands } from '../../../../fpsReferences';
+import { sortObjectArrayByStringKey } from '../../../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -70,6 +71,7 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     updateSelected( newSelected );
   };
 
+  // const sorted: IMinField[] = sortObjectArrayByStringKey( selected, 'asc', 'Title' );
 
   const choiceFields: IMinField[] = selected.filter( field =>field.FieldTypeKind === FieldTypes.Choice );
   const ChoiceTable = createFieldTableRows( null, 'Choice fields', choiceFields, ChoiceFieldActionIcons, onCmdFieldClick, showFieldPanel );
@@ -94,7 +96,6 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
 
   const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{ float: 'right' }}
     data-fieldtype= 'Commands' onClick= { onExpandRight } className={ 'type-filter-icon' } />;
-
 
   const QuickCommands: IQuickCommands = buildQuickCommands( selected ) ;
 

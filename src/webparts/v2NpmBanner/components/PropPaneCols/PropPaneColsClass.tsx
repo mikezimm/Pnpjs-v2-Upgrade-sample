@@ -129,7 +129,8 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     } );
 
     if ( this.state.errMessage ) {
-      fetchErrorPanel( fetchPane, errMessage, lists[ listIdx ].webURL, lists[ listIdx ].listTitle );
+      const result : JSX.Element= fetchErrorPanel( fetchPane, errMessage, lists[ listIdx ].webURL, lists[ listIdx ].listTitle );
+      return ( result );
 
     } else if ( lists.length === 0 ) {
       return ( <div className={ 'prop-pane-cols' } >
@@ -145,7 +146,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         expanded={ this.state.fullDesign }
         onExpandRight={ this._toggleFullDesign.bind(this) }
       />;
-      
+
       // createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign,
       //     this._showFieldPanel.bind(this), this._toggleFullDesign.bind(this) ) ;
 

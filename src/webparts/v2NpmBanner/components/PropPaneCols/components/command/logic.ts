@@ -58,8 +58,10 @@ const ChoicePerButton : IQuickButton = {
   showWhenEvalTrue: "", //item.AssignedToTitle !== sourceUserInfo.Title
 }
 
+const SingleButtonTitle: string = "Add Button Title here";
+
 const EmptyButton : IQuickButton = {
-  str1: "Add Button Title here",
+  str1: SingleButtonTitle,
   label: "{str1}",
   primary: false,
   confirm: "Are you sure you want: {str1}",
@@ -245,42 +247,45 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
   const updateObject: any = {};
 
   // const today = new Date();
+  const updatedFields: IMinField[] = [];
+  const updatedLabels: string[] = [];
 
   selected.map( ( field: IMinField ) => {
     //Find any field that has a filter command
  
     const IntName = field.InternalName;
     const IntNameId = `${IntName}Id`;
+    const Title = field.Title;
     const TypeAsString = field.TypeAsString;
     
     //Go through all possible update actions
     AllUpdateActions.map( ( action: IIconTableRow ) => {
       if ( field.commands[ action.cmd ] === true ) {
-
+        updatedFields.push( field );
         /**
          * NEED TO ADD ANY CHOICE SETTINGS NOT ALREADY DONE.
          */
-        if ( action.cmd === 'setToday' ) { updateObject[ IntName ] = '[Today]' ;  }
-        else if ( action.cmd === 'set1Week' ) { updateObject[ IntName ] = '[Today+7]' ;  }
-        else if ( action.cmd === 'set1Month' ) { updateObject[ IntName ] = '[Today+30]' ;  }
-        else if ( action.cmd === 'clearDate' ) { updateObject[ IntName ] = null ;  }
-        else if ( action.cmd === 'replaceText' ) { updateObject[ IntName ] = `Hello world! It is [Today] and my name is [MyName] - and I clicked '{str1}'` ;  }
-        else if ( action.cmd === 'promptText' ) { updateObject[ IntName ] = '{{stamp}}' ;  }
-        else if ( action.cmd === 'appendNote' ) { updateObject[ IntName ] = '{{append rich stamp}}' ;  }
-        else if ( action.cmd === 'replaceNote' ) { updateObject[ IntName ] = '{{rich stamp}}' ;  }
+        if ( action.cmd === 'setToday' ) { updateObject[ IntName ] = '[Today]' ;  updatedLabels.push( `Set ${Title} = Today` ); }
+        else if ( action.cmd === 'set1Week' ) { updateObject[ IntName ] = '[Today+7]' ; updatedLabels.push( `Set ${Title} = next Week` ); }
+        else if ( action.cmd === 'set1Month' ) { updateObject[ IntName ] = '[Today+30]' ; updatedLabels.push( `Set ${Title} = next Month` );   }
+        else if ( action.cmd === 'clearDate' ) { updateObject[ IntName ] = null ; updatedLabels.push( `Clear ${Title}` );  }
+        else if ( action.cmd === 'replaceText' ) { updateObject[ IntName ] = `Hello world! It is [Today] and my name is [MyName] - and I clicked '{str1}'` ; updatedLabels.push( `Added Text: ${Title}` );  }
+        else if ( action.cmd === 'promptText' ) { updateObject[ IntName ] = '{{stamp}}' ;  updatedLabels.push( `Update comment for: ${Title}` );  }
+        else if ( action.cmd === 'appendNote' ) { updateObject[ IntName ] = '{{append rich stamp}}' ; updatedLabels.push( `Add comment to: ${Title}` );}
+        else if ( action.cmd === 'replaceNote' ) { updateObject[ IntName ] = '{{rich stamp}}' ; updatedLabels.push( `Replace comment in: ${Title}` );  }
         //These are all the user variants
-        else if ( action.cmd === 'setUser' && TypeAsString === 'UserMulti' )    { updateObject[ IntNameId ] = '{Me}' ;  }
-        else if ( action.cmd === 'setUser' && TypeAsString === 'User' )         { updateObject[ IntNameId ] = '[Me]' ;  }
-        else if ( action.cmd === 'addUser' && TypeAsString === 'UserMulti' )    { updateObject[ IntNameId ] = '{+Me}' ;  }
-        else if ( action.cmd === 'addUser' && TypeAsString === 'User' )         { updateObject[ IntNameId ] = '[Me]' ;  }
-        else if ( action.cmd === 'removeUser' && TypeAsString === 'UserMulti' ) { updateObject[ IntNameId ] = '{-Me}' ;  }
-        else if ( action.cmd === 'removeUser' && TypeAsString === 'User' )      { updateObject[ IntNameId ] = '[-Me]' ;  }
-        else if ( action.cmd === 'clearUsers' && TypeAsString === 'UserMulti' ) { updateObject[ IntNameId ] = '[]' ;  }
-        else if ( action.cmd === 'clearUsers' && TypeAsString === 'User' )      { updateObject[ IntNameId ] = '[]' ;  }
+        else if ( action.cmd === 'setUser' && TypeAsString === 'UserMulti' )    { updateObject[ IntNameId ] = '{Me}' ;  updatedLabels.push( `Set ${Title} to me` );  }
+        else if ( action.cmd === 'setUser' && TypeAsString === 'User' )         { updateObject[ IntNameId ] = '[Me]' ;  updatedLabels.push( `Set ${Title} to me` );   }
+        else if ( action.cmd === 'addUser' && TypeAsString === 'UserMulti' )    { updateObject[ IntNameId ] = '{+Me}' ;  updatedLabels.push( `Add me to ${Title}` );   }
+        else if ( action.cmd === 'addUser' && TypeAsString === 'User' )         { updateObject[ IntNameId ] = '[Me]' ; updatedLabels.push( `Add me to ${Title}` );  }
+        else if ( action.cmd === 'removeUser' && TypeAsString === 'UserMulti' ) { updateObject[ IntNameId ] = '{-Me}' ; updatedLabels.push( `Remove me from ${Title}` );  }
+        else if ( action.cmd === 'removeUser' && TypeAsString === 'User' )      { updateObject[ IntNameId ] = '[-Me]' ;  updatedLabels.push( `Remove me from ${Title}` ); }
+        else if ( action.cmd === 'clearUsers' && TypeAsString === 'UserMulti' ) { updateObject[ IntNameId ] = '[]' ; updatedLabels.push( `Clear ${Title}` );  }
+        else if ( action.cmd === 'clearUsers' && TypeAsString === 'User' )      { updateObject[ IntNameId ] = '[]' ; updatedLabels.push( `Clear ${Title}` );  }
 
         ///export type IYesNoActionTypes = 'showOnTrue' | 'showOnFalse' | 'showOnNull' | 'setTrue' | 'setFalse' | 'setToggle' ;
-        else if ( action.cmd === 'setTrue' )      { updateObject[ IntNameId ] = true ;  }
-        else if ( action.cmd === 'setFalse' )     { updateObject[ IntNameId ] = false ;  }
+        else if ( action.cmd === 'setTrue' )      { updateObject[ IntNameId ] = true ; updatedLabels.push( `Set ${Title} to Yes` );  }
+        else if ( action.cmd === 'setFalse' )     { updateObject[ IntNameId ] = false ; updatedLabels.push( `Set ${Title} to No` );  }
         // else if ( action.cmd === 'setToggle' )    { updateObject[ IntNameId ] = '[]' ;  }
 
       }
@@ -288,6 +293,18 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
    });
  
    console.log( 'updateObject: ', updateObject  );
+
+   if ( buttons.length === 1 ) {
+    if ( buttons[0].label === SingleButtonTitle ) {
+      if ( updateObject.length === 1 ) {
+        buttons[0].label = updatedLabels[0];
+      } else if ( updateObject.length > 1 ) {
+        buttons[0].label = `Update ${ updatedFields.map( field => field.Title ).join(', ') }`;
+      } else {
+        buttons[0].label = 'Have NO IDEA What you did :(';
+      }
+    }
+   }
 
   // Merge updateObject to all buttons
   buttons.map( ( button: IQuickButton ) => {

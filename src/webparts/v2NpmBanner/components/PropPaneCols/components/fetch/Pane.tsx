@@ -10,19 +10,21 @@ import { mainSiteLink } from '../main/Pane';
 import { IMinListProps } from '../IPropPaneColsProps';
 // import { fetchFields } from './FetchFuncion';
 
-export function fetchErrorPanel( fetchPane: JSX.Element, errMessage: string, webURL: string, listTitle: string ) {
+export function fetchErrorPanel( fetchPane: JSX.Element, errMessage: string, webURL: string, listTitle: string ): JSX.Element {
 
   const siteLink = mainSiteLink( webURL );
   const messages: string[] = errMessage.split('-- FULL ERROR MESSAGE:');
 
   return ( <div className={ 'prop-pane-cols' } >
-              <h2>There was an error trying to fetch fields for this list:</h2>
-              <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }</h3>
-              { siteLink }
-              <p style={{ fontWeight: 'bold' }}>{messages[0]}</p>
-              <p style={{ fontWeight: 'bold', color: 'red' }}>{ messages[1] }</p>
-              { fetchPane }
-            </div>);
+        { fetchPane }
+        <div className={ 'right-side' }>
+          <h2>There was an error trying to fetch fields for this list:</h2>
+          <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }</h3>
+          { siteLink }
+          <p style={{ fontWeight: 'bold' }}>{messages[0]}</p>
+          <p style={{ fontWeight: 'bold', color: 'red' }}>{ messages[1] }</p>
+          </div>
+        </div>);
 
 }
 
