@@ -125,46 +125,35 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
   //   updateSelected( [ ] );
   // };
 
-  const RightSide = <div>
-    <div>
-      <div>
-        <h2>Command Set Title goes here</h2>
-        <TextField
-          value={ label }
-          description={ 'Add label to save this as group of buttons' }
-          //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
-          onChange= { (e, v) => { setLabel(v) } }
-        />
-        <TextField
-          value={ secondary }
-          description={ 'Additional text in smaller font' }
-          //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
-          onChange= { (e, v) => { setSecondary(v) } }
-        />
-      </div>
-
-    </div>
-    <div>
-      <div>
+  const RightSide = <div style={{ display: 'flex' }}>
         <div>
-          <h2>Total Command Set</h2>
-          <Icon iconName ="Download" onClick={ () => { setCommandSet( [ ...commandSet, ...QuickCommands.buttons ]) } } title={'Add Command Set here'}/>
+          <h2>Command Set Title goes here</h2>
+          <TextField
+            value={ label }
+            description={ 'Add label to save this as group of buttons' }
+            //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
+            onChange= { (e, v) => { setLabel(v) } }
+          />
+          <TextField
+            value={ secondary }
+            description={ 'Additional text in smaller font' }
+            //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
+            onChange= { (e, v) => { setSecondary(v) } }
+          />
+          <div>Design buttons: {QuickCommands.buttons.length}</div>
+          <ReactJson src={ QuickCommands } name={ 'Current' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+              enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
         </div>
         <div>
-          <div>Designer buttons: {QuickCommands.buttons.length}</div>
+          <div>
+            <h2>Total Command Set</h2>
+            <Icon iconName ="Download" onClick={ () => { setCommandSet( [ ...commandSet, ...QuickCommands.buttons ]) } } title={'Add Command Set here'}/>
+          </div>
           <div>Existing buttons: {commandSet.length}</div>
+          <ReactJson src={ commandSet } name={ 'commandSet' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+            enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
         </div>
-      </div>
-      <div>
-        <ReactJson src={ QuickCommands } name={ 'Current' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
-            enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
-
-        <ReactJson src={ commandSet } name={ 'commandSet' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
-            enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
-      </div>
-    </div>
-
-  </div>;
+      </div>;
 
   const commandElement: JSX.Element = <div className={ 'command-tables' }>
     < SelectedItemPanelHook 
