@@ -15,21 +15,36 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { IMinField } from "../IPropPaneColsProps";
 import SelectedItemPanelHook from "../FieldPanel";
+import { getDirectionClicks, getKeeperClicks } from './functions';
 
 
 export interface ISelectedTableHookProps {
   selected: IMinField[];
-  onKeeperClick: any;
-  onDirectionClick: any;
+  // onKeeperClick: any;
+  // onDirectionClick: any;
+  updateSelected: any;
   // showFieldPanel: any;
 }
 
 // export const SelectedTableHook( selected: IMinField[], onKeeperClick: any, onDirectionClick: any , showFieldPanel: any) : JSX.Element {
 const SelectedTableHook: React.FC<ISelectedTableHookProps> = ( props ) => {
 
-  const { selected, onKeeperClick, onDirectionClick, } = props;
+  const { selected, updateSelected } = props;
 
   const [ panelItem, setPanelItem ] = useState<IMinField>(null);
+  // const [ selected, setSelected ] = useState<IMinField[]>(props.selected);
+
+  const onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+    const newSelected: IMinField[] = getKeeperClicks( ev, selected );
+    updateSelected( newSelected );
+    // setSelected( newSelected );
+  };
+
+  const onDirectionClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+    const newSelected: IMinField[] = getDirectionClicks( ev, selected );
+    updateSelected( newSelected );
+    // setSelected( newSelected );
+  };
 
   const tableRows: any[] = [];
   tableRows.push( 

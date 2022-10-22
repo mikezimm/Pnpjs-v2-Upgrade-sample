@@ -12,7 +12,7 @@ import CommandBuilderHook from './components/command/Accordion';
 import { getMainSelectedItems, } from './components/OnClickHelpers';
 // import { buildSelectedFieldTable } from './components/SelectedTable';
 import { createViewBuilder } from './components/views/Accordion';
-import { getDirectionClicks, getKeeperClicks, ISelectedInfo, updateSelectedInfo, } from './components/OnClickHelpers';
+import { ISelectedInfo, updateSelectedInfo, } from './components/OnClickHelpers';
 
 import { IFieldPanelFetchState, IFieldPanelProps, IFieldPanelState, IMinField, IMinListProps, } from './components/IPropPaneColsProps';
 
@@ -140,6 +140,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
 
       const DesignCommands: JSX.Element = <CommandBuilderHook
         selected={ this.state.selected }
+        updateSelected= { this._updateSelected.bind( this ) }
         // onCmdFieldClick={ this._onCmdFieldClick }
         expanded={ this.state.fullDesign }
         onExpandRight={ this._toggleFullDesign.bind(this) }
@@ -158,8 +159,9 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       //     this._onDirectionClick, this._showFieldPanel.bind(this) );
 
       const selectedHook: JSX.Element = <SelectedTableHook 
-        onDirectionClick={ this._onDirectionClick }
-        onKeeperClick={ this._onKeeperClick }
+        updateSelected= { this._updateSelected.bind( this ) }
+        // onDirectionClick={ this._onDirectionClick }
+        // onKeeperClick={ this._onKeeperClick }
         selected={ this.state.selected }
         // showFieldPanel={ this._showFieldPanel.bind(this) }
       />;
@@ -208,6 +210,10 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   private _toggleFullDesign ( status: boolean): void {
     const fullDesign : boolean = this.state.fullDesign === true ? false : true;
     this.setState({ fullDesign: fullDesign });
+  }
+
+  private _updateSelected( selected: IMinField[] ) : void {
+    this.setState({ selected: selected });
   }
 
   private _onCmdFieldClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
@@ -290,15 +296,15 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     }
   }
 
-  private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const newSelected: IMinField[] = getKeeperClicks( ev, this.state.selected );
-    this.setState({ selected: newSelected });
-  };
+  // private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+  //   const newSelected: IMinField[] = getKeeperClicks( ev, this.state.selected );
+  //   this.setState({ selected: newSelected });
+  // };
 
-  private _onDirectionClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const newSelected: IMinField[] = getDirectionClicks( ev, this.state.selected );
-    this.setState({ selected: newSelected });
-  };
+  // private _onDirectionClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+  //   const newSelected: IMinField[] = getDirectionClicks( ev, this.state.selected );
+  //   this.setState({ selected: newSelected });
+  // };
 
   // private _onClosePanel = () : void => {
   //   this.setState({ panelItem: null });

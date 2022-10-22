@@ -37,7 +37,7 @@ export interface IMainCallbacks {
   onTypeClick: any;
   // showFieldPanel: any;
 
-  MainFieldTable?: JSX.Element;
+  // MainFieldTable?: JSX.Element;
 
 }
 

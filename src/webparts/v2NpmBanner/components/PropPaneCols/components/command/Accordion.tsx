@@ -41,6 +41,7 @@ export interface ICommandBuilderHookProps {
   expanded: boolean;
   // showFieldPanel: any;
   onExpandRight: any;
+  updateSelected: any;
 
 }
 
@@ -49,9 +50,11 @@ export interface ICommandBuilderHookProps {
 
 const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
 
-  const { selected, expanded, onExpandRight } = props;
+  const { selected, expanded, onExpandRight, updateSelected } = props;
+  // const { selected, expanded, onExpandRight } = props;
 
   const [ panelItem, setPanelItem ] = useState<IMinField>(null);
+  // const [ selected, setSelected ] = useState<IMinField[]>(props.selected);
 
   const showFieldPanel = ( item: IMinField ) : void => {
     setPanelItem( item );
@@ -61,10 +64,10 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     setPanelItem( null );
   }
 
-  
   const onCmdFieldClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
     const newSelected: IMinField [] = updateSelectedCommands( ev, selected );
-    this.setState({ selected: newSelected });
+    // setSelected( newSelected );
+    updateSelected( newSelected );
   };
 
 
