@@ -10,6 +10,7 @@ import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 import { IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
+import { TextField, } from 'office-ui-fabric-react/lib/TextField';
 
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
@@ -55,7 +56,9 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
   // const { selected, expanded, onExpandRight } = props;
 
   const [ panelItem, setPanelItem ] = useState<IMinField>(null);
-  // const [ selected, setSelected ] = useState<IMinField[]>(props.selected);
+  const [ label, setLabel ] = useState<string>('');
+  const [ secondary, setSecondary ] = useState<string>('');
+  const [ commandSet, setCommandSet ] = useState<IQuickButton[][]>([]);
 
   const showFieldPanel = ( item: IMinField ) : void => {
     setPanelItem( item );
@@ -70,6 +73,11 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     // setSelected( newSelected );
     updateSelected( newSelected );
   };
+
+  // const onLabelUpdate = ( input: any, text: string = '' ): void => {
+  //   const labelText : string = typeof input === 'string' ? input : input && input.target && input.target.value ? input.target.value : '';
+  //   setLabel( labelText );
+  // }
 
   // const sorted: IMinField[] = sortObjectArrayByStringKey( selected, 'asc', 'Title' );
 
@@ -99,10 +107,63 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
 
   const QuickCommands: IQuickCommands = buildQuickCommands( selected ) ;
 
+  if ( label ) {
+    QuickCommands.buttons.unshift( [{
+      label: label,
+      styleButton: 'Divider',
+      secondary: secondary,
+      primary: false,
+      updateItem: undefined,
+    }]);
+  }
+  // const addCommandSet = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+
+  //  const NewButtons: IQuickButton[][] = [];
+  //  NewButtons.push( NewDivider );
+  //   // setSelected( newSelected );
+  //   NewButtons.push( QuickCommands.buttons[0] ) ;
+  //   updateSelected( [ ] );
+  // };
+
   const RightSide = <div>
-    <h2>Command Set Title goes here</h2>
-    <ReactJson src={ QuickCommands } name={ 'QuickCommands' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
-        enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+    <div>
+      <div>
+        <h2>Command Set Title goes here</h2>
+        <TextField
+          value={ label }
+          description={ 'Add label to save this as group of buttons' }
+          //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
+          onChange= { (e, v) => { setLabel(v) } }
+        />
+        <TextField
+          value={ secondary }
+          description={ 'Additional text in smaller font' }
+          //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
+          onChange= { (e, v) => { setSecondary(v) } }
+        />
+      </div>
+
+    </div>
+    <div>
+      <div>
+        <div>
+          <h2>Total Command Set</h2>
+          <Icon iconName ="Download" onClick={ () => { setCommandSet( [ ...commandSet, ...QuickCommands.buttons ]) } } title={'Add Command Set here'}/>
+        </div>
+        <div>
+          <div>Designer buttons: {QuickCommands.buttons.length}</div>
+          <div>Existing buttons: {commandSet.length}</div>
+        </div>
+      </div>
+      <div>
+        <ReactJson src={ QuickCommands } name={ 'Current' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+            enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+
+        <ReactJson src={ commandSet } name={ 'commandSet' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+            enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+      </div>
+    </div>
+
   </div>;
 
   const commandElement: JSX.Element = <div className={ 'command-tables' }>

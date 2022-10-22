@@ -265,9 +265,9 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
         /**
          * NEED TO ADD ANY CHOICE SETTINGS NOT ALREADY DONE.
          */
-        if ( action.cmd === 'setToday' ) { updateObject[ IntName ] = '[Today]' ;  updatedLabels.push( `Set ${Title} = Today` ); }
-        else if ( action.cmd === 'set1Week' ) { updateObject[ IntName ] = '[Today+7]' ; updatedLabels.push( `Set ${Title} = next Week` ); }
-        else if ( action.cmd === 'set1Month' ) { updateObject[ IntName ] = '[Today+30]' ; updatedLabels.push( `Set ${Title} = next Month` );   }
+        if ( action.cmd === 'setToday' ) { updateObject[ IntName ] = '[Today]' ;  updatedLabels.push( `Set ${Title} to Today` ); }
+        else if ( action.cmd === 'set1Week' ) { updateObject[ IntName ] = '[Today+7]' ; updatedLabels.push( `Set ${Title} to next Week` ); }
+        else if ( action.cmd === 'set1Month' ) { updateObject[ IntName ] = '[Today+30]' ; updatedLabels.push( `Set ${Title} to next Month` );   }
         else if ( action.cmd === 'clearDate' ) { updateObject[ IntName ] = null ; updatedLabels.push( `Clear ${Title}` );  }
         else if ( action.cmd === 'replaceText' ) { updateObject[ IntName ] = `Hello world! It is [Today] and my name is [MyName] - and I clicked '{str1}'` ; updatedLabels.push( `Updated : ${Title}` );  }
         else if ( action.cmd === 'promptText' ) { updateObject[ IntName ] = '{{stamp}}' ;  updatedLabels.push( `Update comment for: ${Title}` );  }
