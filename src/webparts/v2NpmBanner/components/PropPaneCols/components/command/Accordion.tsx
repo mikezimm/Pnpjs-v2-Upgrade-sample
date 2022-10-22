@@ -125,8 +125,8 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
   //   updateSelected( [ ] );
   // };
 
-  const RightSide = <div style={{ display: 'flex' }}>
-        <div>
+  const RightSide = <div className={ 'accordion-design' } style={{  }}>
+        <div className='current-title'>
           <h2>Command Set Title goes here</h2>
           <TextField
             value={ label }

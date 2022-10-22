@@ -1,0 +1,38 @@
+/* @import '~office-ui-fabric-react/dist/sass/References.scss'; */
+@import '~office-ui-fabric-react/dist/css/fabric.min.css';
+
+.accordion-design {
+  padding:20px;
+  background: #ececec;
+
+  display: grid;
+  grid-gap: 3em;
+
+  min-height: 50vh;
+
+}
+  .accordion-design .current-title {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .accordion-design .current-object {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .accordion-design .total-title {
+    grid-column: 2;
+    grid-row: 1;
+    transition:all 0.4s ease;
+    opacity: 1;
+  }
+
+  .accordion-design .current-object {
+    grid-column: 2;
+    grid-row: 2;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
