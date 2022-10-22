@@ -7,22 +7,20 @@ import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanc
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 
-import styles from './PropPaneCols.module.scss';
-import { updateSelectedCommands } from './components/CommandAccordion';
-import CommandBuilderHook from './components/CommandAccordion';
+import { updateSelectedCommands } from './components/command/Accordion';
+import CommandBuilderHook from './components/command/Accordion';
 import { getMainSelectedItems, } from './components/OnClickHelpers';
-import SelectedItemPanelHook from './components/FieldPanel';
 // import { buildSelectedFieldTable } from './components/SelectedTable';
-import { createViewBuilder } from './components/ViewAccordion';
+import { createViewBuilder } from './components/views/Accordion';
 import { getDirectionClicks, getKeeperClicks, ISelectedInfo, updateSelectedInfo, } from './components/OnClickHelpers';
 
 import { IFieldPanelFetchState, IFieldPanelProps, IFieldPanelState, IMinField, IMinListProps, } from './components/IPropPaneColsProps';
 
-import { MainPane } from './components/MainPane';
-import { fetchErrorPanel, FetchPane } from './components/FetchPane';
-import { fetchFields } from './components/FetchFuncion';
+import { MainPane } from './components/main/Pane';
+import { fetchErrorPanel, FetchPane } from './components/fetch/Pane';
+import { fetchFields } from './components/fetch/funcions';
 
-import SelectedTableHook from './components/SelectedTableHook';
+import SelectedTableHook from './components/selected/TableHook';
 
 require('./components/PropPaneCols.css');
 

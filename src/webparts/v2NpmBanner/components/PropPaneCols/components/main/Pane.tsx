@@ -13,10 +13,10 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 // import styles from '../PropPaneCols.module.scss';
 
-import { IFieldPanelProps, IFieldPanelState, IsEditable } from './IPropPaneColsProps';
+import { IFieldPanelProps, IFieldPanelState, IsEditable } from '../IPropPaneColsProps';
 
 // import { buildMainFieldTable } from './MainFieldTable';
-import MainFieldTableHook  from './MainFieldTable';
+import MainFieldTableHook  from './FieldTable';
 
 export function mainSiteLink( webURL: string ): JSX.Element {
   return (<div style={{paddingBottom: '15px', fontSize: 'larger', fontWeight: 'bolder' }}>on this site:  

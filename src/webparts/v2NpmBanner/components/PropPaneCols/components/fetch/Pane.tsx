@@ -1,13 +1,13 @@
 
 import * as React from 'react';
 
-import { ILoadPerformance, IPerformanceOp } from '../../../fpsReferences';
+import { ILoadPerformance, IPerformanceOp } from '../../../../fpsReferences';
 
 // import styles from '../PropPaneCols.module.scss';
 
 import ReactJson from 'react-json-view';
-import { mainSiteLink } from './MainPane';
-import { IMinListProps } from './IPropPaneColsProps';
+import { mainSiteLink } from '../main/Pane';
+import { IMinListProps } from '../IPropPaneColsProps';
 // import { fetchFields } from './FetchFuncion';
 
 export function fetchErrorPanel( fetchPane: JSX.Element, errMessage: string, webURL: string, listTitle: string ) {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2 } from '../../../fpsReferences';
+import { getHighlightedText , getHelpfullErrorV2 } from '../../../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -13,8 +13,8 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 // import styles from '../PropPaneCols.module.scss';
 
-import { IMinField } from "./IPropPaneColsProps";
-import SelectedItemPanelHook from "./FieldPanel";
+import { IMinField } from "../IPropPaneColsProps";
+import SelectedItemPanelHook from "../FieldPanel";
 
 
 export interface ISelectedTableHookProps {

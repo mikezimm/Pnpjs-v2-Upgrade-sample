@@ -3,7 +3,7 @@ import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
 
-import { IMinField } from "./IPropPaneColsProps";
+import { IMinField } from "../IPropPaneColsProps";
 
 export function createViewFromFields( fields: IMinField[] ) : IViewField[] {
 
