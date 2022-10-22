@@ -58,7 +58,7 @@ const ChoicePerButton : IQuickButton = {
   showWhenEvalTrue: "", //item.AssignedToTitle !== sourceUserInfo.Title
 }
 
-const SingleButtonTitle: string = "Add Button Title here";
+const SingleButtonTitle: string = "Update Button Title";
 
 const EmptyButton : IQuickButton = {
   str1: SingleButtonTitle,
@@ -269,7 +269,7 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
         else if ( action.cmd === 'set1Week' ) { updateObject[ IntName ] = '[Today+7]' ; updatedLabels.push( `Set ${Title} = next Week` ); }
         else if ( action.cmd === 'set1Month' ) { updateObject[ IntName ] = '[Today+30]' ; updatedLabels.push( `Set ${Title} = next Month` );   }
         else if ( action.cmd === 'clearDate' ) { updateObject[ IntName ] = null ; updatedLabels.push( `Clear ${Title}` );  }
-        else if ( action.cmd === 'replaceText' ) { updateObject[ IntName ] = `Hello world! It is [Today] and my name is [MyName] - and I clicked '{str1}'` ; updatedLabels.push( `Added Text: ${Title}` );  }
+        else if ( action.cmd === 'replaceText' ) { updateObject[ IntName ] = `Hello world! It is [Today] and my name is [MyName] - and I clicked '{str1}'` ; updatedLabels.push( `Updated : ${Title}` );  }
         else if ( action.cmd === 'promptText' ) { updateObject[ IntName ] = '{{stamp}}' ;  updatedLabels.push( `Update comment for: ${Title}` );  }
         else if ( action.cmd === 'appendNote' ) { updateObject[ IntName ] = '{{append rich stamp}}' ; updatedLabels.push( `Add comment to: ${Title}` );}
         else if ( action.cmd === 'replaceNote' ) { updateObject[ IntName ] = '{{rich stamp}}' ; updatedLabels.push( `Replace comment in: ${Title}` );  }
@@ -295,13 +295,17 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
    console.log( 'updateObject: ', updateObject  );
 
    if ( buttons.length === 1 ) {
-    if ( buttons[0].label === SingleButtonTitle ) {
-      if ( updateObject.length === 1 ) {
-        buttons[0].label = updatedLabels[0];
-      } else if ( updateObject.length > 1 ) {
-        buttons[0].label = `Update ${ updatedFields.map( field => field.Title ).join(', ') }`;
+    if ( buttons[0].str1 === SingleButtonTitle ) {
+
+      if ( Object.keys( updateObject).length === 1 ) {
+        buttons[0].str1 = updatedLabels[0];
+
+      } else if ( Object.keys( updateObject ).length > 1 ) {
+        buttons[0].str1 = `Update ${ updatedFields.map( field => field.Title ).join(', ') }`;
+
       } else {
-        buttons[0].label = 'Have NO IDEA What you did :(';
+        buttons[0].str1 = 'Have NO IDEA What you did :(';
+
       }
     }
    }
