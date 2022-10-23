@@ -9,7 +9,7 @@
   column-gap: 20px;
   row-gap: 20px;
 
-  min-height: 50vh;
+  /* min-height: 50vh; */
 
 }
   .accordion-design .current-title {
@@ -37,7 +37,6 @@
     overflow: hidden;
   }
 
-  
   .accordion-design .command-icon {
 
     margin-left: 15px;
@@ -48,6 +47,42 @@
     /* @extend .selectIcon; */
     cursor: pointer;
     padding: 6px 5px 5px;
-  
 
+  }
+
+  /* 'button' | 'divider' | 'choice' */
+  .sample-panel .button {
+    cursor: pointer;
+    font-size: x-large;
+    padding: 15px;
+    background: lightgray;
+    margin: 30px;
+    text-align: center;
+  }
+
+  .sample-panel .choice {
+    cursor: pointer;
+    font-size: x-large;
+    padding: 15px;
+    background: lightgray;
+    margin: 30px;
+    text-align: center;
+  }
+
+  .sample-panel .divider {
+    font-size: x-large;
+    padding: 20px;
+    /* background: lightgray; */
+    margin: 20px 30px 30px;
+    text-align: center;
+    border-bottom: 10px solid lightgray;
+  }
+
+  .sample-panel .divider div:nth-child(1) {
+    font-weight: 600;
+  }
+
+  .sample-panel .divider div:nth-child(2) {
+    font-size: smaller;
+    font-weight: 400;
   }

@@ -93,13 +93,7 @@ const EmptyButton : IQuickButton = {
 export function buildQuickCommands(  selected: IMinField[], title: string, description: string ): IQuickCommandsDesign {
 
   const buttons : IQuickButton[] = [];
-  const summary: IButtonSummary[] = [{
-      label: [ title, description ].join('||'),
-      type: 'divider',
-      updates: [],
-      filters: [],
-      fields: [],
-    }];
+  const summary: IButtonSummary[] = [];
 
   //Do all choice column settings first because it can create multiple buttons
   selected.map( ( field: IMinField ) => {
@@ -208,34 +202,35 @@ export function buildQuickCommands(  selected: IMinField[], title: string, descr
   const gtTodayFields : string[] = [];  //Currently not supported in Drilldown functions
   const ltTodayFields : string[] = [];  //Currently not supported in Drilldown functions
 
+  const filteredFields: string[] = [];
+
   selected.map( ( field: IMinField ) => {
    //Find any field that has a filter command
 
    //If filter command contains show, add to eqFields array else if contains hide, add to neFields array
    Object.keys( field.commands ).map( ( command: IAllActionTypes ) => {
 
-
     if ( field.commands[ command ] === true ) {
       // if ( command.indexOf('show') === 0 ) { 
         // if ( command === 'showToUser' ) { eqUserFields.push( field.InternalName ) ;  }
         // else if ( command === 'hideFromUser' ) { neUserFields.push( field.InternalName ) ;  }
 
-        if ( command === 'showToUser' && field.TypeAsString === 'User' ) { eqUserFields.push( `item.${field.InternalName}Id === sourceUserInfo.Id` ) ;  }
-        else if ( command === 'showToUser' && field.TypeAsString === 'UserMulti' ) { eqUserFields.push( `item.${field.InternalName}Id.indexOf( sourceUserInfo.Id ) > -1` ) ;  }
-        else if ( command === 'hideFromUser' && field.TypeAsString === 'User' ) { neUserFields.push( `item.${field.InternalName}Id !== sourceUserInfo.Id` ) ;  }
-        else if ( command === 'hideFromUser'&& field.TypeAsString === 'UserMulti'  ) { neUserFields.push( `item.${field.InternalName}Id.indexOf( sourceUserInfo.Id ) === -1` ) ;  }
+        if ( command === 'showToUser' && field.TypeAsString === 'User' ) { eqUserFields.push( `item.${field.InternalName}Id === sourceUserInfo.Id` ) ; filteredFields.push( field.InternalName ); }
+        else if ( command === 'showToUser' && field.TypeAsString === 'UserMulti' ) { eqUserFields.push( `item.${field.InternalName}Id.indexOf( sourceUserInfo.Id ) > -1` ) ; filteredFields.push( field.InternalName );  }
+        else if ( command === 'hideFromUser' && field.TypeAsString === 'User' ) { neUserFields.push( `item.${field.InternalName}Id !== sourceUserInfo.Id` ) ; filteredFields.push( field.InternalName );  }
+        else if ( command === 'hideFromUser'&& field.TypeAsString === 'UserMulti'  ) { neUserFields.push( `item.${field.InternalName}Id.indexOf( sourceUserInfo.Id ) === -1` ) ; filteredFields.push( field.InternalName );  }
         // else if ( command === 'promoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
         // else if ( command === 'demoteChoice' ) { eqTextFields.push( field.InternalName ) ;  }
         // else if ( command === 'bracketChoice' ) { eqTextFields.push( field.InternalName ) ;  }
 
         //export type IYesNoActionTypes = 'showOnTrue' | 'showOnFalse' | 'showOnNull' | 'setTrue' | 'setFalse' | 'setToggle' ;
-        else if ( command === 'showOnTrue' ) { YesNoFields.push( `item.${field.InternalName} === true` ) ;  }
-        else if ( command === 'showOnFalse' ) { YesNoFields.push( `item.${field.InternalName} === false` ) ;  }
-        else if ( command === 'showOnNull' ) { YesNoFields.push( `item.${field.InternalName} === null` ) ;  }
+        else if ( command === 'showOnTrue' ) { YesNoFields.push( `item.${field.InternalName} === true` ) ; filteredFields.push( field.InternalName );  }
+        else if ( command === 'showOnFalse' ) { YesNoFields.push( `item.${field.InternalName} === false` ) ; filteredFields.push( field.InternalName );  }
+        else if ( command === 'showOnNull' ) { YesNoFields.push( `item.${field.InternalName} === null` ) ; filteredFields.push( field.InternalName );  }
 
 
-        else if ( command === 'showIfFuture' ) { gtTodayFields.push( field.InternalName ) ;  }
-        else if ( command === 'showIfPast' ) { ltTodayFields.push( field.InternalName ) ;  }
+        else if ( command === 'showIfFuture' ) { gtTodayFields.push( field.InternalName ) ; filteredFields.push( field.InternalName );  }
+        else if ( command === 'showIfPast' ) { ltTodayFields.push( field.InternalName ) ; filteredFields.push( field.InternalName );  }
 
       // } if ( command.indexOf('hide') === 0 ) { neUserFields.push( field.InternalName ) ; }
     }
@@ -243,7 +238,7 @@ export function buildQuickCommands(  selected: IMinField[], title: string, descr
 
   });
 
-  const FilterFields: string[] = [ ...eqUserFields, ...neUserFields, ...YesNoFields, ...gtTodayFields, ...ltTodayFields ];
+  const FilterStrings: string[] = [ ...eqUserFields, ...neUserFields, ...YesNoFields, ...gtTodayFields, ...ltTodayFields ];
   /**
    * This applies user filters defined above
    */
@@ -341,13 +336,28 @@ export function buildQuickCommands(  selected: IMinField[], title: string, descr
   //This loop just adds all the fields that impact this button
   buttons.map( ( button: IQuickButton, idx: number ) => {
     //Get filtered fields
-    FilterFields.map( ( internalName: string ) => {
+    filteredFields.map( ( internalName: string ) => {
+      if ( summary[ idx ].filters.indexOf( internalName ) === -1 ) summary[ idx ].filters.push( internalName );
       if ( summary[ idx ].fields.indexOf( internalName ) === -1 ) summary[ idx ].fields.push( internalName );
     });
-    Object.keys( updateObject ).map( ( key: string ) => {
+    Object.keys(  button.updateItem ).map( ( key: string ) => {
+      if ( summary[ idx ].updates.indexOf( key ) === -1 ) summary[ idx ].updates.push( key );
       if ( summary[ idx ].fields.indexOf( key ) === -1 ) summary[ idx ].fields.push( key );
     });
   });
+
+
+  // Now add the divider button/object when neccessary:
+
+  if ( title ) {
+    summary.unshift( {
+      label: !description ? title : [ title, description ].join('||'),
+      type: 'divider',
+      updates: [],
+      filters: [],
+      fields: [],
+    });
+  }
 
 
   //now go through and do updates

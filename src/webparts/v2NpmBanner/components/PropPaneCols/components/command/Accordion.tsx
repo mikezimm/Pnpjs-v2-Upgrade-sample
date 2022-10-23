@@ -19,12 +19,13 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 import { IMinField, IMinFieldCmds } from "../IPropPaneColsProps";
 import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
 import SelectedItemPanelHook from "../FieldPanel";
+import SampleDesignHook from "./SampleDesign";
 
 import ReactJson from 'react-json-view';
 import { filter } from 'lodash';
 import { IActionProps } from '@pnp/spfx-controls-react';
 
-import { ChoiceFieldActionIcons, UserFieldActionIcons, YesNoFieldActionIcons,   } from './IAccordion'
+import { ChoiceFieldActionIcons, IButtonSummary, UserFieldActionIcons, YesNoFieldActionIcons,   } from './IAccordion'
 import { DateFieldActionIcons, TextFieldActionIcons, NoteFieldActionIcons,  } from './IAccordion'
 import { AllUpdateActions,  } from './IAccordion'
 
@@ -56,10 +57,25 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
   const { selected, expanded, onExpandRight, updateSelected } = props;
   // const { selected, expanded, onExpandRight } = props;
 
+  const [ showCurrent, setShowCurrent ] = useState<boolean>(false);
+  const [ showTotal, setShowTotal ] = useState<boolean>(false);
   const [ panelItem, setPanelItem ] = useState<IMinField>(null);
   const [ label, setLabel ] = useState<string>('');
   const [ secondary, setSecondary ] = useState<string>('');
-  const [ commandSet, setCommandSet ] = useState<IQuickButton[][]>([]);
+  const [ CommandDesign, setCommandDesign ] = useState<IQuickCommandsDesign>({
+                          buttons: [ ],
+                          summary: [],
+                          fields: [],
+                        });
+
+  const hideSamplePanel = (  ) : void => {
+    setShowCurrent( false );
+    setShowTotal( false );
+  }
+
+  const showCurrentSample = (  ) : void => {
+    setShowCurrent( showCurrent !== true ? true : false );
+  }
 
   const showFieldPanel = ( item: IMinField ) : void => {
     setPanelItem( item );
@@ -108,23 +124,18 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
 
   const QuickCommands: IQuickCommandsDesign = buildQuickCommands( selected, label, secondary ) ;
 
-  if ( label ) {
-    QuickCommands.buttons.unshift( [{
-      label: label,
-      styleButton: 'Divider',
-      secondary: secondary,
-      primary: false,
-      updateItem: undefined,
-    }]);
-  }
-  // const addCommandSet = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+  const addCommandSet = ( add: boolean ): void => {
 
-  //  const NewButtons: IQuickButton[][] = [];
-  //  NewButtons.push( NewDivider );
-  //   // setSelected( newSelected );
-  //   NewButtons.push( QuickCommands.buttons[0] ) ;
-  //   updateSelected( [ ] );
-  // };
+   const TotalCommands: IQuickCommandsDesign = {
+    buttons: add === true ? [ ...CommandDesign.buttons, ...QuickCommands.buttons ] : [] ,
+    summary: add === true ? [ ...CommandDesign.summary, ...QuickCommands.summary ] : [] ,
+    fields: add === true ? [ ...CommandDesign.fields, ...QuickCommands.fields ] : [] ,
+   }
+   setCommandDesign( TotalCommands );
+  };
+
+  const SampleCommand = showCurrent !== true ? undefined : SampleDesignHook({ CommandDesign: QuickCommands, onClosePanel: hideSamplePanel }  ) ;
+  const SampleDesign = showTotal !== true ? undefined : SampleDesignHook({ CommandDesign: CommandDesign, onClosePanel: hideSamplePanel }  ) ;
 
   const RightSide = <div className={ 'accordion-design' } style={{  }}>
     <div className='current-title'>
@@ -144,22 +155,32 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
 
     </div>
     <div className='total-object'>
-      <div>Design buttons: {QuickCommands.buttons.length}</div>
-        <ReactJson src={ QuickCommands } name={ 'Current' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
-            enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+      <div>
+        <Icon iconName ="EntryView" className={ 'command-icon' } onClick={ () => setShowCurrent( showTotal !== true ? true : false ) } title={'See sample panel'} style={{ float: 'right'}} />
+        <div>Dividers: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'divider' ).length }</div>
+        <div>Choice buttons: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'choice' ).length }</div>
+        <div>Regular buttons: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'button' ).length }</div>
+      </div>
+      <ReactJson src={ QuickCommands } name={ 'Current' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+          enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
     </div>
 
     <div className='total-title'>
       <div>
         <h2>Total Command Set</h2>
-        <Icon iconName ="Download" className={ 'command-icon' } onClick={ () => { setCommandSet( [ ...commandSet, ...QuickCommands.buttons ]) } } title={'Add Command Set here'}/>
-        <Icon iconName ="Delete" className={ 'command-icon' } onClick={ () => { setCommandSet( [ ]) } } title={'Clear Command Set'}/>
+        <Icon iconName ="Download" className={ 'command-icon' } onClick={ () => addCommandSet( true ) } title={'Add Command Set here'}/>
+        <Icon iconName ="Delete" className={ 'command-icon' } onClick={ () => addCommandSet( false ) } title={'Clear Command Set'}/>
         <Icon iconName ="Save" className={ 'command-icon' } onClick={ null } title={'Save Command Set'}/>
       </div>
     </div>
     <div className='total-object'>
-      <div>Existing buttons: {commandSet.length}</div>
-        <ReactJson src={ commandSet } name={ 'commandSet' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+      <div>
+        <Icon iconName ="EntryView" className={ 'command-icon' } onClick={ () => setShowTotal( showTotal !== true ? true : false ) } title={'See sample panel'} style={{ float: 'right'}} />
+        <div>Dividers: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'divider' ).length }</div>
+        <div>Choice buttons: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'choice' ).length }</div>
+        <div>Regular buttons: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'button' ).length }</div>
+      </div>
+        <ReactJson src={ CommandDesign } name={ 'CommandDesign' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
           enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
     </div>
   </div>;
@@ -182,6 +203,8 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     <div className={ expanded === true ? 'right-command' : 'collapse-command' }>
       { RightSide }
     </div>
+    { SampleCommand }
+    { SampleDesign }
   </div>;
 
   const commandTitle = `Build Commands`;
