@@ -22,19 +22,18 @@ import ReactJson from 'react-json-view';
 import { filter } from 'lodash';
 import { IActionProps } from '@pnp/spfx-controls-react';
 
-import { ChoiceFieldActionIcons, UserFieldActionIcons, YesNoFieldActionIcons,   } from './IAccordion'
+import { ChoiceFieldActionIcons, IButtonsSummary, UserFieldActionIcons, YesNoFieldActionIcons,   } from './IAccordion'
 import { DateFieldActionIcons, TextFieldActionIcons, NoteFieldActionIcons,  } from './IAccordion'
 import { AllUpdateActions,  } from './IAccordion'
 
 import { IAllActionTypes, IChoiceActionTypes, IYesNoActionTypes, IUserActionTypes,   } from './IAccordion'
 import { IDateActionTypes, ITextActionTypes, INoteActionTypes  } from './IAccordion'
-import { IIconTableRow  } from './IAccordion'
+import { IIconTableRow, IQuickCommandsDesign, IButtonSummary  } from './IAccordion'
 
 
 import { AllActions, ChoiceActions, YesNoActions, UserActions,   } from './IAccordion'
 import { DateActions, TextActions, NoteActions  } from './IAccordion'
 import { createFieldTableRows } from './tableRows';
-
 
 
 
@@ -82,23 +81,25 @@ const EmptyButton : IQuickButton = {
 
 //IQuickCommands
 
-export function buildQuickCommands(  selected: IMinField[], ): IQuickCommands {
+// export function buildQuickCommands(  selected: IMinField[], title: string, description: string  ): IQuickCommandsDesign {
 
-  const QuickButtons: IQuickButton[] = buildQuickButtons( selected );
+//   const QuickDesign: IQuickCommandsDesign = buildQuickButtons( selected, title, description );
 
-  const QuickCommands: IQuickCommands = {
-    buttons: [ QuickButtons ],
-    fields: [],
-  };
+//   return QuickDesign;
 
-  return QuickCommands;
-
-}
+// }
 
 
-export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
+export function buildQuickCommands(  selected: IMinField[], title: string, description: string ): IQuickCommandsDesign {
 
   const buttons : IQuickButton[] = [];
+  const summary: IButtonSummary[] = [{
+      label: [ title, description ].join('||'),
+      type: 'divider',
+      updates: [],
+      filters: [],
+      fields: [],
+    }];
 
   //Do all choice column settings first because it can create multiple buttons
   selected.map( ( field: IMinField ) => {
@@ -108,6 +109,16 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
       const catchNullEmpty = `!item.${field.InternalName}`;
 
       field.Choices.map( ( choice: string , idx: number ) => {
+
+        const buttonSummary: IButtonSummary = {
+          label: '',
+          type: 'choice',
+          updates: [],
+          filters: [],
+          fields: [field.InternalName],
+        };
+
+        let skipSummary: boolean = false; //Used later to push to buttonSummary if the button does get created.  true === skip pushing
 
         const buttonIndex = idx === 0 ? 'first' : idx  === field.Choices.length -1 ? 'last' : 'middle';
         const thisButton: IQuickButton = JSON.parse(JSON.stringify( ChoicePerButton ));
@@ -130,7 +141,7 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
 
         } else if ( buttonIndex === 'last' && filterButton === 'demote' ) {
           //Skip this button since you can not promote the item any further
-
+          skipSummary = true;
         } else {
 
           const promoteFilter = idx === 0 ? '' : field.Choices[ idx -1 ];
@@ -139,7 +150,6 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
           //This will enable the first button if the choice column is ever null/empty
           thisButton.showWhenEvalTrue = buttonIndex === 'first' ? catchNullEmpty : '';
           thisButton.str1 = choice;
-
 
           if ( promoteFilter && ( filterButton === 'promote' || filterButton === 'bracket' ) ){
 
@@ -168,13 +178,24 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
           }
           thisButton.updateItem[ field.InternalName ] = `{str1}`;
           buttons.push( thisButton );
-        }
 
+        }
+        buttonSummary.label = thisButton.str1;
+        if ( skipSummary === false ) summary.push( buttonSummary );
       });
     }
   });
 
-  if ( buttons.length === 0 ) buttons.push( JSON.parse(JSON.stringify( EmptyButton)) );
+  if ( buttons.length === 0 ) { 
+    buttons.push( JSON.parse(JSON.stringify( EmptyButton)) );
+    summary.push ({
+        label: EmptyButton.label,
+        type: 'button',
+        updates: [],
+        filters: [],
+        fields: [],
+      }) ;
+  }
 
   //Get filtered fields
   const eqUserFields : string[] = [];
@@ -213,7 +234,6 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
         else if ( command === 'showOnNull' ) { YesNoFields.push( `item.${field.InternalName} === null` ) ;  }
 
 
-
         else if ( command === 'showIfFuture' ) { gtTodayFields.push( field.InternalName ) ;  }
         else if ( command === 'showIfPast' ) { ltTodayFields.push( field.InternalName ) ;  }
 
@@ -223,6 +243,7 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
 
   });
 
+  const FilterFields: string[] = [ ...eqUserFields, ...neUserFields, ...YesNoFields, ...gtTodayFields, ...ltTodayFields ];
   /**
    * This applies user filters defined above
    */
@@ -233,7 +254,7 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
   const YesNoEvalFilters: string = YesNoFields.length === 0 ? '' : `( ${YesNoFields.join( ' && ')} )`;
 
   if ( UserEvalFilters ) {
-    buttons.map( ( button: IQuickButton ) => {
+    buttons.map( ( button: IQuickButton, idx: number ) => {
       button.showWhenEvalTrue = bumpEval( button.showWhenEvalTrue, '&&', UserEvalFilters , false ); 
     });
   }
@@ -316,12 +337,30 @@ export function buildQuickButtons(  selected: IMinField[], ): IQuickButton[] {
     button.updateItem = { ...button.updateItem, ...updateObject }
   });
 
+
+  //This loop just adds all the fields that impact this button
+  buttons.map( ( button: IQuickButton, idx: number ) => {
+    //Get filtered fields
+    FilterFields.map( ( internalName: string ) => {
+      if ( summary[ idx ].fields.indexOf( internalName ) === -1 ) summary[ idx ].fields.push( internalName );
+    });
+    Object.keys( updateObject ).map( ( key: string ) => {
+      if ( summary[ idx ].fields.indexOf( key ) === -1 ) summary[ idx ].fields.push( key );
+    });
+  });
+
+
   //now go through and do updates
 
 
-      
+  const QuickDesign: IQuickCommandsDesign = {
+    buttons: [ buttons ],
+    summary: summary,
+    fields: [],
+  };
 
-  return buttons;
+  console.log('QuickDesign: IQuickCommandsDesign = ', QuickDesign );
+  return QuickDesign;
 
 }
 

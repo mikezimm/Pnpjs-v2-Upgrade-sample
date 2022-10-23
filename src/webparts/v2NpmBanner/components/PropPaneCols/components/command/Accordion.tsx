@@ -29,14 +29,14 @@ import { DateFieldActionIcons, TextFieldActionIcons, NoteFieldActionIcons,  } fr
 import { AllUpdateActions,  } from './IAccordion'
 
 import { IAllActionTypes, IChoiceActionTypes, IYesNoActionTypes, IUserActionTypes,   } from './IAccordion'
-import { IDateActionTypes, ITextActionTypes, INoteActionTypes  } from './IAccordion'
+import { IDateActionTypes, IQuickCommandsDesign, ITextActionTypes, INoteActionTypes  } from './IAccordion'
 import { IIconTableRow  } from './IAccordion'
 
 
 import { AllActions, ChoiceActions, YesNoActions, UserActions,   } from './IAccordion'
 import { DateActions, TextActions, NoteActions  } from './IAccordion'
 import { createFieldTableRows } from './tableRows';
-import { buildQuickCommands } from './logic';
+import { buildQuickCommands } from './createLogic';
 
 export interface ICommandBuilderHookProps {
   selected: IMinField[];
@@ -47,6 +47,7 @@ export interface ICommandBuilderHookProps {
 
 }
 
+require('./command.css');
 
 // export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null, expanded: boolean, showFieldPanel: any, onExpandRight: any = null ) : JSX.Element { //onCmdFieldClick: any
 
@@ -105,7 +106,7 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
   const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{ float: 'right' }}
     data-fieldtype= 'Commands' onClick= { onExpandRight } className={ 'type-filter-icon' } />;
 
-  const QuickCommands: IQuickCommands = buildQuickCommands( selected ) ;
+  const QuickCommands: IQuickCommandsDesign = buildQuickCommands( selected, label, secondary ) ;
 
   if ( label ) {
     QuickCommands.buttons.unshift( [{
@@ -126,34 +127,42 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
   // };
 
   const RightSide = <div className={ 'accordion-design' } style={{  }}>
-        <div className='current-title'>
-          <h2>Command Set Title goes here</h2>
-          <TextField
-            value={ label }
-            description={ 'Add label to save this as group of buttons' }
-            //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
-            onChange= { (e, v) => { setLabel(v) } }
-          />
-          <TextField
-            value={ secondary }
-            description={ 'Additional text in smaller font' }
-            //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
-            onChange= { (e, v) => { setSecondary(v) } }
-          />
-          <div>Design buttons: {QuickCommands.buttons.length}</div>
-          <ReactJson src={ QuickCommands } name={ 'Current' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
-              enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
-        </div>
-        <div>
-          <div>
-            <h2>Total Command Set</h2>
-            <Icon iconName ="Download" onClick={ () => { setCommandSet( [ ...commandSet, ...QuickCommands.buttons ]) } } title={'Add Command Set here'}/>
-          </div>
-          <div>Existing buttons: {commandSet.length}</div>
-          <ReactJson src={ commandSet } name={ 'commandSet' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+    <div className='current-title'>
+      <h2>Command Set Title goes here</h2>
+      <TextField
+        value={ label }
+        description={ 'Add label to save this as group of buttons' }
+        //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
+        onChange= { (e, v) => { setLabel(v) } }
+      />
+      <TextField
+        value={ secondary }
+        description={ 'Additional text in smaller font' }
+        //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
+        onChange= { (e, v) => { setSecondary(v) } }
+      />
+
+    </div>
+    <div className='total-object'>
+      <div>Design buttons: {QuickCommands.buttons.length}</div>
+        <ReactJson src={ QuickCommands } name={ 'Current' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
             enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
-        </div>
-      </div>;
+    </div>
+
+    <div className='total-title'>
+      <div>
+        <h2>Total Command Set</h2>
+        <Icon iconName ="Download" className={ 'command-icon' } onClick={ () => { setCommandSet( [ ...commandSet, ...QuickCommands.buttons ]) } } title={'Add Command Set here'}/>
+        <Icon iconName ="Delete" className={ 'command-icon' } onClick={ () => { setCommandSet( [ ]) } } title={'Clear Command Set'}/>
+        <Icon iconName ="Save" className={ 'command-icon' } onClick={ null } title={'Save Command Set'}/>
+      </div>
+    </div>
+    <div className='total-object'>
+      <div>Existing buttons: {commandSet.length}</div>
+        <ReactJson src={ commandSet } name={ 'commandSet' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } 
+          enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+    </div>
+  </div>;
 
   const commandElement: JSX.Element = <div className={ 'command-tables' }>
     < SelectedItemPanelHook 

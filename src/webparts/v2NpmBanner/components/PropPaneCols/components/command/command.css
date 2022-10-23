@@ -6,7 +6,8 @@
   background: #ececec;
 
   display: grid;
-  grid-gap: 3em;
+  column-gap: 20px;
+  row-gap: 20px;
 
   min-height: 50vh;
 
@@ -36,3 +37,17 @@
     overflow: hidden;
   }
 
+  
+  .accordion-design .command-icon {
+
+    margin-left: 15px;
+    font-size: x-large;
+    background: white;
+    border-radius: 5px;
+
+    /* @extend .selectIcon; */
+    cursor: pointer;
+    padding: 6px 5px 5px;
+  
+
+  }

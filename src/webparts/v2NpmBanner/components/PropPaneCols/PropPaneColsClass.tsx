@@ -291,9 +291,9 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     const searchText: string = `${SearchValue}${ property ? property : ''}`;
 
     if ( !SearchValueLc ) {
-      this.setState({ filtered: filtered, searchText: searchText, searchProp: property });
+      this.setState({ filtered: filtered, searchText: searchText, searchProp: property, designMode: true });
     } else {
-      this.setState({ filtered: filtered, searchText: searchText, searchProp: property });
+      this.setState({ filtered: filtered, searchText: searchText, searchProp: property, designMode: true });
     }
   }
 

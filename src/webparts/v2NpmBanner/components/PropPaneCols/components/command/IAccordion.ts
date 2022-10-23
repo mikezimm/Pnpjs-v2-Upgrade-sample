@@ -15,6 +15,24 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 import { IMinFieldCmds } from "../IPropPaneColsProps";
 
 
+export type IButtonPurpose = 'button' | 'divider' | 'choice' ;
+
+export interface IButtonSummary {
+  type: IButtonPurpose;
+  label: string;
+  updates: string[];
+  filters: string[];
+  fields: string[]; //Fields impacted by this button -- could be used to pass selected fields to fetch function
+}
+
+export interface IButtonsSummary {
+  buttons: IButtonSummary[];
+}
+
+export interface IQuickCommandsDesign extends IQuickCommands {
+  summary: IButtonSummary[];
+}
+
 /**
  * MEMO TO SELF... THESE TYPES ARE TIED DIRECTLY TO THE keys in the IMinFieldCmds Interface.
  * 
