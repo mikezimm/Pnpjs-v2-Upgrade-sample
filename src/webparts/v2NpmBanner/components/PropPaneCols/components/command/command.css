@@ -51,6 +51,15 @@
   }
 
   /* 'button' | 'divider' | 'choice' */
+  .sample-panel {
+    min-height: 80vh;
+  }
+
+  .choice-stack {
+    position: relative;
+  }
+
+  /* 'button' | 'divider' | 'choice' */
   .sample-panel .button {
     cursor: pointer;
     font-size: x-large;
@@ -67,6 +76,14 @@
     background: lightgray;
     margin: 30px;
     text-align: center;
+    box-shadow: 10px 10px 29px 7px rgba(0,0,0,0.5);
+    width: 60%;
+    transition:all 0.4s ease;
+  }
+
+  .sample-panel .choice:hover {
+    z-index: 999999;
+    transition:all 0.4s ease;
   }
 
   .sample-panel .divider {

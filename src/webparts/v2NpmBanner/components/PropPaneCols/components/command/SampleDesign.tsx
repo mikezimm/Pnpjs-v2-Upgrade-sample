@@ -28,29 +28,31 @@ const SampleDesignHook: React.FC<IPanelItemProps> = ( props ) => {
 
     if ( button.type !== 'choice' ){
       const text:string[] = button.label.split('||');
-      return <div className={ button.type } style={{ position: idx === 0 ? 'relative' : 'absolute' }}>
+      // return <div className={ button.type } style={{ position: idx === 0 ? 'relative' : 'absolute' }}>
+      return <div className={ button.type } style={ null }>
         <div>{ text[0] }</div>
         <div>{ text.length === 1 ? null : text [1] }</div>
       </div>;
-    } else if ( button.type === 'choice' && CommandDesign.summary[ idx-1 ].type !== 'choice' ) {
+      //ERROR READING TYPE HERE
+    } else if ( idx === 0 || ( button.type === 'choice' && CommandDesign.summary[ idx-1 ].type !== 'choice' ) ) {
       return createChoiceStack( idx );  //
     }
 
   }
-  
+
   function createChoiceStack( idx: number ): JSX.Element {
     const ChoiceButtonArray: JSX.Element[] = [];
     let i = idx + 0;
-
-    while( CommandDesign.summary[ i ].type === 'choice' ) {
-      const offset = `${( i - idx ) * 10}px`;
-      ChoiceButtonArray.push( <div className={ 'choice' } style={{ position: i === idx ? 'relative' : 'absolute', top: offset, left: offset }}>
+    let offset = 0;
+    while( i < CommandDesign.summary.length && CommandDesign.summary[ i ].type === 'choice' ) {
+      ChoiceButtonArray.push( <div className={ 'choice' } style={{ position: 'absolute', top: `${offset}px`, left: `${offset}px` }}>
         <div>{ CommandDesign.summary[ i ].label }</div>
       </div> );
-        i ++;
+      i ++;
+      offset = ( i - idx ) * 20;
     }
 
-    return <div className={ 'choice-stack' } style={{  }}>
+    return <div className={ 'choice-stack' } style={{ marginBottom: `${offset + 10 }px` }}>
       { ChoiceButtonArray }
     </div>;
   }
