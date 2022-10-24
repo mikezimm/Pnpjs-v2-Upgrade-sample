@@ -1,28 +1,30 @@
 
 import * as React from 'react';
 
-import { ILoadPerformance, IPerformanceOp } from '../../../fpsReferences';
+import { ILoadPerformance, IPerformanceOp } from '../../../../fpsReferences';
 
-import styles from '../PropPaneCols.module.scss';
+// import styles from '../PropPaneCols.module.scss';
 
 import ReactJson from 'react-json-view';
-import { mainSiteLink } from './MainPane';
-import { IMinListProps } from './IPropPaneColsProps';
+import { mainSiteLink } from '../main/Pane';
+import { IMinListProps } from '../IPropPaneColsProps';
 // import { fetchFields } from './FetchFuncion';
 
-export function fetchErrorPanel( fetchPane: JSX.Element, errMessage: string, webURL: string, listTitle: string ) {
+export function fetchErrorPanel( fetchPane: JSX.Element, errMessage: string, webURL: string, listTitle: string ): JSX.Element {
 
   const siteLink = mainSiteLink( webURL );
   const messages: string[] = errMessage.split('-- FULL ERROR MESSAGE:');
 
-  return ( <div className={ styles.propPaneCols } >
-              <h2>There was an error trying to fetch fields for this list:</h2>
-              <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }</h3>
-              { siteLink }
-              <p style={{ fontWeight: 'bold' }}>{messages[0]}</p>
-              <p style={{ fontWeight: 'bold', color: 'red' }}>{ messages[1] }</p>
-              { fetchPane }
-            </div>);
+  return ( <div className={ 'prop-pane-cols' } >
+        { fetchPane }
+        <div className={ 'right-side' }>
+          <h2>There was an error trying to fetch fields for this list:</h2>
+          <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'` }</h3>
+          { siteLink }
+          <p style={{ fontWeight: 'bold' }}>{messages[0]}</p>
+          <p style={{ fontWeight: 'bold', color: 'red' }}>{ messages[1] }</p>
+          </div>
+        </div>);
 
 }
 
@@ -64,18 +66,18 @@ export function FetchPane ( props: IFetchPaneProps ): JSX.Element {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const fetch4Any: any = fetch4 as any;
 
-        return <div className={ styles.performanceRow } key={idx}><div>{key}</div> <div>{ fetch4Any[ key ] }</div></div>;
+        return <div className={ 'performance-row' } key={idx}><div>{key}</div> <div>{ fetch4Any[ key ] }</div></div>;
       })
     }
 
   </div>;
 
   //This works when I pass in this._onClick...bind(this)
-  // const fetchButton: JSX.Element = <div className={ styles.button } onClick={ () => onClickFetchFields() } >Fetch</div>;
+  // const fetchButton: JSX.Element = <div className={ 'button } onClick={ () => onClickFetchFields() } >Fetch</div>;
   // This also works when I pass in this._onClick...bind(this)
-  const fetchButton: JSX.Element = <div className={ styles.button } onClick={ onClickFetchFields } >Fetch</div>;
+  const fetchButton: JSX.Element = <div className={ 'button' } onClick={ onClickFetchFields } >Fetch</div>;
 
-  return ( <div className={ [ styles.fetchPane, designMode === true ? styles.hideLeft : styles.showLeft ].join(' ') }>
+  return ( <div className={ [ 'fetch-pane', designMode === true ? 'hide-left' : 'show-left' ].join(' ') }>
       { fetchButton }
       <div style={{ margin: '20px', fontWeight: 'bolder', color: status.indexOf('Success') > -1 ? 'darkgreen': status.indexOf('Failed') > -1 ? 'red': '' }}>{ status }</div>
       <div style={{ margin: '20px' }}>{ fetchPerformance }</div>

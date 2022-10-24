@@ -11,11 +11,12 @@ import {  SearchBox, ISearchBoxStyles, } from 'office-ui-fabric-react/lib/Search
 
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import styles from '../PropPaneCols.module.scss';
+// import styles from '../PropPaneCols.module.scss';
 
-import { IFieldPanelProps, IFieldPanelState, IsEditable } from './IPropPaneColsProps';
+import { IFieldPanelProps, IFieldPanelState, IsEditable } from '../IPropPaneColsProps';
 
-import { buildMainFieldTable } from './MainFieldTable';
+// import { buildMainFieldTable } from './MainFieldTable';
+import MainFieldTableHook  from './FieldTable';
 
 export function mainSiteLink( webURL: string ): JSX.Element {
   return (<div style={{paddingBottom: '15px', fontSize: 'larger', fontWeight: 'bolder' }}>on this site:  
@@ -34,15 +35,15 @@ export interface IMainCallbacks {
   toggleDesign: any;
   onSelectItem: any;
   onTypeClick: any;
-  showFieldPanel: any;
+  // showFieldPanel: any;
 
-  MainFieldTable?: JSX.Element;
+  // MainFieldTable?: JSX.Element;
 
 }
 
 export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, callbacks: IMainCallbacks ): JSX.Element {
 
-  const { selectFiltered, onFilterClick2, onSelectItem, showFieldPanel } = callbacks;
+  const { selectFiltered, onFilterClick2, onSelectItem, } = callbacks;
   const { onTextSearch, onTypeClick, } = callbacks;
   // const { onTextSearch,} = callbacks;
   const { toggleDesign } = callbacks;
@@ -78,37 +79,37 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
     />;
 
   const SelectFiltered = <Icon iconName={ 'SkypeCircleArrow' } title={ 'Select All these columns'} style={{ color: searchText ? '' : 'lightgray' }}
-    data-fieldtype= '' onClick= { !fetched ? null : selectFiltered } className={ styles.typeFilterIcon } />;
+    data-fieldtype= '' onClick= { !fetched ? null : selectFiltered } className={ 'type-filter-icon' } />;
 
   const DateFilterIcon = <Icon iconName={ 'DateTime' } title={ 'Filter for DateTime columns'} style={{  }}
-    data-fieldtype= 'Date and Time' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Date and Time' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const UserFilterIcon = <Icon iconName={ 'Contact' } title={ 'Filter for User columns'} style={{  }}
-    data-fieldtype= 'Person or Group' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Person or Group' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const TextFilterIcon = <Icon iconName={ 'TextField' } title={ 'Filter for Text columns'} style={{  }}
-    data-fieldtype= 'Text' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Text' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const ChoiceFilterIcon = <Icon iconName={ 'Stack' } title={ 'Filter for Choice columns'} style={{  }}
-    data-fieldtype= 'Choice' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Choice' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const NumberFilterIcon = <Icon iconName={ 'Number' } title={ 'Filter for Number columns'} style={{  }}
-    data-fieldtype= 'Number' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Number' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const YesNoFilterIcon = <Icon iconName={ 'CheckboxComposite' } title={ 'Filter for Number columns'} style={{  }}
-    data-fieldtype= 'Yes/No' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Yes/No' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const LookupFilterIcon = <Icon iconName={ 'Relationship' } title={ 'Filter for Lookup columns'} style={{  }}
-    data-fieldtype= 'Lookup' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Lookup' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const UrlFilterIcon = <Icon iconName={ 'Link' } title={ 'Filter for Link columns'} style={{  }}
-    data-fieldtype= 'Hyperlink or Picture' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Hyperlink or Picture' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const EditableFilterIcon = <Icon iconName={ 'Edit' } title={ 'All Editable'} style={{  }}
-    data-fieldtype= { IsEditable } onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= { IsEditable } onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const CalculatedFilterIcon = <Icon iconName={ 'Variable' } title={ 'Calculated columns'} style={{  }}
-    data-fieldtype= 'Calculated' onClick= { !fetched ? null : onFilterClick2 } className={ styles.typeFilterIcon } />;
+    data-fieldtype= 'Calculated' onClick= { !fetched ? null : onFilterClick2 } className={ 'type-filter-icon' } />;
 
   const FilterButtons = <div style={{display: 'flex', marginLeft: '50px' }}>
       { SelectFiltered } { DateFilterIcon } { UserFilterIcon } { TextFilterIcon }
@@ -116,11 +117,20 @@ export function MainPane ( props: IFieldPanelProps, state: IFieldPanelState, cal
       { YesNoFilterIcon } { LookupFilterIcon } { UrlFilterIcon } { EditableFilterIcon }
     </div>;
 
-  const MainFieldTable : JSX.Element = buildMainFieldTable( filtered, designMode, listFields, searchProp, searchText, onSelectItem, onTypeClick, showFieldPanel );
+  const MainFieldTable : JSX.Element = <MainFieldTableHook
+    filtered={ filtered }
+    designMode={ designMode }
+    listFields={ listFields }
+    searchProp={ searchProp }
+    searchText={ searchText }
+    onSelectItem={ onSelectItem }
+    onTypeClick={ onTypeClick }
+    // showFieldPanel={ showFieldPanel }
+  />;
 
   const { listTitle, } = lists[ listIdx ] ;
   return (
-    <div className={ styles.rightSide }>
+    <div className={ 'right-side' }>
       <h3 style={{ marginTop: '0px' }}>{ `Fields from '${ listTitle }'`  } { DesignToggle}</h3>
       { mainSiteLink( lists[ listIdx ].webURL ) }
       <div style={{paddingBottom: '15px', display: 'flex', alignContent: 'space-between' }}>{ FieldSearchBox  } {  FilterButtons }</div>

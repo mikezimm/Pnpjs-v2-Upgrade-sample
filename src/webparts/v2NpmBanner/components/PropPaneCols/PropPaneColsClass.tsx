@@ -7,18 +7,22 @@ import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanc
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 
-import styles from './PropPaneCols.module.scss';
-import { createCommandBuilder, updateSelectedCommands } from './components/CommandAccordion';
-import { getMainSelectedItems, getSelectedItemPanel } from './components/MainFieldTable';
-import { buildSelectedFieldTable } from './components/SelectedTable';
-import { createViewBuilder } from './components/ViewAccordion';
-import { getDirectionClicks, getKeeperClicks, ISelectedInfo, updateSelectedInfo, } from './OnClickHelpers';
+import { updateSelectedCommands } from './components/command/Accordion';
+import CommandBuilderHook from './components/command/Accordion';
+import { getMainSelectedItems, } from './components/OnClickHelpers';
+// import { buildSelectedFieldTable } from './components/SelectedTable';
+import ViewBuilderHook from './components/views/Accordion';
+import { ISelectedInfo, updateSelectedInfo, } from './components/OnClickHelpers';
 
 import { IFieldPanelFetchState, IFieldPanelProps, IFieldPanelState, IMinField, IMinListProps, } from './components/IPropPaneColsProps';
 
-import { MainPane } from './components/MainPane';
-import { fetchErrorPanel, FetchPane } from './components/FetchPane';
-import { fetchFields } from './components/FetchFuncion';
+import { MainPane } from './components/main/Pane';
+import { fetchErrorPanel, FetchPane } from './components/fetch/Pane';
+import { fetchFields } from './components/fetch/funcions';
+
+import SelectedTableHook from './components/selected/TableHook';
+
+require('./components/PropPaneCols.css');
 
 export default class FieldPanel extends React.Component< IFieldPanelProps, IFieldPanelState > {
 
@@ -115,7 +119,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   public render(): React.ReactElement<IFieldPanelProps> {
 
     const { lists, } = this.props;
-    const { status, designMode, errMessage, listIdx, panelItem } = this.state;
+    const { status, designMode, errMessage, listIdx, panelItem, searchText } = this.state;
 
     const fetchPane : JSX.Element = FetchPane( { 
       onClickFetchFields: this._clickFetchFields.bind(this),
@@ -125,22 +129,48 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     } );
 
     if ( this.state.errMessage ) {
-      fetchErrorPanel( fetchPane, errMessage, lists[ listIdx ].webURL, lists[ listIdx ].listTitle );
+      const result : JSX.Element= fetchErrorPanel( fetchPane, errMessage, lists[ listIdx ].webURL, lists[ listIdx ].listTitle );
+      return ( result );
 
     } else if ( lists.length === 0 ) {
-      return ( <div className={ styles.propPaneCols } >
+      return ( <div className={ 'prop-pane-cols' } >
                   <h3>There are no lists to show columns for.</h3>
               </div>);
 
     } else {
 
-      const DesignCommands: JSX.Element = createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign, 
-          this._showFieldPanel.bind(this), this._toggleFullDesign.bind(this) ) ;
+      const DesignCommands: JSX.Element = <CommandBuilderHook
+        selected={ this.state.selected }
+        updateSelected= { this._updateSelected.bind( this ) }
+        // onCmdFieldClick={ this._onCmdFieldClick }
+        expanded={ this.state.fullDesign }
+        onExpandRight={ this._toggleFullDesign.bind(this) }
+        tryCallback={ this.props.tryCommands }
+        saveCallback={ this.props.saveCommands }
+      />;
 
-      const DesignViews: JSX.Element = createViewBuilder( this.state.selected, null, this._toggleFullDesign.bind(this) );
+      // createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign,
+      //     this._showFieldPanel.bind(this), this._toggleFullDesign.bind(this) ) ;
 
-      const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick, 
-          this._onDirectionClick, this._showFieldPanel.bind(this) );
+
+      const DesignViews: JSX.Element = <ViewBuilderHook
+        expanded={ this.state.fullDesign }
+        onExpandRight={ this._toggleFullDesign.bind(this) }
+        selected={ this.state.selected }
+        tryCallback={ this.props.tryViews }
+        saveCallback={ this.props.saveViews }
+      />
+
+      // const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick,
+      //     this._onDirectionClick, this._showFieldPanel.bind(this) );
+
+      const selectedHook: JSX.Element = <SelectedTableHook 
+        updateSelected= { this._updateSelected.bind( this ) }
+        // onDirectionClick={ this._onDirectionClick }
+        // onKeeperClick={ this._onKeeperClick }
+        selected={ this.state.selected }
+        // showFieldPanel={ this._showFieldPanel.bind(this) }
+      />;
 
       const MainPanel: JSX.Element = MainPane( this.props, this.state, 
         {
@@ -150,27 +180,32 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             toggleDesign: this._toggleDesign.bind(this),
             onSelectItem: this._onSelectItem,
             onTypeClick: this._onTypeClick.bind(this),
-            showFieldPanel: this._showFieldPanel.bind(this),
+            // showFieldPanel: this._showFieldPanel.bind(this),
           } );
 
       let designPane: JSX.Element = null;
       if ( designMode === true ) {
-        designPane = <div className={ styles.designPane }>
+        designPane = <div className={ 'design-pane' }>
             { DesignCommands }
             { DesignViews }
             <div style={{paddingBottom: '5px', fontSize: 'smaller' }}>CTRL-click <b>Arrows</b> to move to Top or Bottom</div>
-            { SelectedTable }
+            { selectedHook }
+            {/* { SelectedTable } */}
           </div>
       }
 
-
       return (
 
-        <div className={ [ styles.propPaneCols, styles.colsResults, this.state.fullDesign === true ? styles.fullDesign : null ].join( ' ' ) } >
+        <div className={ [ 'prop-pane-cols', 'cols-results', this.state.fullDesign === true ? 'full-design' : null ].join( ' ' ) } >
           { fetchPane }
           { designPane }
           { MainPanel }
-          { getSelectedItemPanel( panelItem, this._onClosePanel.bind(this) ) }
+          {/* { SelectedItemPanelHook( { panelItem: panelItem, searchText: searchText, onClosePanel: this._onClosePanel.bind(this) } ) } */}
+          {/* < SelectedItemPanelHook 
+              panelItem= { panelItem }
+              searchText={ this.state.searchText }
+              onClosePanel= { this._onClosePanel.bind(this) }
+            /> */}
         </div>
       );
 
@@ -181,6 +216,10 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   private _toggleFullDesign ( status: boolean): void {
     const fullDesign : boolean = this.state.fullDesign === true ? false : true;
     this.setState({ fullDesign: fullDesign });
+  }
+
+  private _updateSelected( selected: IMinField[] ) : void {
+    this.setState({ selected: selected });
   }
 
   private _onCmdFieldClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
@@ -222,7 +261,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
   
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { altKey, ctrlKey, shiftKey, type } = ev; // type is like 'click'
-    const fieldtype: string = this.state?.searchText === target.dataset?.fieldtype.toLocaleLowerCase() ? '' : target.dataset.fieldtype;
+    const fieldtype: string = this.state?.searchText.toLocaleLowerCase() === target.dataset?.fieldtype.toLocaleLowerCase() ? '' : target.dataset.fieldtype;
     this._onSearchChange( fieldtype , '' );
   }
 
@@ -242,40 +281,40 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
     this._onSearchChange( SearchValue , '' );
   }
 
-  private _onSearchChange ( input: string, property: string = '' ): void {
+  private _onSearchChange ( SearchValue: string, property: string = '' ): void {
 
-    const SearchValue = input.toLocaleLowerCase();
+    const SearchValueLc = SearchValue.toLocaleLowerCase();
 
     const filtered: IMinField[] = [];
 
     this.state.listFields.map( ( field: IMinField) => {
-      const textFound: number = !SearchValue ? 0 : field.searchTextLC.indexOf( SearchValue ) ;
+      const textFound: number = !SearchValueLc ? 0 : field.searchTextLC.indexOf( SearchValueLc ) ;
       const propertyFound: boolean = !property ? true : field.TypeDisplayName === property;
       if ( textFound > -1 && propertyFound === true ) filtered.push( field );
     });
 
     const searchText: string = `${SearchValue}${ property ? property : ''}`;
 
-    if ( !SearchValue ) {
-      this.setState({ filtered: filtered, searchText: searchText, searchProp: property });
+    if ( !SearchValueLc ) {
+      this.setState({ filtered: filtered, searchText: searchText, searchProp: property, designMode: true });
     } else {
-      this.setState({ filtered: filtered, searchText: searchText, searchProp: property });
+      this.setState({ filtered: filtered, searchText: searchText, searchProp: property, designMode: true });
     }
   }
 
-  private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const newSelected: IMinField[] = getKeeperClicks( ev, this.state.selected );
-    this.setState({ selected: newSelected });
-  };
+  // private _onKeeperClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+  //   const newSelected: IMinField[] = getKeeperClicks( ev, this.state.selected );
+  //   this.setState({ selected: newSelected });
+  // };
 
-  private _onDirectionClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
-    const newSelected: IMinField[] = getDirectionClicks( ev, this.state.selected );
-    this.setState({ selected: newSelected });
-  };
+  // private _onDirectionClick = ( ev: React.MouseEvent<HTMLElement>  ): void => {
+  //   const newSelected: IMinField[] = getDirectionClicks( ev, this.state.selected );
+  //   this.setState({ selected: newSelected });
+  // };
 
-  private _onClosePanel = () : void => {
-    this.setState({ panelItem: null });
-  }
+  // private _onClosePanel = () : void => {
+  //   this.setState({ panelItem: null });
+  // }
 
   //field: IMinField
   // private _showFieldPanel = ( ev: React.MouseEvent<HTMLElement>  ): void => {
