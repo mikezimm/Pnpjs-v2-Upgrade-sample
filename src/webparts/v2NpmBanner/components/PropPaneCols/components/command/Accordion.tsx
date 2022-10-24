@@ -139,6 +139,9 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
   const SampleCommand = showCurrent !== true ? undefined : SampleDesignHook({ CommandDesign: QuickCommands, onClosePanel: hideSamplePanel }  ) ;
   const SampleDesign = showTotal !== true ? undefined : SampleDesignHook({ CommandDesign: CommandDesign, onClosePanel: hideSamplePanel }  ) ;
 
+  const showTry = tryCallback && CommandDesign.summary.length > 0 ? true : false;
+  const showSave = saveCallback && CommandDesign.summary.length > 0 ? true : false;
+
   const RightSide = <div className={ 'accordion-design' } style={{  }}>
     <div className='current-title'>
       <h2>Command Set Title goes here</h2>
@@ -172,8 +175,10 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
         <h2>Total Command Set</h2>
         <Icon iconName ="Download" className={ 'command-icon' } onClick={ () => addCommandSet( true ) } title={'Add Command Set here'}/>
         <Icon iconName ="Delete" className={ 'command-icon' } onClick={ () => addCommandSet( false ) } title={'Clear Command Set'}/>
-        <Icon iconName ="Save" className={ 'command-icon' } onClick={ null } title={'Save Command Set'} style={{ display: props.saveCallback ? '' : 'none' }}/>
-        <Icon iconName ="TestImpactSolid" className={ 'command-icon' } onClick={ null } title={'Try Command Set'} style={{ display: props.tryCallback ? '' : 'none' }}/>
+        <Icon iconName ="Save" className={ 'command-icon' } onClick={ showSave  === true ? () => saveCallback( CommandDesign ) : null } 
+            title={'Save Command Set'} style={{ display: showSave === true ? '' : 'none' }}/>
+        <Icon iconName ="TestImpactSolid" className={ 'command-icon' } onClick={ showTry === true ? () => tryCallback( CommandDesign ) : null } 
+            title={'Try Command Set'} style={{ display: showTry === true ? '' : 'none' }}/>
       </div>
     </div>
     <div className='total-object'>

@@ -157,8 +157,8 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         expanded={ this.state.fullDesign }
         onExpandRight={ this._toggleFullDesign.bind(this) }
         selected={ this.state.selected }
-        tryViews={ this.props.tryViews }
-        saveViews={ this.props.saveViews }
+        tryCallback={ this.props.tryViews }
+        saveCallback={ this.props.saveViews }
       />
 
       // const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick,

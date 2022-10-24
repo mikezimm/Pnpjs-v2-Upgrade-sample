@@ -24,8 +24,8 @@ export interface IViewBuilderHookProps {
   expanded: boolean;
   // showFieldPanel: any;
   onExpandRight: any;
-  tryViews?: any;  //if function is passed down, parent web part could use this to temporarily replace the saved button commands.
-  saveViews?: any;  // callback function to save current command
+  tryCallback?: any;  //if function is passed down, parent web part could use this to temporarily replace the saved button commands.
+  saveCallback?: any;  // callback function to save current command
 
 }
 
@@ -33,7 +33,7 @@ export interface IViewBuilderHookProps {
 
 const ViewBuilderHook: React.FC<IViewBuilderHookProps> = ( props ) => {
 
-  const { selected, expanded, onExpandRight, tryViews, saveViews } = props;
+  const { selected, expanded, onExpandRight, tryCallback, saveCallback } = props;
 
   const viewFields: IViewField[] = [];
 
@@ -46,8 +46,10 @@ const ViewBuilderHook: React.FC<IViewBuilderHookProps> = ( props ) => {
   const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{  }}
     data-fieldtype= 'Commands' onClick= { onExpandRight } className={ 'type-filter-icon' } />;
 
-  const tryIcon = <Icon iconName ="Save" className={ 'command-icon' } onClick={ null } title={'Save Views Set'} style={{ display: saveViews ? '' : 'none' }}/>
-  const saveIcon = <Icon iconName ="TestImpactSolid" className={ 'command-icon' } onClick={ null } title={'Try Views Set'} style={{ display: tryViews ? '' : 'none' }}/>
+  const tryIcon = <Icon iconName ="Save" className={ 'command-icon' } onClick={ saveCallback ? () => saveCallback( viewFields ) : null } 
+      title={'Save Views Set'} style={{ display: saveCallback ? '' : 'none' }}/>
+  const saveIcon = <Icon iconName ="TestImpactSolid" className={ 'command-icon' } onClick={ tryCallback ? () => tryCallback( viewFields ) : null } 
+      title={'Try Views Set'} style={{ display: tryCallback ? '' : 'none' }}/>
 
   const viewElement: JSX.Element = <div>
     <div style={{ display: 'flex' }}>

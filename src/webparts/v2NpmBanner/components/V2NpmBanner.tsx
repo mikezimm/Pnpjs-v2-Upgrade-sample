@@ -25,6 +25,8 @@ import { IPinMeState } from '../fpsReferences';
 
 import { IUser } from '../fpsReferences';
 import FieldPanel from './PropPaneCols/PropPaneColsClass';
+import { IQuickCommandsDesign } from './PropPaneCols/components/command/IAccordion';
+import { IViewField } from '@pnp/spfx-controls-react/lib/ListView';
 
 //Use this to add more console.logs for this component
 const urlParams : URLSearchParams = new URLSearchParams( window.location.search );
@@ -382,14 +384,34 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
           <FieldPanel 
             displayMode={this.props.displayMode}
             lists={this.props.lists}
-            tryCommands={ null }
-            tryViews={ null }
-            saveCommands={ null }
-            saveViews={ null }
+            tryCommands={ this._tryCommands.bind( this ) }
+            tryViews={ this._tryViews.bind( this ) }
+            saveCommands={ this._saveCommands.bind( this ) }
+            saveViews={ this._saveViews.bind( this ) }
           />
         </div>
       </section>
     );
+  }
+
+  private _saveCommands( commands: IQuickCommandsDesign ): void {
+    console.log('_saveCommands', commands );
+    alert( `_saveCommands - ${this.props.lists[0].listTitle}` );
+  }
+
+  private _saveViews( viewFields: IViewField[] ): void {
+    console.log('_saveViews', viewFields );
+    alert( `_saveViews - ${this.props.lists[0].listTitle}` );
+  }
+
+  private _tryCommands( commands: IQuickCommandsDesign ): void {
+    console.log('_tryCommands', commands );
+    alert( `_tryCommands - ${this.props.lists[0].listTitle}` );
+  }
+
+  private _tryViews( viewFields: IViewField[] ): void {
+    console.log('_tryViews', viewFields );
+    alert( `_tryViews - ${this.props.lists[0].listTitle}` );
   }
 
   private _doSomething(): void {
