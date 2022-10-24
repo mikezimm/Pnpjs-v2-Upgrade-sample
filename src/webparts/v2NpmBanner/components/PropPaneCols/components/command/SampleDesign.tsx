@@ -21,12 +21,15 @@ const SampleDesignHook: React.FC<IPanelItemProps> = ( props ) => {
 
   const { CommandDesign } = props;
   
+  // Setting state in any way causes react error 310.
+  // https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/36
   // const [ label, setLabel ] = useState<string>('');
 
   // const IconStyles: React.CSSProperties = { cursor: 'pointer', fontSize: 'x-large', marginLeft: '20px', color: 'lightgray' };
 
   // let firstChoice: null;
 
+  // For https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/36
   const clickSummary = ( idx: number ) : void => {
     console.log( 'clicked', idx );
 

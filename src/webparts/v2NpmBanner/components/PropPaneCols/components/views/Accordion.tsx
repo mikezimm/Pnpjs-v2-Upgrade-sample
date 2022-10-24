@@ -46,9 +46,9 @@ const ViewBuilderHook: React.FC<IViewBuilderHookProps> = ( props ) => {
   const expandRightIcon = <Icon iconName={ 'TransitionPop' } title={ 'Expand right to see button object'} style={{  }}
     data-fieldtype= 'Commands' onClick= { onExpandRight } className={ 'type-filter-icon' } />;
 
-  const tryIcon = <Icon iconName ="Save" className={ 'command-icon' } onClick={ saveCallback ? () => saveCallback( viewFields ) : null } 
+  const tryIcon = <Icon iconName ="Save" className={ 'type-filter-icon' } onClick={ saveCallback ? () => saveCallback( viewFields ) : null } 
       title={'Save Views Set'} style={{ display: saveCallback ? '' : 'none' }}/>
-  const saveIcon = <Icon iconName ="TestImpactSolid" className={ 'command-icon' } onClick={ tryCallback ? () => tryCallback( viewFields ) : null } 
+  const saveIcon = <Icon iconName ="TestImpactSolid" className={ 'type-filter-icon' } onClick={ tryCallback ? () => tryCallback( viewFields ) : null } 
       title={'Try Views Set'} style={{ display: tryCallback ? '' : 'none' }}/>
 
   const viewElement: JSX.Element = <div>

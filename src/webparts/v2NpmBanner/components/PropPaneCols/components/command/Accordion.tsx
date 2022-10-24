@@ -173,7 +173,7 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     </div>
     <div className='total-object'>
       <div>
-        <Icon iconName ="EntryView" className={ 'command-icon' } onClick={ () => updateShowCurrent( ) } title={'See sample panel'} style={{ float: 'right'}} />
+        <Icon iconName ="EntryView" className={ 'type-filter-icon' } onClick={ () => updateShowCurrent( ) } title={'See sample panel'} style={{ float: 'right'}} />
         <div>Dividers: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'divider' ).length }</div>
         <div>Choice buttons: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'choice' ).length }</div>
         <div>Regular buttons: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'button' ).length }</div>
@@ -185,17 +185,17 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     <div className='total-title'>
       <div>
         <h2>Total Command Set</h2>
-        <Icon iconName ="Download" className={ 'command-icon' } onClick={ () => addCommandSet( true ) } title={'Add Command Set here'}/>
-        <Icon iconName ="Delete" className={ 'command-icon' } onClick={ () => addCommandSet( false ) } title={'Clear Command Set'}/>
-        <Icon iconName ="Save" className={ 'command-icon' } onClick={ showSave  === true ? () => saveCallback( CommandDesign ) : null } 
+        <Icon iconName ="Download" className={ 'type-filter-icon' } onClick={ () => addCommandSet( true ) } title={'Add Command Set here'}/>
+        <Icon iconName ="Delete" className={ 'type-filter-icon' } onClick={ () => addCommandSet( false ) } title={'Clear Command Set'}/>
+        <Icon iconName ="Save" className={ 'type-filter-icon' } onClick={ showSave  === true ? () => saveCallback( CommandDesign ) : null } 
             title={'Save Command Set'} style={{ display: showSave === true ? '' : 'none' }}/>
-        <Icon iconName ="TestImpactSolid" className={ 'command-icon' } onClick={ showTry === true ? () => tryCallback( CommandDesign ) : null } 
+        <Icon iconName ="TestImpactSolid" className={ 'type-filter-icon' } onClick={ showTry === true ? () => tryCallback( CommandDesign ) : null } 
             title={'Try Command Set'} style={{ display: showTry === true ? '' : 'none' }}/>
       </div>
     </div>
     <div className='total-object'>
       <div>
-        <Icon iconName ="EntryView" className={ 'command-icon' } onClick={ () => updateShowTotal( ) } title={'See sample panel'} style={{ float: 'right'}} />
+        <Icon iconName ="EntryView" className={ 'type-filter-icon' } onClick={ () => updateShowTotal( ) } title={'See sample panel'} style={{ float: 'right'}} />
         <div>Dividers: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'divider' ).length }</div>
         <div>Choice buttons: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'choice' ).length }</div>
         <div>Regular buttons: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'button' ).length }</div>
