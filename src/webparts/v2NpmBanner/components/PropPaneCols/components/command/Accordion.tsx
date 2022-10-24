@@ -45,6 +45,8 @@ export interface ICommandBuilderHookProps {
   // showFieldPanel: any;
   onExpandRight: any;
   updateSelected: any;
+  tryCallback?: any;  //if function is passed down, parent web part could use this to temporarily replace the saved button commands.
+  saveCallback?: any;  // callback function to save current command
 
 }
 
@@ -54,7 +56,7 @@ require('./command.css');
 
 const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
 
-  const { selected, expanded, onExpandRight, updateSelected } = props;
+  const { selected, expanded, onExpandRight, updateSelected, tryCallback, saveCallback  } = props;
   // const { selected, expanded, onExpandRight } = props;
 
   const [ showCurrent, setShowCurrent ] = useState<boolean>(false);
@@ -170,7 +172,8 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
         <h2>Total Command Set</h2>
         <Icon iconName ="Download" className={ 'command-icon' } onClick={ () => addCommandSet( true ) } title={'Add Command Set here'}/>
         <Icon iconName ="Delete" className={ 'command-icon' } onClick={ () => addCommandSet( false ) } title={'Clear Command Set'}/>
-        <Icon iconName ="Save" className={ 'command-icon' } onClick={ null } title={'Save Command Set'}/>
+        <Icon iconName ="Save" className={ 'command-icon' } onClick={ null } title={'Save Command Set'} style={{ display: props.saveCallback ? '' : 'none' }}/>
+        <Icon iconName ="TestImpactSolid" className={ 'command-icon' } onClick={ null } title={'Try Command Set'} style={{ display: props.tryCallback ? '' : 'none' }}/>
       </div>
     </div>
     <div className='total-object'>

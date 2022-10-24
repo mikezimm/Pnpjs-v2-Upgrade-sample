@@ -29,6 +29,10 @@ export interface IMinField extends IFieldInfo {
 export interface IFieldPanelProps {
   webURL: string;
   listTitle: string,
+  tryCommands?: any;  //if function is passed down, parent web part could use this to temporarily replace the saved button commands.
+  saveCommands?: any;  // callback function to save current command
+  tryViews?: any;  //if function is passed down, parent web part could use this to temporarily replace the saved button commands.
+  saveViews?: any;  // callback function to save current command
 }
 
 const ListFieldsHook: React.FC<IFieldPanelProps> = ( props ) => {

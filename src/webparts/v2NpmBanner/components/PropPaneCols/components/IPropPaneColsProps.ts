@@ -13,6 +13,11 @@ export interface IFieldPanelProps {
   displayMode: DisplayMode;
   lists: IMinListProps[];
   disableDesign?: boolean; //Default is false
+  
+  tryCommands?: any;  //if function is passed down, parent web part could use this to temporarily replace the saved button commands.
+  saveCommands?: any;  // callback function to save current command
+  tryViews?: any;  //if function is passed down, parent web part could use this to temporarily replace the saved button commands.
+  saveViews?: any;  // callback function to save current command
 }
 
 

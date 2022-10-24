@@ -300,9 +300,9 @@ export function buildQuickCommands(  selected: IMinField[], title: string, descr
         else if ( action.cmd === 'clearUsers' && TypeAsString === 'User' )      { updateObject[ IntNameId ] = '[]' ; updatedLabels.push( `Clear ${Title}` );  }
 
         ///export type IYesNoActionTypes = 'showOnTrue' | 'showOnFalse' | 'showOnNull' | 'setTrue' | 'setFalse' | 'setToggle' ;
-        else if ( action.cmd === 'setTrue' )      { updateObject[ IntNameId ] = true ; updatedLabels.push( `Set ${Title} to Yes` );  }
-        else if ( action.cmd === 'setFalse' )     { updateObject[ IntNameId ] = false ; updatedLabels.push( `Set ${Title} to No` );  }
-        // else if ( action.cmd === 'setToggle' )    { updateObject[ IntNameId ] = '[]' ;  }
+        else if ( action.cmd === 'setTrue' )      { updateObject[ IntName ] = true ; updatedLabels.push( `Set ${Title} to Yes` );  }
+        else if ( action.cmd === 'setFalse' )     { updateObject[ IntName ] = false ; updatedLabels.push( `Set ${Title} to No` );  }
+        // else if ( action.cmd === 'setToggle' )    { updateObject[ IntName ] = '[]' ;  }
 
       }
     }); 
@@ -357,6 +357,15 @@ export function buildQuickCommands(  selected: IMinField[], title: string, descr
       filters: [],
       fields: [],
     });
+
+    buttons.unshift( {
+      label: title,
+      secondary: description,
+      styleButton: '',
+      primary: false,
+      updateItem: null,
+    });
+
   }
 
 

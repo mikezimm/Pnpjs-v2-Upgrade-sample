@@ -11,7 +11,7 @@ import { updateSelectedCommands } from './components/command/Accordion';
 import CommandBuilderHook from './components/command/Accordion';
 import { getMainSelectedItems, } from './components/OnClickHelpers';
 // import { buildSelectedFieldTable } from './components/SelectedTable';
-import { createViewBuilder } from './components/views/Accordion';
+import ViewBuilderHook from './components/views/Accordion';
 import { ISelectedInfo, updateSelectedInfo, } from './components/OnClickHelpers';
 
 import { IFieldPanelFetchState, IFieldPanelProps, IFieldPanelState, IMinField, IMinListProps, } from './components/IPropPaneColsProps';
@@ -145,16 +145,21 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
         // onCmdFieldClick={ this._onCmdFieldClick }
         expanded={ this.state.fullDesign }
         onExpandRight={ this._toggleFullDesign.bind(this) }
+        tryCallback={ this.props.tryCommands }
+        saveCallback={ this.props.saveCommands }
       />;
 
       // createCommandBuilder( this.state.selected, this._onCmdFieldClick, this.state.fullDesign,
       //     this._showFieldPanel.bind(this), this._toggleFullDesign.bind(this) ) ;
 
 
-
-
-
-      const DesignViews: JSX.Element = createViewBuilder( this.state.selected, null, this._toggleFullDesign.bind(this) );
+      const DesignViews: JSX.Element = <ViewBuilderHook
+        expanded={ this.state.fullDesign }
+        onExpandRight={ this._toggleFullDesign.bind(this) }
+        selected={ this.state.selected }
+        tryViews={ this.props.tryViews }
+        saveViews={ this.props.saveViews }
+      />
 
       // const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick,
       //     this._onDirectionClick, this._showFieldPanel.bind(this) );

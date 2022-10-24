@@ -382,6 +382,10 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
           <FieldPanel 
             displayMode={this.props.displayMode}
             lists={this.props.lists}
+            tryCommands={ null }
+            tryViews={ null }
+            saveCommands={ null }
+            saveViews={ null }
           />
         </div>
       </section>
