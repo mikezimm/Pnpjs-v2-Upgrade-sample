@@ -146,11 +146,11 @@ export function buildQuickCommands(  selected: IMinField[], title: string, descr
           //This will enable the first button if the choice column is ever null/empty
           thisButton.showWhenEvalTrue = buttonIndex === 'first' ? catchNullEmpty : '';
           thisButton.str1 = choice;
-          thisButton.strPrev = promoteFilter;
-          thisButton.strNext = demoteFilter;
 
           if ( promoteFilter && ( filterButton === 'promote' || filterButton === 'bracket' ) ){
 
+            thisButton.strPrev = promoteFilter;  // for https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/25
+            
             // thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === '${promoteFilter}'` , false );
             thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === {strPrev}` , false );
             // thisButton.showWhenEvalTrue += thisButton.showWhenEvalTrue ? ' || ' : '';
@@ -158,6 +158,8 @@ export function buildQuickCommands(  selected: IMinField[], title: string, descr
           }
 
           if ( demoteFilter && ( filterButton === 'demote' || filterButton === 'bracket' ) ){
+
+            thisButton.strNext = demoteFilter;  // for https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/25
 
             // thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === '${demoteFilter}'` , false );
             thisButton.showWhenEvalTrue = bumpEval( thisButton.showWhenEvalTrue, '||', `item.${field.InternalName} === {strNext}` , false );
