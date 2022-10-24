@@ -22,15 +22,15 @@ import SelectedItemPanelHook from "../FieldPanel";
 import SampleDesignHook from "./SampleDesign";
 
 import ReactJson from 'react-json-view';
-import { filter } from 'lodash';
-import { IActionProps } from '@pnp/spfx-controls-react';
+// import { filter } from 'lodash';
+// import { IActionProps } from '@pnp/spfx-controls-react';
 
 import { ChoiceFieldActionIcons, IButtonSummary, UserFieldActionIcons, YesNoFieldActionIcons,   } from './IAccordion'
 import { DateFieldActionIcons, TextFieldActionIcons, NoteFieldActionIcons,  } from './IAccordion'
-import { AllUpdateActions,  } from './IAccordion'
+// import { AllUpdateActions,  } from './IAccordion'
 
 import { IAllActionTypes, IChoiceActionTypes, IYesNoActionTypes, IUserActionTypes,   } from './IAccordion'
-import { IDateActionTypes, IQuickCommandsDesign, ITextActionTypes, INoteActionTypes  } from './IAccordion'
+import { IDateActionTypes, IQuickCommandsDesign,  } from './IAccordion'
 import { IIconTableRow  } from './IAccordion'
 
 
@@ -75,8 +75,20 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     setShowTotal( false );
   }
 
-  const showCurrentSample = (  ) : void => {
+  const updateShowCurrent = (  ) : void => {
     setShowCurrent( showCurrent !== true ? true : false );
+  }
+
+  const updateShowTotal = (  ) : void => {
+    setShowTotal( showTotal !== true ? true : false );
+  }
+
+  const updateSecondary = ( v: string ) : void => {
+    setSecondary( v );
+  }
+
+  const updateLabel = ( v: string ) : void => {
+    setLabel( v );
   }
 
   const showFieldPanel = ( item: IMinField ) : void => {
@@ -149,19 +161,19 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
         value={ label }
         description={ 'Add label to save this as group of buttons' }
         //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
-        onChange= { (e, v) => { setLabel(v) } }
+        onChange= { (e, v) => { updateLabel(v) } }
       />
       <TextField
         value={ secondary }
         description={ 'Additional text in smaller font' }
         //Modeled after https://github.com/pnp/sp-dev-fx-webparts/blob/b139ba199cb57363a88f070dd9814e5af4fc3cbd/samples/react-teams-personal-app-settings/src/webparts/personalAppSettings/components/settingsPanel/SettingsPanel.tsx#L67
-        onChange= { (e, v) => { setSecondary(v) } }
+        onChange= { (e, v) => { updateSecondary(v) } }
       />
 
     </div>
     <div className='total-object'>
       <div>
-        <Icon iconName ="EntryView" className={ 'command-icon' } onClick={ () => setShowCurrent( showTotal !== true ? true : false ) } title={'See sample panel'} style={{ float: 'right'}} />
+        <Icon iconName ="EntryView" className={ 'command-icon' } onClick={ () => updateShowCurrent( ) } title={'See sample panel'} style={{ float: 'right'}} />
         <div>Dividers: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'divider' ).length }</div>
         <div>Choice buttons: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'choice' ).length }</div>
         <div>Regular buttons: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'button' ).length }</div>
@@ -183,7 +195,7 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     </div>
     <div className='total-object'>
       <div>
-        <Icon iconName ="EntryView" className={ 'command-icon' } onClick={ () => setShowTotal( showTotal !== true ? true : false ) } title={'See sample panel'} style={{ float: 'right'}} />
+        <Icon iconName ="EntryView" className={ 'command-icon' } onClick={ () => updateShowTotal( ) } title={'See sample panel'} style={{ float: 'right'}} />
         <div>Dividers: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'divider' ).length }</div>
         <div>Choice buttons: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'choice' ).length }</div>
         <div>Regular buttons: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'button' ).length }</div>

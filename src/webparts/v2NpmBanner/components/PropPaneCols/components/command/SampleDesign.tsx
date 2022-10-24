@@ -3,33 +3,55 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
-import { Icon, } from 'office-ui-fabric-react/lib/Icon';
+// import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { IButtonSummary, IQuickCommandsDesign } from './IAccordion';
+import { IQuickButton } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
 
 export interface IPanelItemProps {
   CommandDesign: IQuickCommandsDesign;
   onClosePanel: any;
 }
 
-const ConstIcon = <Icon iconName={ 'Stack' } title={ 'Is a choice button' } style={{  }}
-    data-fieldtype= 'Choice' className={ 'type-filter-icon' } />
+// const ConstIcon = <Icon iconName={ 'Stack' } title={ 'Is a choice button' } style={{  }}
+//     data-fieldtype= 'Choice' className={ 'type-filter-icon' } />
 
 // export function getSampleDesign( panelItem: IMinField, onClosePanel: any, searchText: string ) : JSX.Element {
 const SampleDesignHook: React.FC<IPanelItemProps> = ( props ) => {
 
   const { CommandDesign } = props;
+  
+  // const [ label, setLabel ] = useState<string>('');
 
-  const IconStyles: React.CSSProperties = { cursor: 'pointer', fontSize: 'x-large', marginLeft: '20px', color: 'lightgray' };
+  // const IconStyles: React.CSSProperties = { cursor: 'pointer', fontSize: 'x-large', marginLeft: '20px', color: 'lightgray' };
 
-  let firstChoice: null;
+  // let firstChoice: null;
+
+  const clickSummary = ( idx: number ) : void => {
+    console.log( 'clicked', idx );
+
+    if ( idx > -1 ) {
+      let equivilantSummary = -1;
+      let ActualButton: IQuickButton = null;
+      CommandDesign.buttons.map( ( buttonRow: IQuickButton[] ) => {
+        buttonRow.map( ( button: IQuickButton ) => {
+          equivilantSummary ++;
+          if ( idx === equivilantSummary ) ActualButton = button ;
+        });
+      } );
+
+      console.log( 'ActualButton', ActualButton ) ;
+      alert( `Clicked ${ ActualButton.label.replace( `{str1}`, ActualButton.str1) }, Check console for details.`)
+    }
+
+  }
 
   function createButtonRow( button: IButtonSummary, idx: number ): JSX.Element {
 
     if ( button.type !== 'choice' ){
       const text:string[] = button.label.split('||');
       // return <div className={ button.type } style={{ position: idx === 0 ? 'relative' : 'absolute' }}>
-      return <div className={ button.type } style={ null }>
+      return <div className={ button.type } style={ null } onClick= { () => clickSummary( idx ) }>
         <div>{ text[0] }</div>
         <div>{ text.length === 1 ? null : text [1] }</div>
       </div>;
@@ -45,7 +67,9 @@ const SampleDesignHook: React.FC<IPanelItemProps> = ( props ) => {
     let i = idx + 0;
     let offset = 0;
     while( i < CommandDesign.summary.length && CommandDesign.summary[ i ].type === 'choice' ) {
-      ChoiceButtonArray.push( <div className={ 'choice' } style={{ position: 'absolute', top: `${offset}px`, left: `${offset}px` }}>
+      const whileIndex = i + 0; // Had to create this or the clickSummary( ) would always just show the last index.
+      ChoiceButtonArray.push( <div className={ 'choice' } style={{ position: 'absolute', top: `${offset}px`, left: `${offset}px` }}
+        onClick= { () => clickSummary( whileIndex ) }>
         <div>{ CommandDesign.summary[ i ].label }</div>
       </div> );
       i ++;

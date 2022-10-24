@@ -26,13 +26,8 @@ const SampleDesignHook: React.FC<IPanelItemProps> = ( props ) => {
   //No matter what I do here, I seem to get error 310 whenever trying to do anything with state.
   const [ label, setLabel ] = useState<string>('');
 
-  const IconStyles: React.CSSProperties = { cursor: 'pointer', fontSize: 'x-large', marginLeft: '20px', color: 'lightgray' };
-
-  let firstChoice: null;
-
   const clickSummary = ( idx: number ) : void => {
     console.log( 'clicked', idx )
-    // setClickedSummary( idx );
   }
 
   function createButtonRow( button: IButtonSummary, idx: number ): JSX.Element {

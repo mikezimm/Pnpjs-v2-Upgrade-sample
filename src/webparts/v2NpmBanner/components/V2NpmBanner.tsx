@@ -201,7 +201,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
       if ( fpsconsole === true ) console.log( `${consolePrefix} ~ componentDidUpdate` );
 
-      const refresh = this.props.displayMode !== prevProps.displayMode ? true : false;
+      let refresh = this.props.displayMode !== prevProps.displayMode ? true : false;
 
       //refresh these privates when the prop changes warrent it
       if ( refresh === true ) {
@@ -234,7 +234,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
      }
 
      if ( JSON.stringify( prevProps.lists) !== JSON.stringify( this.props.lists ) ) {
-      refresh === true;
+      refresh = true;
      }
 
      return refresh;
