@@ -11,6 +11,10 @@ module.exports = {
         'ecmaVersion': 2018,
         'sourceType': 'module'
       },
+      // "plugins": [
+      //   // ...
+      //   "react-hooks"
+      // ],
       rules: {
         // Prevent usage of the JavaScript null value, while allowing code to access existing APIs that may require null. https://www.npmjs.com/package/@rushstack/eslint-plugin
         '@rushstack/no-new-null': 1,
@@ -124,7 +128,7 @@ module.exports = {
         //
         // STANDARDIZED BY:   @typescript-eslint\eslint-plugin\dist\configs\recommended.json
         '@typescript-eslint/no-unused-vars': [
-          1,
+          0,
           {
             'vars': 'all',
             // Unused function arguments often indicate a mistake in JavaScript code.  However in TypeScript code,
@@ -323,7 +327,9 @@ module.exports = {
         // ====================================================================
         '@microsoft/spfx/import-requires-chunk-name': 1,
         '@microsoft/spfx/no-require-ensure': 2,
-        '@microsoft/spfx/pair-react-dom-render-unmount': 1
+        '@microsoft/spfx/pair-react-dom-render-unmount': 1,
+        // "react-hooks/rules-of-hooks": "error",
+        // "react-hooks/exhaustive-deps": "warn"
       }
     },
     {

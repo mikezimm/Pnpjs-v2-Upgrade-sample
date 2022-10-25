@@ -148,8 +148,8 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
    setCommandDesign( TotalCommands );
   };
 
-  const SampleCommand = showCurrent !== true ? undefined : SampleDesignHook({ CommandDesign: QuickCommands, onClosePanel: hideSamplePanel }  ) ;
-  const SampleDesign = showTotal !== true ? undefined : SampleDesignHook({ CommandDesign: CommandDesign, onClosePanel: hideSamplePanel }  ) ;
+  const SampleCommand = showCurrent !== true ? undefined : SampleDesignHook({ CommandDesign: QuickCommands, onClosePanel: updateShowCurrent }  ) ;
+  const SampleDesign = showTotal !== true ? undefined : SampleDesignHook({ CommandDesign: CommandDesign, onClosePanel: updateShowTotal }  ) ;
 
   const showTry = tryCallback && CommandDesign.summary.length > 0 ? true : false;
   const showSave = saveCallback && CommandDesign.summary.length > 0 ? true : false;
@@ -242,8 +242,6 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
   return ( DesignCommands ) ;
 
 }
-
-
 
 export function updateSelectedCommands ( ev: React.MouseEvent<HTMLElement>, selected: IMinField []  ): IMinField [] {
   const target: any = ev.target;
