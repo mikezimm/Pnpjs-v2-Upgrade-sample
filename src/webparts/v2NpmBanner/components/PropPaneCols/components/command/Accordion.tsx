@@ -70,18 +70,18 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
                           fields: [],
                         });
 
-  const hideSamplePanel = (  ) : void => {
-    setShowCurrent( false );
-    setShowTotal( false );
-  }
+  // const hideSamplePanel = (  ) : void => {
+  //   setShowCurrent( false );
+  //   setShowTotal( false );
+  // }
 
-  const updateShowCurrent = (  ) : void => {
-    setShowCurrent( showCurrent !== true ? true : false );
-  }
+  // const updateShowCurrent = (  ) : void => {
+  //   setShowCurrent( showCurrent !== true ? true : false );
+  // }
 
-  const updateShowTotal = (  ) : void => {
-    setShowTotal( showTotal !== true ? true : false );
-  }
+  // const updateShowTotal = (  ) : void => {
+  //   setShowTotal( showTotal !== true ? true : false );
+  // }
 
   const updateSecondary = ( v: string ) : void => {
     setSecondary( v );
@@ -148,8 +148,13 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
    setCommandDesign( TotalCommands );
   };
 
-  const SampleCommand = showCurrent !== true ? undefined : SampleDesignHook({ CommandDesign: QuickCommands, onClosePanel: updateShowCurrent }  ) ;
-  const SampleDesign = showTotal !== true ? undefined : SampleDesignHook({ CommandDesign: CommandDesign, onClosePanel: updateShowTotal }  ) ;
+  // Using this way caused error 310 
+  // const SampleCommand = showCurrent !== true ? undefined : SampleDesignHook({ CommandDesign: QuickCommands, onClosePanel: updateShowCurrent }  ) ;
+  // const SampleDesign = showTotal !== true ? undefined : SampleDesignHook({ CommandDesign: CommandDesign, onClosePanel: updateShowTotal }  ) ;
+
+  // This fixes error 310 when always calling the SampleDesignHook
+  const SampleCommand = SampleDesignHook({ CommandDesign: QuickCommands, onClosePanel: setShowCurrent, showPanel: showCurrent }  ) ;
+  const SampleDesign = SampleDesignHook({ CommandDesign: CommandDesign, onClosePanel: setShowTotal, showPanel: showTotal }  ) ;
 
   const showTry = tryCallback && CommandDesign.summary.length > 0 ? true : false;
   const showSave = saveCallback && CommandDesign.summary.length > 0 ? true : false;
@@ -173,7 +178,7 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     </div>
     <div className='total-object'>
       <div>
-        <Icon iconName ="EntryView" className={ 'type-filter-icon' } onClick={ () => updateShowCurrent( ) } title={'See sample panel'} style={{ float: 'right'}} />
+        <Icon iconName ="EntryView" className={ 'type-filter-icon' } onClick={ () => setShowCurrent( true ) } title={'See sample panel'} style={{ float: 'right'}} />
         <div>Dividers: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'divider' ).length }</div>
         <div>Choice buttons: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'choice' ).length }</div>
         <div>Regular buttons: {QuickCommands.summary.filter( ( summary: IButtonSummary ) => summary.type === 'button' ).length }</div>
@@ -195,7 +200,7 @@ const CommandBuilderHook: React.FC<ICommandBuilderHookProps> = ( props ) => {
     </div>
     <div className='total-object'>
       <div>
-        <Icon iconName ="EntryView" className={ 'type-filter-icon' } onClick={ () => updateShowTotal( ) } title={'See sample panel'} style={{ float: 'right'}} />
+        <Icon iconName ="EntryView" className={ 'type-filter-icon' } onClick={ () => setShowTotal( true ) } title={'See sample panel'} style={{ float: 'right'}} />
         <div>Dividers: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'divider' ).length }</div>
         <div>Choice buttons: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'choice' ).length }</div>
         <div>Regular buttons: {CommandDesign.summary.filter( ( summary: IButtonSummary ) => summary.type === 'button' ).length }</div>

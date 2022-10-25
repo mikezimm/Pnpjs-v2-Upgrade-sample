@@ -164,7 +164,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
       // const SelectedTable: JSX.Element = buildSelectedFieldTable( this.state.selected, this._onKeeperClick,
       //     this._onDirectionClick, this._showFieldPanel.bind(this) );
 
-      const selectedHook: JSX.Element = <SelectedTableHook 
+      const SelectedHook: JSX.Element = <SelectedTableHook 
         updateSelected= { this._updateSelected.bind( this ) }
         // onDirectionClick={ this._onDirectionClick }
         // onKeeperClick={ this._onKeeperClick }
@@ -189,7 +189,7 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
             { DesignCommands }
             { DesignViews }
             <div style={{paddingBottom: '5px', fontSize: 'smaller' }}>CTRL-click <b>Arrows</b> to move to Top or Bottom</div>
-            { selectedHook }
+            { SelectedHook }
             {/* { SelectedTable } */}
           </div>
       }

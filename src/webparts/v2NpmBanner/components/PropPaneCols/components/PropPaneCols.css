@@ -46,9 +46,10 @@
     border-radius: 5px;
 
     /* @extend .selectIcon; */
-    font-size: large;
+    font-size: x-large;
     cursor: pointer;
     padding: 3px;
+    margin-left: 20px;
 
   }
   
@@ -259,4 +260,21 @@
     white-space: nowrap;
     font-size: larger;
     cursor: pointer;
+  }
+
+  .panel-action-toggles {
+    display: flex;
+    margin-top: 10px; 
+    justify-content: flex-end;
+  }
+
+  .panel-action-toggles i {
+    background: #ffffff;
+    border-radius: 5px;
+
+    /* @extend .selectIcon; */
+    font-size: x-large;
+    cursor: pointer;
+    padding: 3px;
+    margin-left: 20px;
   }

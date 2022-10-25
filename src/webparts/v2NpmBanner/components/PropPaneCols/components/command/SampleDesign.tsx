@@ -3,14 +3,16 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
-// import { Icon, } from 'office-ui-fabric-react/lib/Icon';
+import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { IButtonSummary, IQuickCommandsDesign } from './IAccordion';
 import { IQuickButton } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
+import { panelActionToggles } from '../common';
 
 export interface IPanelItemProps {
   CommandDesign: IQuickCommandsDesign;
   onClosePanel: any;
+  showPanel: boolean;
 }
 
 // const ConstIcon = <Icon iconName={ 'Stack' } title={ 'Is a choice button' } style={{  }}
@@ -19,15 +21,13 @@ export interface IPanelItemProps {
 // export function getSampleDesign( panelItem: IMinField, onClosePanel: any, searchText: string ) : JSX.Element {
 const SampleDesignHook: React.FC<IPanelItemProps> = ( props ) => {
 
-  const { CommandDesign } = props;
+  const { CommandDesign, showPanel } = props;
   
   // Setting state in any way causes react error 310.
   // https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/36
-  const [ label, setLabel ] = useState<string>('');
 
-  // const IconStyles: React.CSSProperties = { cursor: 'pointer', fontSize: 'x-large', marginLeft: '20px', color: 'lightgray' };
-
-  // let firstChoice: null;
+  const [ type, setSide ] = useState<PanelType>( PanelType.custom );
+  const [ blocking, setBlock ] = useState<boolean>( true );
 
   // For https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/36
   const clickSummary = ( idx: number ) : void => {
@@ -84,15 +84,19 @@ const SampleDesignHook: React.FC<IPanelItemProps> = ( props ) => {
     </div>;
   }
 
-  const AttachPanel: JSX.Element = <Panel
+  // const IconStyles: React.CSSProperties = { cursor: 'pointer', fontSize: 'x-large', marginLeft: '20px' };
+  const AttachPanel: JSX.Element = showPanel !== true ? null : <Panel
           isOpen={ CommandDesign.buttons.length > 0 ? true : false }
-          type={ PanelType.medium }
+          type={ type }
+          isBlocking={ blocking }
           // onDismiss={ onClosePanel }
-          onDismiss={ () => props.onClosePanel() }
+          onDismiss={ () => props.onClosePanel( false ) }
           headerText={ `Sample Button Set` }
           closeButtonAriaLabel="Close"
           isLightDismiss={ true }
+          customWidth={ '700px' }
       >
+        { panelActionToggles ( type, blocking, setSide, null )}
         <div className='sample-panel'>
           { CommandDesign.summary.map( ( summary: IButtonSummary, idx: number ) => createButtonRow ( summary, idx ) ) }
         </div>

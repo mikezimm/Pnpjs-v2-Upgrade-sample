@@ -1,5 +1,9 @@
 
 
+## adjust these lint rules to find lots of areas of improvement:
+@typescript-eslint/no-unused-vars - was 1, set to 0
+'@typescript-eslint/no-explicit-any': 0,
+
 
 
 ## copied from default project
