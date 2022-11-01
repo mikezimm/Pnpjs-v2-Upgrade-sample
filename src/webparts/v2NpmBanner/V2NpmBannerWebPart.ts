@@ -232,7 +232,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
 
      // DEFAULTS SECTION:  Performance   <<< ================================================================
      this._performance = createBasePerformanceInit( this.displayMode, false );
-      this._performance.ops.superOnInit = startPerformOp( 'superOnInit', this.displayMode );
+    this._performance.ops.superOnInit = startPerformOp( 'superOnInit', this.displayMode );
 
       //NEED TO APPLY THIS HERE as well as follow-up in render for it to not visibly change
       this._sitePresets = applyPresetCollectionDefaults( this._sitePresets, PreConfiguredProps, this.properties, this.context.pageContext.web.serverRelativeUrl ) ;

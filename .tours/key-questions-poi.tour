@@ -3,24 +3,24 @@
   "title": "key-questions-poi",
   "steps": [
     {
+      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
+      "description": "Is there a better/more proper way to get context properities?",
+      "line": 238
+    },
+    {
       "file": "../../../../../../c:/Users/dev/Documents/GitHub/Pnpjs-v2-Upgrade-sample/package.json",
       "description": "Key dependancies\r\n@mikezimm is my own npm library for shared code.\r\nIncludes functions and components.\r\nSome code in some components of the library has dependancies that are not installed in the npm package but uses whatever is in the final web aprt.",
       "line": 17
     },
     {
       "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
-      "description": "Is there a better/more proper way to get context properities?",
-      "line": 238
-    },
-    {
-      "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
-      "description": "## How do I correctly pass the context without casing as any here?\r\n\r\nThis function is in the npm library.\r\n\r\n## Noted that the library also has to re-cast it as any to prevent lint errors on it's side.",
+      "description": "## How do I correctly pass the context without casting as any here?\r\n\r\nThis function is in the npm library.\r\n\r\n## Noted that the library also has to re-cast it as any to prevent lint errors on it's side.",
       "line": 291
     },
     {
       "file": "src/webparts/v2NpmBanner/V2NpmBannerWebPart.ts",
       "description": "## Why do I need to cast this as any?\r\n\r\nIs it because that is determined somehow by my npm package that doesn't even requre any of that in it's package.json?\r\n\r\n## Not sure why I have react 17.0.1 here in my package... \r\nmight have been to resolve some errors.\r\n\r\nWill this cause issues?\r\n\r\n```json\r\n  \"dependencies\": {\r\n    \"@pnp/spfx-controls-react\": \"3.9.0\",\r\n    \"gulp\": \"^4.0.2\",\r\n    \"react\": \"^17.0.1\",\r\n    \"react-json-view\": \"^1.21.3\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"@types/es6-promise\": \"^3.3.0\",\r\n    \"@types/react\": \"^18.0.17\",\r\n    \"@types/webpack-env\": \"^1.16.4\",\r\n    \"prettier\": \"^2.6.2\",\r\n    \"tslint\": \"^6.1.3\",\r\n    \"tslint-config-prettier\": \"^1.18.0\"\r\n  }\r\n  ```",
-      "line": 319
+      "line": 332
     },
     {
       "file": "src/webparts/v2NpmBanner/IV2NpmBannerWebPartProps.ts",
@@ -55,12 +55,12 @@
     {
       "file": "src/webparts/v2NpmBanner/components/IV2NpmBannerProps.ts",
       "description": "## Another example of the [key: string]: update that may be incorrect\r\n\r\nSee Discord message thread here about it\r\n\r\nhttps://discordapp.com/channels/969580377549185054/1025251346116526180/1029963476501803018",
-      "line": 7
+      "line": 8
     },
     {
       "file": "src/webparts/v2NpmBanner/components/IV2NpmBannerProps.ts",
       "description": "## Verify proper use of extends for props and state",
-      "line": 5
+      "line": 8
     },
     {
       "file": "src/webparts/v2NpmBanner/CoreFPS/BuildExportProps.ts",
