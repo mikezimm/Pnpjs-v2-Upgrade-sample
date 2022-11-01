@@ -102,7 +102,7 @@ import { importBlockProps } from '../IV2NpmBannerWebPartProps'
 
   }
 
-  export function buildFPSAnalyticsProps( wpProps : IV2NpmBannerWebPartProps, wpInstanceID: string, currentWeb: string, ) {
+  export function buildFPSAnalyticsProps( wpProps : IV2NpmBannerWebPartProps, wpInstanceID: string, currentWeb: string, ): any {
     const exportStructure :any = {};
 
     exportStructure.wpInstanceID = wpInstanceID;

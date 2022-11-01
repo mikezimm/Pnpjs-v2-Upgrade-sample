@@ -96,7 +96,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
       * @param email 
       * @returns 
       */
-     private async _remoteListUserInfo( webURL: string, email: string ) {  //Sample From Drilldown webpart:  _presetDrillListUser
+     private async _remoteListUserInfo( webURL: string, email: string ): Promise<any> {  //Sample From Drilldown webpart:  _presetDrillListUser
       const webURLOnCurrentCollection = !webURL || webURL.toLowerCase().indexOf(this.props.context.pageContext.site.serverRelativeUrl.toLowerCase()) > -1 ? true : false;
       console.log('xxxxxxxxxx');
       if ( !webURL || ( !this._sourceUser && webURLOnCurrentCollection === true ) ) {
