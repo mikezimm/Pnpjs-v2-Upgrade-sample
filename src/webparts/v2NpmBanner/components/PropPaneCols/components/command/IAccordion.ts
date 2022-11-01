@@ -46,7 +46,7 @@ export interface IQuickCommandsDesign extends IQuickCommands {
  
  export type IUserActionTypes = 'showToUser' | 'hideFromUser' | 'setUser' | 'addUser' | 'removeUser' | 'clearUsers' ;
  
- export type IDateActionTypes = 'setToday' | 'set1Week' | 'set1Month' | 'clearDate' | 'showIfPast' | 'showIfFuture';
+ export type IDateActionTypes = 'setToday' | 'set1Week' | 'set1Month' | 'clearDate' | 'depends' | 'showIfPast' | 'showIfFuture';
  
  export type ITextActionTypes = 'replaceText' | 'promptText' | 'captcha' ;
  
@@ -118,7 +118,8 @@ export interface IQuickCommandsDesign extends IQuickCommands {
    { group: '1', type: 'update', cmd: 'setToday', icon: 'EventDate', head: 'Today', title: 'Set Field to today' , ignore: 'field.ReadOnlyField === true' },
    { group: '1', type: 'update', cmd: 'set1Week', icon: 'CalendarWorkWeek', head: '+1Wk', title: 'Set Field to + 7 days' , ignore: 'field.ReadOnlyField === true'  },
    { group: '1', type: 'update', cmd: 'set1Month', icon: 'Calendar', head: '+1Mo', title: 'Set Field to + 1 month' , ignore: 'field.ReadOnlyField === true'  },
-   { group: '1', type: 'update', cmd: 'captcha', icon: 'InputAddress', head: 'Cap', title: 'Prompt to enter field value', ignore: 'field.ReadOnlyField === true' },
+  //  { group: '1', type: 'update', cmd: 'captcha', icon: 'InputAddress', head: 'Cap', title: 'Prompt to enter field value', ignore: 'field.ReadOnlyField === true' },
+   { group: '1', type: 'update', cmd: 'depends', icon: 'BranchFork2', head: 'Depends', title: 'Value depends on JS eval - UPDATE Final Logic', ignore: 'field.ReadOnlyField === true' },
    { group: '1', type: 'update', cmd: 'clearDate', icon: 'Delete', head: 'Clear', title: 'Clear Date field' , ignore: 'field.ReadOnlyField === true'  },
    { group: '2', type: 'filter', cmd: 'showIfPast', icon: 'Filter', head: '<Now', title: 'Show if Date is in past' , ignore: 'field.ReadOnlyField === true', disabled: true  },
    { group: '2', type: 'filter', cmd: 'showIfFuture', icon: 'Filter', head: '>Now', title: 'Show if Date is in future' , ignore: 'field.ReadOnlyField === true', disabled: true  },
@@ -129,7 +130,7 @@ export interface IQuickCommandsDesign extends IQuickCommands {
   export const TextFieldActionIcons: IIconTableRow[] = [ 
    { group: '1', type: 'update', cmd: 'replaceText', icon: 'ActionCenter', head: 'Replace', title: 'Replace Text with your own - must update in props yourself', ignore: 'field.ReadOnlyField === true' },
    { group: '1', type: 'update', cmd: 'promptText', icon: 'Comment', head: 'Prompt', title: 'Prompt to update column', ignore: 'field.ReadOnlyField === true' },
-   { group: '1', type: 'update', cmd: 'captcha', icon: 'InputAddress', head: 'Cap', title: 'Prompt to enter field value', ignore: 'field.ReadOnlyField === true' },
+   { group: '1', type: 'update', cmd: 'captcha', icon: 'InputAddress', head: 'Captcha', title: 'Prompt to enter field value - UPDATE Final Logic', ignore: 'field.ReadOnlyField === true' },
   ];
  
   export const TextActions = TextFieldActionIcons.map( ( action: IIconTableRow ) => { return action.cmd } );

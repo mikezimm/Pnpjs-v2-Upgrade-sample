@@ -49,7 +49,7 @@
     font-size: x-large;
     cursor: pointer;
     padding: 3px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
 
   }
   
@@ -219,48 +219,6 @@
       max-width: 150px;
     }
 
-
-
-.command-tables {
-
-  display: grid;
-  grid-gap: 3em;
-  font-size: small;
-}
-
-.command-tables .left-command{
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .command-tables .right-command {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .command-tables .collapse-command {
-    grid-column: 1;
-    grid-row: 1;
-    display: none;
-    overflow: hidden;
-  }
-
-  .command-tables th {
-    width: 50px;
-  }
-
-  .command-tables th:nth-child(1) { 
-    min-width: 150px;
-    white-space: nowrap;
-    font-size: larger;
-  }
-
-  .command-tables td:nth-child(1) { 
-    min-width: 150px;
-    white-space: nowrap;
-    font-size: larger;
-    cursor: pointer;
-  }
 
   .panel-action-toggles {
     display: flex;

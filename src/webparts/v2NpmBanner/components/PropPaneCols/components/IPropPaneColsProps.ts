@@ -84,6 +84,7 @@ export const IsEditable: string = 'IsEditable';
   setToday?: boolean;  // Add current date to this field
   set1Week?: boolean;  // Add current date next week to this field
   set1Month?: boolean;  // Add current date next month to this field
+  depends?: boolean;  // Ternary eval string to change value based on another value... https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/39
   showIfPast?: boolean;  //Show button if date is Today or in the past
   showIfFuture?: boolean;  //Show button if date is Today or in the future
 
