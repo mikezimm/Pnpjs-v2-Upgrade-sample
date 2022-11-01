@@ -295,6 +295,8 @@ export function buildQuickCommands(  selected: IMinField[], title: string, descr
         else if ( action.cmd === 'clearDate' ) { updateObject[ IntName ] = null ; updatedLabels.push( `Clear ${Title}` );  }
         else if ( action.cmd === 'replaceText' ) { updateObject[ IntName ] = `Hello world! It is [Today] and my name is [MyName] - and I clicked '{str1}'` ; updatedLabels.push( `Updated : ${Title}` );  }
         else if ( action.cmd === 'promptText' ) { updateObject[ IntName ] = '{{stamp}}' ;  updatedLabels.push( `Update comment for: ${Title}` );  }
+        else if ( action.cmd === 'captcha' && TypeAsString === 'DateTime' ) { updateObject[ IntName ] = '{{captcha=Created?Verify Created Date}}' ;  updatedLabels.push( `Verify Created Date: ${Title}` );  }
+        else if ( action.cmd === 'captcha' && TypeAsString === 'User' ) { updateObject[ IntName ] = '{{captcha=Created?Verify CreatedBy Name}}' ;  updatedLabels.push( `Verify CreatedBy Name: ${Title}` );  }
         else if ( action.cmd === 'appendNote' ) { updateObject[ IntName ] = '{{append rich stamp}}' ; updatedLabels.push( `Add comment to: ${Title}` );}
         else if ( action.cmd === 'replaceNote' ) { updateObject[ IntName ] = '{{rich stamp}}' ; updatedLabels.push( `Replace comment in: ${Title}` );  }
         //These are all the user variants

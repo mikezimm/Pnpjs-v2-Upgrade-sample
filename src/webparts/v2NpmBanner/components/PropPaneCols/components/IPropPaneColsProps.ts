@@ -89,6 +89,7 @@ export const IsEditable: string = 'IsEditable';
 
   replaceText?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
   promptText?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
+  captcha?: boolean;  // adds prompt to enter/confirm a value (like user's name, date etc...)
 
   appendNote?: boolean;  // prompt for Comment note with all options {{ append rich (if it's note type) stamp }}
   replaceNote?: boolean;  // adds text:  Current user pressed (choice if it's choice button) on [today]
