@@ -8,6 +8,7 @@ import { saveViewAnalytics } from '../CoreFPS/Analytics';
 
 // import FetchBanner from '../CoreFPS/FetchBannerElement';
 import FetchBanner from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/FetchBannerElement';
+import EasyPagesHook from './PropPaneCols/components/EasyPages/component';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ISpecialMessage, specialUpgrade } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/special/interface';
@@ -371,10 +372,17 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
     />;
 
+    const EasyPagesElement = <EasyPagesHook 
+      context={ this.props.context as any }
+      expanded={ true }
+      tabs={ ['Drilldown'] }
+    />
+
     return (
       <section className={`${styles.v2NpmBanner} ${hasTeamsContext ? styles.teams : ''}`}>
         { devHeader }
         { Banner }
+        { EasyPagesElement }
         <div className={styles.welcome}>
           <h2>Well done, {escape(userDisplayName)}!</h2>
           <div>{environmentMessage}</div>

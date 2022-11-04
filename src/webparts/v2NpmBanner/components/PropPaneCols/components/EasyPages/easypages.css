@@ -1,0 +1,63 @@
+
+
+.easy-pages {
+  position: absolute;
+  height: 0px;
+  padding: 2em;
+  width: 92%;
+/*   background: transparent;
+  color: transparent; */
+  transition:.4s;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.easy-pages.expand {
+  position: absolute;
+  height: auto;
+  min-height: 35vh;
+
+  width: 94%;
+  background: lightgray;
+  color: black;
+  transition:.4s;
+  opacity: 1;
+  overflow: hidden;
+  z-index: 100;
+  padding: 1em;
+}
+
+.easy-container {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.easy-link {
+  cursor: pointer;
+  padding: 5px 30px 5px 30px;
+  margin: 10px 0px;
+  transition:.4s;
+  min-height: 1.5em;
+
+}
+
+.easy-link:hover {
+  /* font-weight: 700; */
+  background: gray;
+  transition:.4s;
+}
+
+.easy-link-title {
+  /* max-width: 300px; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 700;
+  font-size: larger;
+}
+
+.eeasy-link-desc {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
