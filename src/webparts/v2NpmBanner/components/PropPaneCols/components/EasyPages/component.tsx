@@ -23,15 +23,16 @@ require('./easypages.css');
 // import styles from '../PropPaneCols.module.scss';
 
 import { WebPartContext } from '@microsoft/sp-webpart-base';
-import { sortObjectArrayByStringKeyCollator } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
 import { easyLinkElement } from './elements';
-import { compoundArrayFilter, getPagesContent } from './functions';
-import { createNewSitePagesSource, ISourceProps, SitePagesSource } from './types';
+import { sortObjectArrayByStringKeyCollator } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
+import { compoundArrayFilter, getPagesContent, getUsedTabs } from './functions';
+import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource } from './types';
 
 export interface IEasyPagesHookProps {
   context: WebPartContext;
   expanded: boolean;
   tabs: string[];
+  overflowTab?: string;
   fetchParent?: boolean; //Include parent site pages
   altSitePagesUrl?: string; //Include alternate site's site pages
   altSiteNavigation?: string; //Include navigation elements from other site
@@ -45,51 +46,65 @@ export interface IEasyLink extends Partial<any> {
   description: string;
   url: string;
   imageUrl: string;
+  imageDesc: string;
   searchTextLC: string;
   type: 'current' | 'parent' | 'other' | 'nav';
+  tabs: string[];
 }
 
 // export function createViewBuilder( selected: IMinField[], onExpandRight: any = null ) : JSX.Element {
 
 const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
-  const { context, expanded, tabs, fetchParent, altSitePagesUrl, altSiteNavigation, styles, containerStyles } = props;
+  const { context, expanded, tabs, overflowTab, fetchParent, altSitePagesUrl, altSiteNavigation, styles, containerStyles } = props;
 
   const [ tab, setTab ] = useState<string>( tabs.length > 0 ? tabs[0] : 'Pages' );
+  const [ showTabs, setShowTabs ] = useState<string[]>( tabs.length > 0 ? tabs : ['Pages'] );
 
-  const [ currentSource, setCurrentSource ] = useState<ISourceProps>( createNewSitePagesSource( context.pageContext.web.absoluteUrl ));
+  const [ currentSource, setCurrentSource ] = useState<ISourceProps>( createNewSitePagesSource( context.pageContext.web.absoluteUrl, tabs, overflowTab ));
   const [ fetched, setFetched ] = useState<boolean>(false);
   const [ filtered, setFiltered ] = useState<IEasyLink[]>([]);
-  const [ current, setCurrent ] = useState<IEasyLink[]>(null);
-  const [ parent, setParent ] = useState<IEasyLink[]>(null);
-  const [ altPages, setAltPages ] = useState<IEasyLink[]>(null);
-  const [ altNav, setAltNav ] = useState<IEasyLink[]>(null);
+  const [ current, setCurrent ] = useState<IEasyLink[]>([]);
+  const [ parent, setParent ] = useState<IEasyLink[]>([]);
+  const [ altPages, setAltPages ] = useState<IEasyLink[]>([]);
+  const [ altNav, setAltNav ] = useState<IEasyLink[]>([]);
 
   useEffect(() => {
     //  https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
-    const getPages = async (): Promise<void> => {
-      const pages = await getPagesContent( currentSource );
-      setFiltered(pages);
-    };
 
-    // eslint-disable-next-line no-void
-    void getPages(); // run it, run it
+    if ( expanded === true && fetched === false ) {
+      const getPages = async (): Promise<void> => {
+        const pages = await getPagesContent( currentSource );
+        const actualTabs = getUsedTabs( currentSource, pages );
+        const links: IEasyLink[] = compoundArrayFilter( pages, actualTabs[0], '' );
+        setTab( actualTabs[0] );
+        setFetched( true );
+        setFiltered( links );
+        setCurrent( pages );
+        setShowTabs( actualTabs );
+      };
 
-    return () => {
-      // this now gets called when the component unmounts
-    };
-    }, []);
+      // eslint-disable-next-line no-void
+      void getPages(); // run it, run it
 
-  const onTextSearch = ( input: any, text: string = '' ): void => {
-    const SearchValue : string = typeof input === 'string' ? input : input && input.target && input.target.value ? input.target.value : '';
+      return () => {
+        // this now gets called when the component unmounts
+      };
+    }
+
+  }, );
+
+  const onTextSearch = ( item: any, text: string = '' ): void => {
+    const SearchValue : string = typeof item === 'string' ? item : item && item.target && item.target.value ? item.target.value : '';
     const  allLinks: IEasyLink[] = [ ...current, ...parent, ...altPages, ...altNav ];
-    const links: IEasyLink[] = compoundArrayFilter( allLinks, SearchValue, tab );
-    setFiltered( links )
+    const links: IEasyLink[] = compoundArrayFilter( allLinks, SearchValue, text );
+    setFiltered( links );
+    setTab( SearchValue );
   }
 
   const pivotClick = ( item?: PivotItem, ev?: React.MouseEvent<HTMLElement> ): void => {
-    const itemKey = item.props.itemKey;
-    onTextSearch( item );
+    const itemKey = item.props.headerText;
+    onTextSearch( itemKey );
 
   }
 
@@ -103,9 +118,9 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       //   linkSize= { pivotOptionsGroup.getPivSize('normal') }
       //   linkFormat= { pivotOptionsGroup.getPivFormat('links') }
         onLinkClick= { pivotClick.bind(this) }  //{this.specialClick.bind(this)}
-      //   selectedKey={ null }
+        selectedKey={ tab }
       >
-      { tabs.map( ( tab: string ) => {
+      { showTabs.map( ( tab: string ) => {
         return <PivotItem key={ tab } headerText={ tab } />
       })}
 

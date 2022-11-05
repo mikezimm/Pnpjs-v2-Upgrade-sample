@@ -29,6 +29,13 @@ export interface ISourceProps {
         prop: string;
         asc: boolean;
     };
+    overflowTab?: string;
+    meta0?: string[];    // Used for quick filtering - aka buttons or Pivots - meta0 is used for things like Type
+    meta1?: string[];    // Used for quick filtering - aka buttons or Pivots - meta1 is normal button
+    meta2?: string[];   // Used for quick filtering - aka buttons or Pivots - meta2 is normal button
+    meta3?: string[];   // Used for quick filtering - aka buttons or Pivots - meta3 is normal button
+    metaX?: string[];   // Used for quick filtering - For common filters like Modified and Created metadata
+
     defSearchButtons: string[];  //These are default buttons always on that source page.  Use case for Manual:  Policy, Instruction etc...
 
 }
@@ -52,13 +59,22 @@ export const SitePagesSource : ISourceProps = {
   orderBy: { //Including even though it does not seem to do anything
     prop: 'Title',
     asc: true,
-  }
+  },
+  meta0:[],
+  meta1:[],
+  meta2:[],
+  meta3:[],
+  metaX:[],
 }
 
-export function createNewSitePagesSource( webUrl: string ): ISourceProps {
+export const DefaultOverflowTab = 'Others';
+
+export function createNewSitePagesSource( webUrl: string, tabs: string[], overflowTab: string ): ISourceProps {
 
   const NewSource: ISourceProps = SitePagesSource;
   NewSource.webUrl = webUrl;
+  NewSource.meta1 = tabs;
+  NewSource.overflowTab = overflowTab ? overflowTab : DefaultOverflowTab;
 
   return NewSource;
 

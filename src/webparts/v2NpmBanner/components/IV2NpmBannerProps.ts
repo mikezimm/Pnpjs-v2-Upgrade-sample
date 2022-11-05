@@ -25,5 +25,6 @@ export interface IV2NpmBannerProps  extends IFPSCorePinMeReactComponentProps {
  */
  export interface IV2NpmBannerState extends IFPSCorePinMeReactComponentState {
 
+  showEasyPages: boolean;
 
 }
