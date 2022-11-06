@@ -1,20 +1,3 @@
-
-
-// export type IEasyIconFolders = 'Products' | 'Processes' | 'Customers' | 'Functions' | 'EasyIcons7' | 'EasyIcons9' ;
-// export type IEasyIconPriority = 'Title' | 'Description' | 'FileLeafRef' ;
-// export type IEasyIconOptions = 's' | 'ing' | 'er' ;
-
-
-// export interface IEasyIconGroup {
-//   Rules: string;
-//   Icons: string[];
-//   Suggestions: string[];  // Potential future Icon ideas
-//   Status: 'Active' | 'Planned' | 'Test';
-//   Priority: number;  // Order in which to search for Icon
-//   Options?: IEasyIconOptions[];  // For possible use looking for similar words
-// }
-
-
 /**
  * HOW TO ADD NEW KEYWORDS
  * 
@@ -48,7 +31,7 @@ export interface IEasyIcons {
 
 export const EasyIconObject : IEasyIcons = {
   Priority: [ 'Title', 'Description', 'FileLeafRef' ],
-  Keys: [ 'Errors' as IEasyIconFolders , 'Products' , 'Processes' , 'Customers' , 'Functions', 'Keywords', 'WebParts'  ],
+  Keys: [ 'Products' , 'Processes' , 'Customers' , 'Functions', 'Keywords', 'WebParts'  ],
   Valid: [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'WebParts' , 'Keywords' ],
   Ignore: [],
   Groups: {
@@ -131,7 +114,7 @@ export type IEasyIconOptions = 's' | 'ing' | 'r' | 'er' ;
 
 export interface IEasyIconGroup {
   Rules: string;
-  Icons: string[];
+  Icons: string[];  // Icon Names found in the EasyIcons folder.  Must be spelled exactly as shown and must be .png
   Suggestions: string[];  // Potential future Icon ideas
   Status: 'Active' | 'Planned' | 'Test';
   Priority: number;  // Order in which to search for Icon
@@ -142,11 +125,11 @@ export interface IEasyIconGroup {
 /**
  * Logic order:
  * First checks keywords in the first Prop to test ( Title )
- * Then checks all the Icons
+ * Then checks for all the Icons in Title
  * Then repeats for the next Prop - Description
- * @param EasyIcons 
- * @param item 
- * @returns 
+ * @param EasyIcons
+ * @param item
+ * @returns
  */
 
 export function getEasyIcon( EasyIcons: IEasyIcons, item: any, ) : string {
