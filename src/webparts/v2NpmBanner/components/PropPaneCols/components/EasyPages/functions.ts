@@ -14,6 +14,7 @@ import { getExpandColumns, getSelectColumns } from '../../../../fpsReferences';
 // import { warnMutuallyExclusive } from 'office-ui-fabric-react';
 
 import { getHelpfullErrorV2 } from '../../../../fpsReferences';
+import { EasyIconLocation, EasyIconObject, getEasyIcon } from "../EasyIcons/EasyIcons";
 
 /**
  * This filters first by a meta string and then by text search string
@@ -140,9 +141,15 @@ export function addSearchMeta ( items: IEasyLink[], sourceProps: ISourceProps,  
     page.imageUrl =  page.BannerImageUrl?.Url;
     page.imageDesc = page.BannerImageUrl?.Description;
     if ( !page.imageUrl || page.imageUrl.indexOf( DefaultSiteLogo ) > - 1 ) {
-      if ( page.title.indexOf( 'Contents' ) > -1 ) { page.imageUrl = DefaultThumbEasyContents; }
-      else if ( page.title.toLocaleLowerCase().indexOf( 'extreme' ) > -1 ) { page.imageUrl = DefaultThumbExtreme; }
+      if ( page.title?.indexOf( 'Contents' ) > -1 ) { page.imageUrl = DefaultThumbEasyContents; }
+      else if ( page.title?.toLocaleLowerCase().indexOf( 'extreme' ) > -1 ) { page.imageUrl = DefaultThumbExtreme; }
       else if ( page.title === 'Home' ) { page.imageUrl = DefaultThumbEarth; }
+      else {
+        const EasyIconUrl = getEasyIcon( EasyIconObject, page );
+        if ( EasyIconUrl ) page.imageUrl = EasyIconUrl ? EasyIconUrl : page.imageUrl; // If one is found, then use it, else use the defaul sitepagelogo
+        if ( EasyIconUrl ) page.imageDesc = EasyIconUrl ? `Using EasyIcon: ${ EasyIconUrl.replace( EasyIconLocation, '' )}` : page.imageDesc; // If one is found, then use it, else use the defaul sitepagelogo
+      }
+
     }
     page.searchTextLC = `${page.Title} || ${page.Description}`.toLocaleLowerCase();
     sourceProps.meta1.map( ( tab : string ) => {

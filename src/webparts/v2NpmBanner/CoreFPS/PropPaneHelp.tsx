@@ -58,7 +58,7 @@ export function putObjectIntoJSON ( obj: any, name: string = null ): JSX.Element
 
 const PleaseSeeWiki = <p>Please see the { repoLink.wiki }  for more information</p>;
 
-const tenantServiceRequestURL = `https://servicenow.${window.location.hostname}.com/`;
+const tenantServiceRequestURL = `https://servicenow.${window.location.origin}.com/`;
 // const RequestStorageHere = <span>Please request storage <a href={tenantServiceRequestURL} target="_blank">here in Service Now.</a></span>;
 
 // const LinkFindInternalName = <a href="https://tomriha.com/what-is-sharepoint-column-internal-name-and-where-to-find-it/" target="_blank">Finding Internal Name of a column</a>;
