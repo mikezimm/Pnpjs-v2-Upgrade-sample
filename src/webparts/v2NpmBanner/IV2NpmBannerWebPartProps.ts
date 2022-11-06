@@ -31,14 +31,35 @@ export const importBlockProps: string[] = [...importBlockPropsFPS, ...importBloc
 
 export const changePropertyGroupX: string[] = ['showSomeProps', 'showCustomProps', 'showOOTBProps', 'showApprovalProps', 'propsTitleField', 'propsExpanded', 'selectedProperties'];
 
+//To be added to npmFunctions
+export interface IEasyPagesProps {
+  easyPageEnable: string[];
+  easyPageTabs: string[];
+  easyPageOverflowTab?: string;
+  easyPageParent?: boolean; //Include parent site pages
+  easyPageAltUrl?: string; //Include alternate site's site pages
+  easyPageAltNav?: string; //Include navigation elements from other site
+  easyPageStyles?: React.CSSProperties;  //Optional styles on entire page
+  easyPageContainer?: React.CSSProperties;  //Optional styles on container element
+}
+
+//To be added to npmFunctions
+export interface IEasyIconsProps {
+  easyIconEnable: boolean; // Used 
+  easyIconKeys: string;
+  easyIconIgnore: string;
+}
+
 // export interface IV2NpmBannerWebPartProps extends IMinWPBannerProps {
 /**
  * Extend with portions of FPS Props that are needed
  * 
  */
-export interface IV2NpmBannerWebPartProps extends IMinBannerUIProps, IMinPinMeProps, IMinPandoramicProps, IMinBannerThemeProps, IMinCustomHelpProps, IMinPageStyleProps, IMinBannerUtilityProps, IMinFPSLegacyProps {
+export interface IV2NpmBannerWebPartProps extends IMinBannerUIProps, IMinPinMeProps, IMinPandoramicProps, IMinBannerThemeProps, IMinCustomHelpProps, IMinPageStyleProps, IMinBannerUtilityProps, IMinFPSLegacyProps, IEasyPagesProps, IEasyIconsProps {
   [key: string]: any;
   
+
+
   description: string;
   
   webURL: string;
