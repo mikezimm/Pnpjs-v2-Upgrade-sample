@@ -147,7 +147,7 @@ export function addSearchMeta ( items: IEasyLink[], sourceProps: ISourceProps,  
       else {
         const EasyIconUrl = getEasyIcon( EasyIconObject, page );
         if ( EasyIconUrl ) page.imageUrl = EasyIconUrl ? EasyIconUrl : page.imageUrl; // If one is found, then use it, else use the defaul sitepagelogo
-        if ( EasyIconUrl ) page.imageDesc = EasyIconUrl ? `Using EasyIcon: ${ EasyIconUrl.replace( EasyIconLocation, '' )}` : page.imageDesc; // If one is found, then use it, else use the defaul sitepagelogo
+        if ( EasyIconUrl ) page.imageDesc = EasyIconUrl ? `Using EasyIcon:) ${ EasyIconUrl.replace( EasyIconLocation, '' )}` : page.imageDesc; // If one is found, then use it, else use the defaul sitepagelogo
       }
 
     }
