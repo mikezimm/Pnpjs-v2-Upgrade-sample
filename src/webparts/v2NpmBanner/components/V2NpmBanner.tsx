@@ -238,6 +238,13 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
      if ( JSON.stringify( prevProps.lists) !== JSON.stringify( this.props.lists ) ) {
       refresh = true;
      }
+     //These do not seem to update component when changed
+     if ( JSON.stringify( prevProps.EasyIconsObject.GroupKeys ) !== JSON.stringify( this.props.EasyIconsObject.GroupKeys ) ) {
+      refresh = true;
+     }
+     if ( JSON.stringify( prevProps.easyPagesProps.tabs ) !== JSON.stringify( this.props.easyPagesProps.tabs ) ) {
+      refresh = true;
+     }
 
      return refresh;
 
@@ -378,9 +385,13 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
     />;
 
     const EasyPagesElement = <EasyPagesHook 
-      context={ this.props.context as any }
-      expanded={ this.state.showEasyPages }
-      tabs={ [ 'Home', 'Drilldown', 'Training', 'Links', 'Contents' ] }
+      easyPagesProps={ { ...this.props.easyPagesProps, ...{ expanded: this.state.showEasyPages } } }
+      // easyPagesProps={{
+      //   context: this.props.context as any,
+      //   expanded: this.state.showEasyPages ,
+      //   tabs: [ 'Home', 'Drilldown', 'Training', 'Links', 'Contents' ],
+      // }}
+      EasyIconsObject= { this.props.EasyIconsObject }
     />
 
     return (

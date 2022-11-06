@@ -27,8 +27,10 @@ import { easyLinkElement } from './elements';
 import { sortObjectArrayByStringKeyCollator } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
 import { compoundArrayFilter, getPagesContent, getUsedTabs } from './functions';
 import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource } from './types';
+import { IEasyIconProps, IEasyIcons } from '../EasyIcons/eiTypes';
+import { setEasyIconsObjectProps } from '../EasyIcons/eiFunctions';
 
-export interface IEasyPagesHookProps {
+export interface IEasyPagesProps {
   context: WebPartContext;
   expanded: boolean;
   tabs: string[];
@@ -38,7 +40,13 @@ export interface IEasyPagesHookProps {
   altSiteNavigation?: string; //Include navigation elements from other site
   styles?: React.CSSProperties;  //Optional styles on entire page
   containerStyles?: React.CSSProperties;  //Optional styles on container element
+}
 
+
+
+export interface IEasyPagesHookProps {
+  easyPagesProps: IEasyPagesProps;
+  EasyIconsObject: IEasyIcons;
 }
 
 export interface IEasyLink extends Partial<any> {
@@ -56,7 +64,7 @@ export interface IEasyLink extends Partial<any> {
 
 const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
-  const { context, expanded, tabs, overflowTab, fetchParent, altSitePagesUrl, altSiteNavigation, styles, containerStyles } = props;
+  const { context, expanded, tabs, overflowTab, fetchParent, altSitePagesUrl, altSiteNavigation, styles, containerStyles } = props.easyPagesProps;
 
   const [ tab, setTab ] = useState<string>( tabs.length > 0 ? tabs[0] : 'Pages' );
   const [ showTabs, setShowTabs ] = useState<string[]>( tabs.length > 0 ? tabs : ['Pages'] );
@@ -74,7 +82,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
     if ( expanded === true && fetched === false ) {
       const getPages = async (): Promise<void> => {
-        const pages = await getPagesContent( currentSource );
+        const pages = await getPagesContent( currentSource, props.EasyIconsObject );
         const actualTabs = getUsedTabs( currentSource, pages );
         const links: IEasyLink[] = compoundArrayFilter( pages, actualTabs[0], '' );
         setTab( actualTabs[0] );

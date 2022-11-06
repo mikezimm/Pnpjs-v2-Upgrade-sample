@@ -81,6 +81,7 @@
   */
  
  import { renderCustomStyles, updateBannerThemeStyles, expandoOnInit, refreshBannerStylesOnPropChange } from './fpsReferences';
+ import { getReactCSSFromString } from './fpsReferences';
  
  
  /***
@@ -165,6 +166,10 @@
   */
  
  import { importBlockProps,  } from './IV2NpmBannerWebPartProps';
+import { buildEasyPagesGroup } from './PropPaneGroups/EasyPages';
+import { getStringArrayFromString } from '@mikezimm/npmfunctions/dist/Services/Strings/stringServices';
+import { IEasyIconGroups } from './components/PropPaneCols/components/EasyIcons/eiTypes';
+import { setEasyIconsObjectProps } from './components/PropPaneCols/components/EasyIcons/eiFunctions';
  
  /***
   *     .o88b. .d8888. .d8888.      d8888b. d88888b  .d88b.  db    db d888888b d8888b. d88888b .d8888. 
@@ -348,7 +353,20 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           forcePinState: this.properties.forcePinState,
           domElement: this.context.domElement,
           pageLayout: this.properties.pageLayout,
-        }
+        },
+
+        easyPagesProps: {
+          context: this.context,
+          expanded: false ,
+          tabs: getStringArrayFromString( this.properties.easyPageTabs , ';', true, null, true ) ,
+          overflowTab: this.properties.easyPageOverflowTab,
+          fetchParent: this.properties.easyPageParent,
+          altSitePagesUrl: this.properties.easyPageAltUrl,
+          altSiteNavigation: this.properties.easyPageAltNav,
+          styles: getReactCSSFromString( 'easyPageStyles', this.properties.easyPageStyles, {} ).parsed,
+          containerStyles: getReactCSSFromString( 'easyPageContainer', this.properties.easyPageContainer, {} ).parsed,
+        },
+        EasyIconsObject: setEasyIconsObjectProps( this.properties ),
 
       }
     );
@@ -391,7 +409,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
   }
 
 
-  
+
     /***
  *    d8888b. d88888b       .d8b.       db    db .d8888. d88888b d8888b. 
  *    88  `8D 88'          d8' `8b      88    88 88'  YP 88'     88  `8D 
@@ -407,15 +425,15 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
       console.log('beAUserFunction:',   );
       if ( this.displayMode === DisplayMode.Edit ) {
         alert("'Be a regular user' mode is only available while viewing the page.  \n\nOnce you are out of Edit mode, please refresh the page (CTRL-F5) to reload the web part.");
-  
+
       } else {
         this._beAReader = this._beAReader === true ? false : true;
         this.render();
       }
-  
+
     }
-  
-  
+
+
     /***
    *    d8888b. d8888b.  .d88b.  d8888b.      d8888b.  .d8b.  d8b   db d88888b       .o88b. db   db  .d8b.  d8b   db  d888b  d88888b 
    *    88  `8D 88  `8D .8P  Y8. 88  `8D      88  `8D d8' `8b 888o  88 88'          d8P  Y8 88   88 d8' `8b 888o  88 88' Y8b 88'     
@@ -426,52 +444,51 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
    *                                                                                                                                 
    *                                                                                                                                 
    */
-  
+
     //Copied from AdvancedPagePropertiesWebPart.ts
     // protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
       protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): Promise<void> {
         super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
-    
+
         try {
           await validateDocumentationUrl ( this.properties, propertyPath , newValue );
         } catch(e) {
           alert('unalbe to validateDocumentationUrl' );
         }
-  
-    
+
         this.properties.webpartHistory = updateWebpartHistoryV2( this.properties.webpartHistory , propertyPath , newValue, this.context.pageContext.user.displayName, [], [] );
-    
+
         if ( propertyPath === 'fpsImportProps' ) {
-    
+
           this._importErrorMessage = updateFpsImportProps( this.properties, importBlockProps, propertyPath, newValue,
             this.context.propertyPane.refresh,
             this.onPropertyPaneConfigurationStart,
             this._exitPropPaneChanged,
           );
-    
+
          } else if ( propertyPath === 'bannerStyle' || propertyPath === 'bannerCmdStyle' )  {
-    
+
           refreshBannerStylesOnPropChange( this.properties, propertyPath, newValue, this.context.propertyPane.refresh );
-    
+
         } else if (propertyPath === 'bannerStyleChoice')  {
           // bannerThemes, bannerThemeKeys, makeCSSPropPaneString
-    
+
           updateBannerThemeStyles( this.properties , newValue, true, this.properties.defPinState, this._sitePresets.forces );
-    
+
           if ( newValue === 'custom' || newValue === 'lock' ) {
             //Do nothing for these cases.
-            
+
           } else {
             //Reset main web part styles to defaults
-    
+
           }
-    
+
         }
-    
+
         this.context.propertyPane.refresh();
-    
+
         this.render();
-    
+
       }
 
 
@@ -501,6 +518,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
 
            },
 
+           buildEasyPagesGroup( this.properties, this.context.pageContext.site.absoluteUrl !== this.context.pageContext.web.absoluteUrl ),
             FPSPinMePropsGroup, //End this group  
 
             FPSBanner3VisHelpGroup( this.context, this.onPropertyPaneFieldChanged, this.properties ),

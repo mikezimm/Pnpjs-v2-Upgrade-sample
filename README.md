@@ -29,3 +29,20 @@ npm install --save-dev webpack-bundle-analyzer@3.9.0
 ## added 'as any' references:
 Twice for this.context in main web part class
 Updated the null return types in HelpPanel to be undefined per latest ESLint errors... BUT should this be reverted??
+
+
+## Checklist to move EasyPages and EasyIcons
+
+Move EasyIcons and EasyPages folders to npmFunctions
+
+Move Prop Pane Group(s) to npmFunctions
+Add PropPane Group to fpsReferences
+Update Main Web Part import for Prop Pane Group
+
+Move IEasyPagesWPProps and IEasyIconsWPProps to npmFunctions
+WebPart Props:  Import those interfaces from npmFunctions
+
+Move changeEasyIcons and changeEasyPages to npmFunctions
+BuildExportProps:  Import those interfaces from npmFunctions
+
+Move PreConfiguredSettings to npmFunctions

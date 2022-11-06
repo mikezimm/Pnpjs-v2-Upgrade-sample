@@ -118,6 +118,7 @@ export const trickyEmails = links.trickyEmails;
 export { expandoOnInit } from '@mikezimm/npmfunctions/dist/Services/DOM/Expando/WebPartOnInit';
 export { renderCustomStyles } from '@mikezimm/npmfunctions/dist/WebPartFunctions/MainWebPartStyleFunctions';
 export { updateBannerThemeStyles } from '@mikezimm/npmfunctions/dist/WebPartFunctions/BannerThemeFunctions';
+export { getReactCSSFromString } from '@mikezimm/npmfunctions/dist/Services/PropPane/StringToReactCSS';
 
 
 /***
@@ -166,6 +167,7 @@ export { FPSBanner4BasicGroup,FPSBanner3NavGroup, FPSBanner3ThemeGroup } from '@
 export { FPSBanner3VisHelpGroup } from '@mikezimm/npmfunctions/dist/CoreFPS/FPSOptionsGroupVisHelp';
 export { FPSPinMePropsGroup } from '@mikezimm/npmfunctions/dist/Services/DOM/PinMe/FPSOptionsGroupPinMe';
 export { FPSOptionsExpando, } from '@mikezimm/npmfunctions/dist/Services/DOM/Expando/FPSOptionsExpando'; //expandAudienceChoicesAll
+export { createAudienceGroup, } from '@mikezimm/npmfunctions/dist/Services/PropPane/Audiences'; //expandAudienceChoicesAll
 
 
 /***

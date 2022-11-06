@@ -14,7 +14,8 @@ import { getExpandColumns, getSelectColumns } from '../../../../fpsReferences';
 // import { warnMutuallyExclusive } from 'office-ui-fabric-react';
 
 import { getHelpfullErrorV2 } from '../../../../fpsReferences';
-import { EasyIconLocation, EasyIconObject, getEasyIcon } from "../EasyIcons/EasyIcons";
+import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons, } from "../EasyIcons/eiTypes";
+import { getEasyIcon } from "../EasyIcons/eiFunctions";
 
 /**
  * This filters first by a meta string and then by text search string
@@ -75,7 +76,7 @@ export function getUsedTabs( sourceProps: ISourceProps, items: IEasyLink[] ) : s
  * @param sourceProps 
  * @returns 
  */
-export async function getPagesContent( sourceProps: ISourceProps, ): Promise<IEasyLink[]> {
+export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject: IEasyIcons = EasyIconObjectDefault ): Promise<IEasyLink[]> {
 
   // debugger;
   const web = Web(`${sourceProps.webUrl.indexOf('https:') < 0 ? window.location.origin : ''}${sourceProps.webUrl}`);
@@ -110,7 +111,7 @@ export async function getPagesContent( sourceProps: ISourceProps, ): Promise<IEa
 
   // debugger;
 
-  items = addSearchMeta( items, sourceProps, );
+  items = addSearchMeta( items, sourceProps, EasyIconObject );
   items = sortObjectArrayByStringKeyCollator( items, 'asc', 'title', true, 'en' );
 
   console.log( sourceProps.defType, sourceProps.listTitle , items );
@@ -131,7 +132,7 @@ export const DefaultSiteLogo : string = `_layouts/15/images/sitepagethumbnail.pn
  * @param sourceProps 
  * @returns 
  */
-export function addSearchMeta ( items: IEasyLink[], sourceProps: ISourceProps,  ): IEasyLink[] {
+export function addSearchMeta ( items: IEasyLink[], sourceProps: ISourceProps, EasyIcons: IEasyIcons  ): IEasyLink[] {
 
   items.map( page => {
     page.tabs = [];
@@ -145,7 +146,7 @@ export function addSearchMeta ( items: IEasyLink[], sourceProps: ISourceProps,  
       else if ( page.title?.toLocaleLowerCase().indexOf( 'extreme' ) > -1 ) { page.imageUrl = DefaultThumbExtreme; }
       else if ( page.title === 'Home' ) { page.imageUrl = DefaultThumbEarth; }
       else {
-        const EasyIconUrl = getEasyIcon( EasyIconObject, page );
+        const EasyIconUrl = getEasyIcon( EasyIcons, page );
         if ( EasyIconUrl ) page.imageUrl = EasyIconUrl ? EasyIconUrl : page.imageUrl; // If one is found, then use it, else use the defaul sitepagelogo
         if ( EasyIconUrl ) page.imageDesc = EasyIconUrl ? `Using EasyIcon:) ${ EasyIconUrl.replace( EasyIconLocation, '' )}` : page.imageDesc; // If one is found, then use it, else use the defaul sitepagelogo
       }

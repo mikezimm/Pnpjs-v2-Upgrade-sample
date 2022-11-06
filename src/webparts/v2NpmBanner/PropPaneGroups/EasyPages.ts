@@ -18,6 +18,7 @@ import {
     // PropertyPaneHorizontalRule,
     PropertyPaneSlider
 } from '@microsoft/sp-property-pane';
+import { createAudienceGroup } from '../fpsReferences';
 
 // import { getHelpfullErrorV2 } from '../Logging/ErrorHandler';
 // import { JSON_Edit_Link } from './zReusablePropPane';
@@ -26,72 +27,140 @@ import {
 import { IV2NpmBannerWebPartProps } from '../IV2NpmBannerWebPartProps';
 // import { JSON_Edit_Link, ValidLocalLanguages } from '../fpsReferences';
 
-export function buildPerformanceGroup( wpProps: IV2NpmBannerWebPartProps ) : IPropertyPaneGroup {
+export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParent: boolean ) : IPropertyPaneGroup {
+
+  const { easyPageEnable, easyPageTabs, easyPageOverflowTab, easyPageParent, easyIconEnable, easyIconIgnore, easyIconKeys, 
+      easyPagesAudience, easyPageAltNav, easyPageAltUrl, easyPageContainer, easyPageSeparateExtras, easyPageStyles } = wpProps;
+
+  // export interface IEasyPagesWPProps {
+  //   easyPageEnable: boolean;
+  //   easyPageTabs: string;
+  //   easyPageOverflowTab?: string;
+  // }
+  
+
 
 // let theListChoices : IPropertyPaneDropdownOption[] = [];
   const groupFields: IPropertyPaneField<any>[] = [];
 
   groupFields.push(
-    PropertyPaneSlider('fetchCount', {
-      label: 'Load this many items from PC',
-      min: 100,
-      max: 3000,
-      step: 100,
-      value: wpProps.fetchCount,
+    PropertyPaneToggle('easyPageEnable', {
+      label: 'Enable EasyPages',
+      offText: 'No',
+      onText: 'Yes',
+  }));
+
+  groupFields.push( createAudienceGroup( 'easyPagesAudience', 'Min audience to see EasyPages', 'Everyone', !easyPageEnable ) );
+
+  groupFields.push(
+    PropertyPaneTextField('easyPageTabs', {
+      label: 'Easy Pages Tabs (Keywords)',
+      description: 'Semi-colon separated keywords to group pages by',
+      disabled: easyPageEnable === false ? true : false,
+      value: easyPageTabs,
   }));
 
   groupFields.push(
-    PropertyPaneSlider('fetchCountMobile', {
-      label: 'Load this many items',
-      min: 100,
-      max: 3000,
-      step: 100,
-      value: wpProps.fetchCountMobile,
-      disabled: true,
+    PropertyPaneTextField('easyPageOverflowTab', {
+      label: 'Easy Pages Overflow Tab',
+      description: 'Category to put pages into that do not fit into other categories',
+      disabled: easyPageEnable === false ? true : false,
+      value: easyPageOverflowTab,
+  }));
+
+  //   easyPageParent?: boolean; //Include parent site pages
+  //   easyPageAltUrl?: string; //Include alternate site's site pages
+  //   easyPageAltNav?: string; //Include navigation elements from other site
+  //   easyPageStyles?: React.CSSProperties;  //Optional styles on entire page
+  //   easyPageContainer?: React.CSSProperties;  //Optional styles on container element
+
+  if ( hasParent === true ) {
+    groupFields.push(
+      PropertyPaneToggle('easyPageParent', {
+        label: 'Include Parent site',
+        offText: 'No',
+        onText: 'Yes',
+        disabled: easyPageEnable === false ? true : false,
+    }));
+  }
+
+  groupFields.push(
+    PropertyPaneTextField('easyPageAltUrl', {
+      label: 'Include Pages from this other site',
+      description: '/sites/... Url (disabled if you are using parent site)',
+      disabled: easyPageEnable === false || easyPageParent === true || easyPageAltNav ? true : false,
+      value: easyPageAltUrl,
   }));
 
   groupFields.push(
-    PropertyPaneTextField('restFilter', {
-      label: 'Rest filter to load only specific items.',
+    PropertyPaneTextField('easyPageAltNav', {
+      label: 'Include Navigation from this other site',
+      description: '/sites/... Url (disabled if you are using parent site)',
+      disabled: easyPageEnable === false || easyPageParent === true || easyPageAltUrl ? true : false,
+      value: easyPageAltNav,
+  }));
+
+  groupFields.push(
+    PropertyPaneToggle('easyPageSeparateExtras', {
+      label: 'Parent/other Site links',
+      offText: 'Mixed into custom tabs',
+      onText: 'Separate Tabs',
+      disabled: easyPageEnable === false || ( !easyPageParent && !easyPageAltNav && !easyPageAltUrl ) ? true : false,
+  }));
+
+  groupFields.push(
+    PropertyPaneTextField('easyPageStyles', {
+      label: 'Optional Easy Page styles on Entire Component',
+      description: 'React.CSSProperties format.',
+      multiline: true,
+      disabled: easyPageEnable === false ? true : false,
+      value: easyPageStyles,
+  }));
+
+  groupFields.push(
+    PropertyPaneTextField('easyPageContainer', {
+      label: 'Optional Easy Page styles on Container',
+      description: 'React.CSSProperties format.',
+      multiline: true,
+      disabled: easyPageEnable === false ? true : false,
+      value: easyPageContainer,
+  }));
+
+  // //To be added to npmFunctions
+  // export interface IEasyIconsWPProps {
+  //   easyIconEnable: boolean; // Used 
+  //   easyIconKeys: string;
+  //   easyIconIgnore: string;
+  // }
+
+  groupFields.push(
+    PropertyPaneToggle('easyIconEnable', {
+      label: 'Enable EasyIcons',
+      offText: 'No',
+      onText: 'Yes',
+  }));
+
+  groupFields.push(
+    PropertyPaneTextField('easyIconKeys', {
+      label: 'Easy Icon keys',
       description: 'See Github Wiki for examples',
       multiline: true,
-      value: wpProps.restFilter,
+      disabled: easyIconEnable === false ? true : false,
+      value: easyIconKeys,
   }));
 
   groupFields.push(
-    PropertyPaneTextField('evalFilter', {
-      label: 'Javascript eval filter',
+    PropertyPaneTextField('easyIconIgnore', {
+      label: 'Easy Icons to Ignore',
       description: 'See Github Wiki for examples',
       multiline: true,
-      value: wpProps.jsFilter,
+      disabled: easyIconEnable === false ? true : false,
+      value: easyIconIgnore,
   }));
 
-  groupFields.push(
-    PropertyPaneToggle('updateRefinersOnTextSearch', {
-      label: 'Update Refiners on text search',
-      offText: 'No = Faster',
-      onText: 'Yes = Slower',
-  }));
-
-  groupFields.push(
-    PropertyPaneSlider('itemsPerPage', {
-      label: 'Items per page',
-      min: 5,
-      max: 100,
-      step: 5,
-      value: wpProps.itemsPerPage,
-      // disabled: true,
-  }));
-
-  groupFields.push(
-    PropertyPaneToggle('getAllProps', {
-      label: 'Get all item props',
-      offText: 'No = Faster',
-      onText: 'Yes = Slower',
-  }));
 
   const ExportThisGroup: IPropertyPaneGroup = {
-    groupName: `Performance Properties`,
+    groupName: `EasyPages and EasyIcons`,
     isCollapsed: true,
     groupFields: groupFields
   };

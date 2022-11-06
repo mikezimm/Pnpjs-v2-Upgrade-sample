@@ -13,7 +13,8 @@ import {
   IMinPageStyleProps, IMinBannerUtilityProps, IMinFPSLegacyProps
 } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerInterface";
 
-
+import { IEveryoneAudience } from '@mikezimm/npmfunctions/dist/Services/PropPane/Audiences';
+ 
 //Specific for this web part
 export const exportIgnorePropsThis: string[] = [];
 
@@ -29,22 +30,27 @@ export const importBlockPropsThis: string[] = ['showSomeProps'];
 
 export const importBlockProps: string[] = [...importBlockPropsFPS, ...importBlockPropsThis];
 
-export const changePropertyGroupX: string[] = ['showSomeProps', 'showCustomProps', 'showOOTBProps', 'showApprovalProps', 'propsTitleField', 'propsExpanded', 'selectedProperties'];
+export const changeEasyPages: string[] = ['easyPageEnable', 'easyPagesAudience', 'easyPageTabs', 'easyPageOverflowTab', 
+  'easyPageParent', 'easyPageAltUrl', 'easyPageAltNav', 'easyPageSeparateExtras', 'easyPageStyles', 'easyPageContainer'];
+
+export const changeEasyIcons: string[] = ['easyIconEnable', 'easyIconKeys', 'easyIconIgnore', ];
 
 //To be added to npmFunctions
-export interface IEasyPagesProps {
-  easyPageEnable: string[];
-  easyPageTabs: string[];
+export interface IEasyPagesWPProps {
+  easyPageEnable: boolean;
+  easyPagesAudience: IEveryoneAudience;
+  easyPageTabs: string;
   easyPageOverflowTab?: string;
   easyPageParent?: boolean; //Include parent site pages
   easyPageAltUrl?: string; //Include alternate site's site pages
   easyPageAltNav?: string; //Include navigation elements from other site
-  easyPageStyles?: React.CSSProperties;  //Optional styles on entire page
-  easyPageContainer?: React.CSSProperties;  //Optional styles on container element
+  easyPageSeparateExtras?: boolean; //Put Parent/Alt links in separate tab ( default )
+  easyPageStyles?: string;  //Optional styles on entire page
+  easyPageContainer?: string;  //Optional styles on container element
 }
 
 //To be added to npmFunctions
-export interface IEasyIconsProps {
+export interface IEasyIconsWPProps {
   easyIconEnable: boolean; // Used 
   easyIconKeys: string;
   easyIconIgnore: string;
@@ -55,13 +61,11 @@ export interface IEasyIconsProps {
  * Extend with portions of FPS Props that are needed
  * 
  */
-export interface IV2NpmBannerWebPartProps extends IMinBannerUIProps, IMinPinMeProps, IMinPandoramicProps, IMinBannerThemeProps, IMinCustomHelpProps, IMinPageStyleProps, IMinBannerUtilityProps, IMinFPSLegacyProps, IEasyPagesProps, IEasyIconsProps {
+export interface IV2NpmBannerWebPartProps extends IMinBannerUIProps, IMinPinMeProps, IMinPandoramicProps, IMinBannerThemeProps, IMinCustomHelpProps, IMinPageStyleProps, IMinBannerUtilityProps, IMinFPSLegacyProps, IEasyPagesWPProps, IEasyIconsWPProps {
   [key: string]: any;
-  
-
 
   description: string;
-  
+
   webURL: string;
   listTitle: string,
 

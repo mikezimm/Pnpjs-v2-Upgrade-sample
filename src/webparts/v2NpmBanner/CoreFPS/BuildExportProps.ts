@@ -44,6 +44,8 @@
 
 import { IV2NpmBannerWebPartProps, exportIgnoreProps, } from '../IV2NpmBannerWebPartProps';
 
+import { changeEasyPages, changeEasyIcons, } from '../IV2NpmBannerWebPartProps';
+
 import { changeCustomHelp, changeExpando, changePageStyle, changefpsOptions2,  } from '../fpsReferences';
 
 import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerUtility,  } from '../fpsReferences';
@@ -79,6 +81,9 @@ import { importBlockProps } from '../IV2NpmBannerWebPartProps'
     exportStructure.wpInstanceID = wpInstanceID;
     exportStructure.currentWeb = currentWeb;
 
+    exportStructure.easyPages = changeEasyPages;
+    exportStructure.easyIcons = changeEasyIcons;
+
     exportStructure.changePinMe = changePinMe;
 
     exportStructure.Visitor = changeCustomHelp;
@@ -108,6 +113,9 @@ import { importBlockProps } from '../IV2NpmBannerWebPartProps'
     exportStructure.wpInstanceID = wpInstanceID;
     exportStructure.currentWeb = currentWeb;
 
+    exportStructure.easyPages = changeEasyPages;
+    exportStructure.easyIcons = changeEasyIcons;
+    
     exportStructure.changePinMe = changePinMe;
 
     exportStructure.Visitor = changeCustomHelp;
