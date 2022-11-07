@@ -103,12 +103,12 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
     if ( orderBy ) {
       //This does NOT DO ANYTHING at this moment.  Not sure why.
       items = await web.lists.getByTitle( sourceProps.listTitle ).items
-      .select(selectThese).expand(expandThese).filter(restFilter).orderBy(orderBy.prop, orderBy.asc ).getAll();
+      .select(selectThese).expand(expandThese).filter(restFilter).orderBy(orderBy.prop, orderBy.asc )();
       performance.ops.fetch1 = updatePerformanceEnd( performance.ops.fetch1, true, items.length );
 
     } else {
       items = await web.lists.getByTitle( sourceProps.listTitle ).items
-      .select(selectThese).expand(expandThese).filter(restFilter).getAll();
+      .select(selectThese).expand(expandThese).filter(restFilter)();
     }
 
 
