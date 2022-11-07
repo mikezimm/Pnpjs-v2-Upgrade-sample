@@ -1,0 +1,31 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "pnpjs-v3-updates",
+  "steps": [
+    {
+      "file": "src/webparts/v2NpmBanner/CoreFPS/Analytics.ts",
+      "description": "## npmFunctions function that saves list item to list\r\n\r\nNOTE: Just send web, list and save object",
+      "line": 145
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/components/PropPaneCols/components/fetch/funcions.ts",
+      "description": "## Basic Fetch list fields\r\n\r\nUsing just Web Url and List Title",
+      "line": 18
+    },
+    {
+      "file": "src/webparts/v2NpmBanner/components/PropPaneCols/components/EasyPages/functions.ts",
+      "description": "## Basic Fetch Site Pages\r\n\r\nUsing just Web Url and List Title",
+      "line": 112,
+      "selection": {
+        "start": {
+          "line": 103,
+          "character": 10
+        },
+        "end": {
+          "line": 103,
+          "character": 17
+        }
+      }
+    }
+  ]
+}
