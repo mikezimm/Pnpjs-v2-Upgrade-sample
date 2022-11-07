@@ -11,6 +11,9 @@ import "@pnp/sp/items";
 import { DefaultOverflowTab, ISourceProps, } from './types'; //SourceInfo, 
 
 import { getExpandColumns, getSelectColumns } from '../../../../fpsReferences';
+import { createBasePerformanceInit, startPerformOp, updatePerformanceEnd } from '../../../../fpsReferences';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformanceOps } from '../../../../fpsReferences';
 // import { warnMutuallyExclusive } from 'office-ui-fabric-react';
 
 import { getHelpfullErrorV2 } from '../../../../fpsReferences';
@@ -76,7 +79,11 @@ export function getUsedTabs( sourceProps: ISourceProps, items: IEasyLink[] ) : s
  * @param sourceProps 
  * @returns 
  */
-export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject: IEasyIcons = EasyIconObjectDefault ): Promise<IEasyLink[]> {
+export interface IGetPagesContent { items: IEasyLink[], performance: ILoadPerformance }
+export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject: IEasyIcons = EasyIconObjectDefault ): Promise<IGetPagesContent> {
+
+  const performance: ILoadPerformance = createBasePerformanceInit( 1, false );
+  performance.ops.fetch1 = startPerformOp( 'fetch1 - getPages', null );
 
   // debugger;
   const web = Web(`${sourceProps.webUrl.indexOf('https:') < 0 ? window.location.origin : ''}${sourceProps.webUrl}`);
@@ -91,12 +98,14 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
   const restFilter = sourceProps.restFilter ? sourceProps.restFilter : '';
   const orderBy = sourceProps.orderBy ? sourceProps.orderBy : null;
   let items : IEasyLink[]= [];
-  console.log('sourceProps', sourceProps );
+
   try {
     if ( orderBy ) {
       //This does NOT DO ANYTHING at this moment.  Not sure why.
       items = await web.lists.getByTitle( sourceProps.listTitle ).items
       .select(selectThese).expand(expandThese).filter(restFilter).orderBy(orderBy.prop, orderBy.asc ).getAll();
+      performance.ops.fetch1 = updatePerformanceEnd( performance.ops.fetch1, true, items.length );
+
     } else {
       items = await web.lists.getByTitle( sourceProps.listTitle ).items
       .select(selectThese).expand(expandThese).filter(restFilter).getAll();
@@ -110,13 +119,16 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
 
 
   // debugger;
-
+  performance.ops.analyze1 = startPerformOp( 'analyze1 - addSearchMeta', null );
   items = addSearchMeta( items, sourceProps, EasyIconObject );
+
+  performance.ops.analyze1 = updatePerformanceEnd( performance.ops.analyze1, true, items.length );
+
   items = sortObjectArrayByStringKeyCollator( items, 'asc', 'title', true, 'en' );
 
   console.log( sourceProps.defType, sourceProps.listTitle , items );
 
-  return items;
+  return { items: items, performance: performance };
 
 
 }

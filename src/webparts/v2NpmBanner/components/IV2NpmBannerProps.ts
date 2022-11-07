@@ -6,9 +6,6 @@ import { IEasyPagesProps } from './PropPaneCols/components/EasyPages/component';
 import { IEasyIconProps, IEasyIcons } from './PropPaneCols/components/EasyIcons/eiTypes';
 
 
-
-
-
 export interface IV2NpmBannerProps  extends IFPSCorePinMeReactComponentProps {
 
   [key: string]: string | boolean | number | IWebpartHistory | any | undefined;
@@ -25,7 +22,7 @@ export interface IV2NpmBannerProps  extends IFPSCorePinMeReactComponentProps {
 
   easyPagesProps: IEasyPagesProps;
   EasyIconsObject: IEasyIcons;
-  
+
 }
 
 

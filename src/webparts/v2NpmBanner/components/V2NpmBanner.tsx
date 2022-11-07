@@ -385,7 +385,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
     />;
 
     const EasyPagesElement = <EasyPagesHook 
-      easyPagesProps={ { ...this.props.easyPagesProps, ...{ expanded: this.state.showEasyPages } } }
+      easyPagesProps={ { ...this.props.easyPagesProps, ...{ expanded: this.state.showEasyPages, toggleExpanded: this._toggleEasyLinks.bind(this) } } }
       // easyPagesProps={{
       //   context: this.props.context as any,
       //   expanded: this.state.showEasyPages ,

@@ -190,33 +190,33 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
-      //Common FPS variables
+  //Common FPS variables
 
-      private _sitePresets : ISitePreConfigProps = null;
-      private _trickyApp = 'FPS Core115';
-      private _wpInstanceID: string = webpartInstance( this._trickyApp );
-      private _FPSUser: IFPSUser = null;
-    
-      //For FPS Banner
-      private _forceBanner = true ;
-      private _modifyBannerTitle = true ;
-      private _modifyBannerStyle = true ;
-    
-      private _exitPropPaneChanged = false;
-      private _importErrorMessage = '';
-      
-      private _keysToShow : ILoadPerformanceOps[] = [ ];
-      private _performance : ILoadPerformance = null;
+  private _sitePresets : ISitePreConfigProps = null;
+  private _trickyApp = 'FPS Core115';
+  private _wpInstanceID: string = webpartInstance( this._trickyApp );
+  private _FPSUser: IFPSUser = null;
+
+  //For FPS Banner
+  private _forceBanner = true ;
+  private _modifyBannerTitle = true ;
+  private _modifyBannerStyle = true ;
+
+  private _exitPropPaneChanged = false;
+  private _importErrorMessage = '';
   
-      // private performance : ILoadPerformanceALVFM = null;
-      // private bannerProps: IWebpartBannerProps = null;
-    
-      // private urlParameters: any = {};
-    
-      //2022-04-07:  Intent of this is a one-time per instance to 'become a reader' level user.  aka, hide banner buttons that reader won't see
-      private _beAReader: boolean = false; 
-  
-      // private _fetchInfo: any = null; // Originally IFetchInfo if it has it
+  private _keysToShow : ILoadPerformanceOps[] = [ ];
+  private _performance : ILoadPerformance = null;
+
+  // private performance : ILoadPerformanceALVFM = null;
+  // private bannerProps: IWebpartBannerProps = null;
+
+  // private urlParameters: any = {};
+
+  //2022-04-07:  Intent of this is a one-time per instance to 'become a reader' level user.  aka, hide banner buttons that reader won't see
+  private _beAReader: boolean = false; 
+
+  // private _fetchInfo: any = null; // Originally IFetchInfo if it has it
 
 
   protected async onInit(): Promise<void> {

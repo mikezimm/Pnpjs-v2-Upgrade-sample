@@ -41,8 +41,15 @@ Update Main Web Part import for Prop Pane Group
 
 Move IEasyPagesWPProps and IEasyIconsWPProps to npmFunctions
 WebPart Props:  Import those interfaces from npmFunctions
+Move easyPagesProps create to mainWebPartRenderBannerSetup
+Update easyPagesProps from created in Render to bannerProps.easyPagesProps
+
+Move EasyIconsObject create to mainWebPartRenderBannerSetup
+Update EasyIconsObject from created in Render to bannerProps.EasyIconsObject
 
 Move changeEasyIcons and changeEasyPages to npmFunctions
 BuildExportProps:  Import those interfaces from npmFunctions
 
 Move PreConfiguredSettings to npmFunctions
+
+Figure out EasyPages Audience Targetting

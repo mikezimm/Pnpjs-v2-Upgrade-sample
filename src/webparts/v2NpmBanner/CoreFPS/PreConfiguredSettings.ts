@@ -52,6 +52,7 @@ export const WPPresetEverywhere : IPreConfigSettings = {
       //Move these to npmFunctions when code is moved
 
         easyPageEnable: true,
+        easyPagesAudience: 'Everyone',
         easyPageTabs:  'Home;Help;Training;Links;Contents',
         easyPageOverflowTab:  DefaultOverflowTab,
         easyPageParent: false, //Include parent site pages
