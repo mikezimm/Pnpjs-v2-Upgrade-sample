@@ -1,3 +1,9 @@
+## Steps for creating Pnpjs-v3-Upgraded version
+Cloned latest version to new folder v1.3.0.1
+Updated all project versions to v1.3.0.1
+Changed @pnp/graph and @pnp/sp in package.json to 3.8.0
+Deleted package-lock.json
+npm install
 
 
 ## adjust these lint rules to find lots of areas of improvement:
