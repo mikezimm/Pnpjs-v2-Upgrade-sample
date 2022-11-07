@@ -16,7 +16,7 @@ export function aboutTable( showRepoLinks: boolean ): { table: IHelpTable; } {
         rows: [],
     };
 
-    table.rows.push( createAboutRow('2022-11-07',"1.0.0.07","#43, #44", showRepoLinks === true ? repoLink : null ) );
+    table.rows.push( createAboutRow('2022-11-07',"1.0.0.07","#43, #44, #48, #49", showRepoLinks === true ? repoLink : null ) );
 
     table.rows.push( createAboutRow('2022-11-01',"1.0.0.06","#38, #39, #40", showRepoLinks === true ? repoLink : null ) );
 
