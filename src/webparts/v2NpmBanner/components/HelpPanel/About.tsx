@@ -6,7 +6,7 @@ import { repoLink, } from '../../fpsReferences';
 
 import { createAboutRow } from '../../fpsReferences';
 
-export const panelVersionNumber = '2022-11-07 -  1.0.0.07'; //Added to show in panel
+export const panelVersionNumber = '2022-11-09 -  1.3.0.01'; //Added to show in panel
 
 export function aboutTable( showRepoLinks: boolean ): { table: IHelpTable; } {
 
@@ -15,6 +15,8 @@ export function aboutTable( showRepoLinks: boolean ): { table: IHelpTable; } {
         headers: ['Date','Version','Focus'],
         rows: [],
     };
+
+    table.rows.push( createAboutRow('2022-11-07',"1.3.0.01","Start Pnpjs V3", showRepoLinks === true ? repoLink : null ) );
 
     table.rows.push( createAboutRow('2022-11-07',"1.0.0.07","#43, #44, #48, #49", showRepoLinks === true ? repoLink : null ) );
 
