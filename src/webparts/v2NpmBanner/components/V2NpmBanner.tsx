@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './V2NpmBanner.module.scss';
+import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { escape } from '@microsoft/sp-lodash-subset';
 import { IV2NpmBannerProps, IV2NpmBannerState } from './IV2NpmBannerProps';
@@ -8,6 +9,7 @@ import { saveViewAnalytics } from '../CoreFPS/Analytics';
 
 // import FetchBanner from '../CoreFPS/FetchBannerElement';
 import FetchBanner from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/FetchBannerElement';
+import EasyPagesHook from './PropPaneCols/components/EasyPages/component';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ISpecialMessage, specialUpgrade } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/special/interface';
@@ -161,8 +163,8 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
         refreshId: this._newRefreshId(),
         debugMode: false,
         showSpinner: false,
-
-        };
+        showEasyPages: false,
+      };
     }
 
     public componentDidMount() : void {
@@ -234,6 +236,13 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
      }
 
      if ( JSON.stringify( prevProps.lists) !== JSON.stringify( this.props.lists ) ) {
+      refresh = true;
+     }
+     //These do not seem to update component when changed
+     if ( JSON.stringify( prevProps.EasyIconsObject.GroupKeys ) !== JSON.stringify( this.props.EasyIconsObject.GroupKeys ) ) {
+      refresh = true;
+     }
+     if ( JSON.stringify( prevProps.easyPagesProps.tabs ) !== JSON.stringify( this.props.easyPagesProps.tabs ) ) {
       refresh = true;
      }
 
@@ -349,6 +358,10 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
     if ( fpsconsole === true ) console.log('React Render - this._performance:', JSON.parse(JSON.stringify(this._performance)) );
 
+    const nearBannerElementsArray: any[] = [
+      <Icon key='Link12' iconName='Link12' onClick={ this._toggleEasyLinks.bind(this) } style={ this.props.bannerProps.bannerCmdReactCSS }/>
+    ]
+
     const Banner = <FetchBanner 
 
       // bonusHTML1={ 'BonusHTML1 Text' }
@@ -358,7 +371,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
       parentProps={ this.props }
       parentState={ this.state }
 
-      nearBannerElementsArray={ [] }
+      nearBannerElementsArray={ nearBannerElementsArray }
       farBannerElementsArray={ farBannerElementsArray }
 
       contentPages={ this._contentPages }
@@ -371,10 +384,21 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
     />;
 
+    const EasyPagesElement = <EasyPagesHook 
+      easyPagesProps={ { ...this.props.easyPagesProps, ...{ expanded: this.state.showEasyPages, toggleExpanded: this._toggleEasyLinks.bind(this) } } }
+      // easyPagesProps={{
+      //   context: this.props.context as any,
+      //   expanded: this.state.showEasyPages ,
+      //   tabs: [ 'Home', 'Drilldown', 'Training', 'Links', 'Contents' ],
+      // }}
+      EasyIconsObject= { this.props.EasyIconsObject }
+    />
+
     return (
       <section className={`${styles.v2NpmBanner} ${hasTeamsContext ? styles.teams : ''}`}>
         { devHeader }
         { Banner }
+        { EasyPagesElement }
         <div className={styles.welcome}>
           <h2>Well done, {escape(userDisplayName)}!</h2>
           <div>{environmentMessage}</div>
@@ -392,6 +416,10 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
         </div>
       </section>
     );
+  }
+
+  private _toggleEasyLinks( ): void {
+    this.setState({ showEasyPages: !this.state.showEasyPages });
   }
 
   private _saveCommands( commands: IQuickCommandsDesign ): void {
