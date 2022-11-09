@@ -24,6 +24,9 @@ import { repoLink } from '../fpsReferences';
 
 import { ISitePreConfigProps, SitePresetsInfo } from '../fpsReferences';
 
+import { getEasyIconsHelp } from '../components/PropPaneCols/components/EasyIcons/eiHelp';
+import { EasyIconObjectDefault } from '../components/PropPaneCols/components/EasyIcons/eiTypes';
+
 // require('@mikezimm/npmfunctions/dist/PropPaneHelp/PropPanelHelp.css');
 
 /***
@@ -218,6 +221,7 @@ export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ): JSX
           </div>
         </PivotItem>
 
+        { getEasyIconsHelp( EasyIconObjectDefault, repoLink ) }
         { VisitorHelp }
         { BannerHelp }
         { FPSBasicHelp }
