@@ -52,11 +52,11 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
           return (
             <div className='easy-icons-group' key={ group }>
               <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
-              <div>
+              <div className='easy-icons-group-icons'>
                 {
                   EGroup.Icons.map( icon => {
                     return ( !icon ? null :
-                      <div>
+                      <div className='easy-icons-image-div' >
                         <img key={ icon } className={ 'easy-icons-image' } src={ `${EasyIconLocation}${EGroup.Folder}/${icon}.png` } style={{ }} title={ `${EGroup.Folder}/${icon}` }/>
                       </div>
                     )
