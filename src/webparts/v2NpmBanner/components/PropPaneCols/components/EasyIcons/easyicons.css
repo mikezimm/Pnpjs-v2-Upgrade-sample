@@ -7,6 +7,83 @@
   align-items: start;
   }
 
+  /* sample css for using background image: AND easy-icons-image as class */
+  .bg-image {
+    /* background-image: url(https://mcclickster.sharepoint.com/sites/Branding/EasyIcons/Products/Cushion.png); */
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100px;
+    width: min-content;
+    /* width: 100px; */
+    /* width: fit-content; */
+    display: inline-block;
+
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 6px 0px  rgba(0,0,0,0.3);
+    
+    /* object-fit:contain; This can be one of the 5 values from above */
+    /* grid-area: 1 / 1 / 3 / 2; */
+  
+    filter: grayscale(50%);
+    -webkit-filter: grayscale(50%);
+    -webkit-transition: all 1s ease;
+    transition: .5s ease;
+  
+    padding: 5px;
+    position: relative;
+    z-index: 1;
+
+    
+  }
+
+  .bg-image:hover {
+    /* background-image: url(https://mcclickster.sharepoint.com/sites/Branding/EasyIcons/Products/Cushion.png); */
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: .5s ease;
+
+    filter: grayscale(0%);
+    filter: gray;
+    -webkit-filter: grayscale(0%);
+    filter: none;
+  
+    /* max-width: 125px; */
+    /* max-width: 125px; */
+  
+    /* padding: 25px; padding kills smoothness */
+  
+    -webkit-transform: scale(2);
+    -ms-transform: scale(2);
+    transform: scale(2);
+  
+    transition: .5s ease;
+    z-index: 3;
+  
+    -webkit-box-shadow: 7px 5px 33px 11px #000000; 
+    box-shadow: 7px 5px 33px 11px #000000;
+
+  }
+
+  .bg-image-card {
+    display: inline-block;
+  }
+
+  .bg-image-caption {
+    font-size: large;
+    transition: .5s ease;
+  }
+  .bg-image-caption:hover {
+      
+    -webkit-transform: scale(2);
+    -ms-transform: scale(2);
+    transform: scale(2);
+  
+    transition: .5s ease;
+    z-index: 3;
+
+  }
+
+
   .easy-icons-group {
 
   }
@@ -95,3 +172,8 @@
 
   transition: .5s ease;
   } */
+
+  
+  .bg-image-card .bg-image {
+    height: '';
+  }
