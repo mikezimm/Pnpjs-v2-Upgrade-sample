@@ -47,6 +47,7 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
         </li>
       </ul>
       <div className={ 'fps-pph-topic' }>What Icons are available?</div>
+
       <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
         { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
           const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
@@ -183,6 +184,146 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
         })
         }
       </div>
+
+
+
+
+
+      <div style={{ height: '30px', padding: '15px', fontSize: 'larger' }}>
+        Option 2 - Background image
+      </div>
+
+      <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
+        { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
+          const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
+          return (
+            <div className='easy-icons-group' key={ group }>
+              <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
+              <div className='easy-icons-group-icons'>
+                {
+                  EGroup.Icons.map( icon => {
+                    const imageUrl = `${EasyIconLocation}${EGroup.Folder}/${icon}.png`;
+                    return ( !icon ? null :
+                      <div className='bg-image' style={{ backgroundImage: `url(${imageUrl})`}}>
+                        <span className='bg-image-caption'>This is some span text</span>
+                        </div>
+                    )})
+                }
+              </div>
+            </div> );
+          })
+        }
+      </div>
+
+
+
+
+      <div style={{ height: '30px', padding: '15px', fontSize: 'larger' }}>
+          Option 3 - Double Image
+      </div>
+
+      <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
+        { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
+          const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
+          return (
+            <div className='easy-icons-group' key={ group }>
+              <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
+              <div className='easy-icons-group-icons'>
+                {
+                  EGroup.Icons.map( icon => {
+                    const imageUrl = `${EasyIconLocation}${EGroup.Folder}/${icon}.png`;
+                    return ( !icon ? null :
+                      <div className='bg-image' style={{ backgroundImage: `url(${imageUrl})`}}>
+                        <img key={ icon } className={ 'easy-icons-image' } src={ `${imageUrl}` } style={{ visibility: 'hidden' }} title={ `${EGroup.Folder}/${icon}` }/>
+                        <span className='bg-image-caption'>This is some span text</span>
+                        </div>
+                    )})
+                }
+              </div>
+            </div> );
+          })
+        }
+      </div>
+
+
+
+
+      <div style={{ height: '30px', padding: '15px', fontSize: 'larger' }}>
+        Option 4 - Double Image Card v2
+      </div>
+
+      <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
+        { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
+          const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
+          return (
+            <div className='easy-icons-group' key={ group }>
+              <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
+              <div className='easy-icons-group-icons'>
+                {
+                  EGroup.Icons.map( icon => {
+                    const imageUrl = `${EasyIconLocation}${EGroup.Folder}/${icon}.png`;
+                    return ( !icon ? null :
+                      // <div className='easy-icons-image-div' >
+                      <div className='bg-image-card'>
+                        <div className='bg-image' style={{ backgroundImage: `url(${imageUrl})`}}>
+                          <img key={ icon } className={ 'easy-icons-image' } src={ `${imageUrl}` } style={{ visibility: 'hidden' }} title={ `${EGroup.Folder}/${icon}` }/>
+                          <span className='bg-image-caption'>This is some span text</span>
+                          </div>
+                      </div>
+                    )})
+                }
+              </div>
+            </div> );
+          })
+        }
+      </div>
+
+
+
+
+
+      <div style={{ height: '30px', padding: '15px', fontSize: 'larger' }}>
+        Option 5 - Double Image v3
+      </div>
+
+      <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
+        { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
+          const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
+          return (
+            <div className='easy-icons-group' key={ group }>
+              <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
+              <div className='easy-icons-group-icons'>
+                {
+                  EGroup.Icons.map( icon => {
+                    const imageUrl = `${EasyIconLocation}${EGroup.Folder}/${icon}.png`;
+                    return ( !icon ? null :
+                      <div className='bg-image-card'>
+                        <div className='bg-image' style={{ backgroundImage: `url(${imageUrl})`}}>
+                          <img key={ icon } className={ 'easy-icons-image' } src={ `${imageUrl}` } style={{ visibility: 'hidden' }} title={ `${EGroup.Folder}/${icon}` }/>
+                        </div>
+                        <div className='bg-image-caption'>
+                          <span>This is some span text</span>
+                        </div>
+                      </div>
+                    )})
+                }
+              </div>
+            </div> );
+          })
+        }
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
     </div>;
 
   const EasyIconsHelpPivot: JSX.Element = 
