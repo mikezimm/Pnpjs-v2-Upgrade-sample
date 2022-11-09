@@ -77,7 +77,7 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
 
 
 
-      <div style={{ height: '30px', padding: '15px', fontSize: 'larger' }}>
+      <div style={{ height: '30px', padding: '15px', fontSize: 'xxlarge' }}>
         Option 2 - Background image
       </div>
 
@@ -106,7 +106,7 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
 
 
 
-      <div style={{ height: '30px', padding: '15px', fontSize: 'larger' }}>
+      <div style={{ height: '30px', padding: '15px', fontSize: 'xxlarge' }}>
           Option 3 - Double Image
       </div>
 
@@ -136,7 +136,7 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
 
 
 
-      <div style={{ height: '30px', padding: '15px', fontSize: 'larger' }}>
+      <div style={{ height: '30px', padding: '15px', fontSize: 'xxlarge' }}>
         Option 4 - Double Image Card v2
       </div>
 
@@ -170,7 +170,7 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
 
 
 
-      <div style={{ height: '30px', padding: '15px', fontSize: 'larger' }}>
+      <div style={{ height: '30px', padding: '15px', fontSize: 'xxlarge' }}>
         Option 5 - Double Image v3
       </div>
 
