@@ -8,6 +8,7 @@ import { PivotItem, } from 'office-ui-fabric-react/lib/Pivot';
 import { IRepoLinks } from '../../../../fpsReferences';
 import { IEasyIcons, IEasyIconGroup, IEasyIconGroups, EasyIconLocation } from './eiTypes';
 import { urlCombine } from '@pnp/spfx-controls-react';
+import { getEasyIconElement } from './eiHelpIcons';
 
 require('./easyicons.css');
 
@@ -22,7 +23,7 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
 
   // const PleaseSeeWiki = <p>Please see the { repoLink.wiki }  for more information</p>;
 
-  const EasyIconsHelp = <div className={ 'fps-pph-content' }>
+  const EasyIconsHelp = <div className={ 'fps-pph-content' } style={{ paddingBottom: '100px' }}>
       <div className={ 'fps-pph-topic' }>Easy Icons</div>
       <div >Easy Icons feature will magically find Thumbnails and Images for content that does not have any!</div>
       <div >What do you have to do to get started?   NOTHING!</div>
@@ -35,7 +36,7 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
           <li>Files:  SharePoint auto-generates Thumbnails based on the content in the file</li>
           <li>Lists, Libraries:  Not possible to set a Thumbnail at all</li>
         </li>
-        
+
         <li>Tell the web part what Icons to focus on
           <ol>
             <li>Edit Page</li>
@@ -48,169 +49,14 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
       </ul>
       <div className={ 'fps-pph-topic' }>What Icons are available?</div>
 
-      <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
-        { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
-          const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
-          return (
-            <div className='easy-icons-group' key={ group }>
-              <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
-              <div className='easy-icons-group-icons'>
-                {
-                  EGroup.Icons.map( icon => {
-                    return ( !icon ? null :
-                      // Look at this example for cards:  https://codepen.io/flyingcar/pen/jmvLqG
-                      // Or maybe this one:  https://ehtmlu.com/blog/simple-css-image-grid/  ==>> https://codepen.io/eHtmlu/pen/BaodGVp has Hover Text
-                      // Or possibly this one although maybe not:  https://codepen.io/knyttneve/pen/YgZbLO
-
-                      // <div className='easy-icons-image-div' >
-                        <img key={ icon } className={ 'easy-icons-image' } src={ `${EasyIconLocation}${EGroup.Folder}/${icon}.png` } style={{ }} title={ `${EGroup.Folder}/${icon}` }/>
-                      // </div>
-                    )})
-                }
-              </div>
-            </div> );
-        })
-        }
-      </div>
-
-
-
-
-
-      <div style={{ height: '30px', padding: '15px', fontSize: 'xxlarge' }}>
-        Option 2 - Background image
-      </div>
-
-      <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
-        { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
-          const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
-          return (
-            <div className='easy-icons-group' key={ group }>
-              <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
-              <div className='easy-icons-group-icons'>
-                {
-                  EGroup.Icons.map( icon => {
-                    const imageUrl = `${EasyIconLocation}${EGroup.Folder}/${icon}.png`;
-                    return ( !icon ? null :
-                      <div className='bg-image' style={{ backgroundImage: `url(${imageUrl})`}}>
-                        <span className='bg-image-caption'>This is some span text</span>
-                        </div>
-                    )})
-                }
-              </div>
-            </div> );
-          })
-        }
-      </div>
-
-
-
-
-      <div style={{ height: '30px', padding: '15px', fontSize: 'xxlarge' }}>
-          Option 3 - Double Image
-      </div>
-
-      <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
-        { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
-          const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
-          return (
-            <div className='easy-icons-group' key={ group }>
-              <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
-              <div className='easy-icons-group-icons'>
-                {
-                  EGroup.Icons.map( icon => {
-                    const imageUrl = `${EasyIconLocation}${EGroup.Folder}/${icon}.png`;
-                    return ( !icon ? null :
-                      <div className='bg-image' style={{ backgroundImage: `url(${imageUrl})`}}>
-                        <img key={ icon } className={ 'easy-icons-image' } src={ `${imageUrl}` } style={{ visibility: 'hidden' }} title={ `${EGroup.Folder}/${icon}` }/>
-                        <span className='bg-image-caption'>This is some span text</span>
-                        </div>
-                    )})
-                }
-              </div>
-            </div> );
-          })
-        }
-      </div>
-
-
-
-
-      <div style={{ height: '30px', padding: '15px', fontSize: 'xxlarge' }}>
-        Option 4 - Double Image Card v2
-      </div>
-
-      <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
-        { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
-          const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
-          return (
-            <div className='easy-icons-group' key={ group }>
-              <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
-              <div className='easy-icons-group-icons'>
-                {
-                  EGroup.Icons.map( icon => {
-                    const imageUrl = `${EasyIconLocation}${EGroup.Folder}/${icon}.png`;
-                    return ( !icon ? null :
-                      // <div className='easy-icons-image-div' >
-                      <div className='bg-image-card'>
-                        <div className='bg-image' style={{ backgroundImage: `url(${imageUrl})`}}>
-                          <img key={ icon } className={ 'easy-icons-image' } src={ `${imageUrl}` } style={{ visibility: 'hidden' }} title={ `${EGroup.Folder}/${icon}` }/>
-                          <span className='bg-image-caption'>This is some span text</span>
-                          </div>
-                      </div>
-                    )})
-                }
-              </div>
-            </div> );
-          })
-        }
-      </div>
-
-
-
-
-
-      <div style={{ height: '30px', padding: '15px', fontSize: 'xxlarge' }}>
-        Option 5 - Double Image v3
-      </div>
-
-      <div className={ 'easy-icons-grid' }style={{ display: 'grid' }}>
-        { Object.keys( EasyIcons.Groups ).map( ( group: IEasyIconGroups ) => {
-          const EGroup: IEasyIconGroup = EasyIcons.Groups[ group ];
-          return (
-            <div className='easy-icons-group' key={ group }>
-              <div className='easy-icons-group-title'>{ EGroup.Folder }</div>
-              <div className='easy-icons-group-icons'>
-                {
-                  EGroup.Icons.map( icon => {
-                    const imageUrl = `${EasyIconLocation}${EGroup.Folder}/${icon}.png`;
-                    return ( !icon ? null :
-                      <div className='bg-image-card'>
-                        <div className='bg-image' style={{ backgroundImage: `url(${imageUrl})`}}>
-                          <img key={ icon } className={ 'easy-icons-image' } src={ `${imageUrl}` } style={{ visibility: 'hidden' }} title={ `${EGroup.Folder}/${icon}` }/>
-                        </div>
-                        <div className='bg-image-caption'>
-                          <span>This is some span text</span>
-                        </div>
-                      </div>
-                    )})
-                }
-              </div>
-            </div> );
-          })
-        }
-      </div>
-
-
-
-
-
-
-
-
-
-
-
+      { getEasyIconElement( EasyIcons, 'geek' ) }
+      { getEasyIconElement( EasyIcons, 'hero' ) }
+      { getEasyIconElement( EasyIcons, 'fly' ) }
+      { getEasyIconElement( EasyIcons, 'Base' ) }
+      { getEasyIconElement( EasyIcons, '2' ) }
+      { getEasyIconElement( EasyIcons, '3' ) }
+      { getEasyIconElement( EasyIcons, '4' ) }
+      { getEasyIconElement( EasyIcons, '5' ) }
 
     </div>;
 
