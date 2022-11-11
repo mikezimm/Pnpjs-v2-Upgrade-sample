@@ -358,6 +358,8 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
 
         easyPagesProps: {
           context: this.context,
+          pageLayout: this.properties.pageLayout,
+          pinState: this.properties.defPinState,
           expanded: false ,
           tabs: getStringArrayFromString( this.properties.easyPageTabs , ';', true, null, true ) ,
           overflowTab: this.properties.easyPageOverflowTab,

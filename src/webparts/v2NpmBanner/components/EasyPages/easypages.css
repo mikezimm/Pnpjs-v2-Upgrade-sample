@@ -4,12 +4,17 @@
   position: absolute;
   height: 0px;
   padding: 2em;
-  width: calc(100% - 60px -4em );
+  /* width: calc(100% - 60px -4em ); */
+  width: calc(100% - 6em );
 /*   background: transparent;
   color: transparent; */
   transition:.4s;
   opacity: 0;
   overflow: hidden;
+}
+
+.easy-pages-spa {
+  width: calc(100% - 6em );
 }
 
 .easy-pages-close {

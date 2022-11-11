@@ -25,9 +25,14 @@ require('./easypages.css');
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { easyLinkElement } from './elements';
 import { sortObjectArrayByStringKeyCollator } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
+
+import { ISupportedHost } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSInterfaces';
+import { IPinMeState } from "@mikezimm/npmfunctions/dist/Services/DOM/PinMe/FPSPinMenu";
+
 import { ILoadPerformance, } from '@mikezimm/npmfunctions/dist/Performance/IPerformance';
 import { createBasePerformanceInit, } from '@mikezimm/npmfunctions/dist/Performance/functions';
 import { createPerformanceTableVisitor, createPerformanceRows } from '@mikezimm/npmfunctions/dist/Performance/tables';
+
 import { compoundArrayFilter, getPagesContent, getUsedTabs } from './functions';
 import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource } from './epTypes';
 import { IEasyIconProps, IEasyIcons } from '../EasyIcons/eiTypes';
@@ -35,6 +40,8 @@ import { setEasyIconsObjectProps } from '../EasyIcons/eiFunctions';
 
 export interface IEasyPagesProps {
   context: WebPartContext;
+  pageLayout: ISupportedHost;  //SharePointFullPage
+  pinState: IPinMeState;      // To be used when rebuilding the Banner and FetchBanner components
   expanded: boolean;
   toggleExpanded?: any;
   tabs: string[];
@@ -131,8 +138,13 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
   }
 
-  const classNames = [ 'easy-pages', expandedState === true ? 'expand' : null ].join( ' ' );
-  const EasyPagesElement: JSX.Element = <div className = { classNames } style={ styles }>
+  //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/56
+  const classNames: string[] = [ 'easy-pages' ];
+  if ( expandedState === true ) classNames.push ( 'expand' );
+  if ( props.easyPagesProps.pageLayout === 'SharePointFullPage' || props.easyPagesProps.pageLayout === 'SingleWebPartAppPageLayout' ) classNames.push ( 'easy-pages-spa' );
+  if ( ( props.easyPagesProps.pinState === 'pinFull' || props.easyPagesProps.pinState === 'pinMini' ) && classNames.indexOf('easy-pages-spa') < 0 ) classNames.push ( 'easy-pages-spa' );
+
+  const EasyPagesElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
     <Pivot 
           linkFormat={PivotLinkFormat.links}
           linkSize={PivotLinkSize.normal}
