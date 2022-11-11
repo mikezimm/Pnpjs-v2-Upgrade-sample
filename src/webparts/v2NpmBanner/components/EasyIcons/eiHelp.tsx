@@ -5,7 +5,7 @@ import ReactJson from "react-json-view";
 
 import { PivotItem, } from 'office-ui-fabric-react/lib/Pivot';
 
-import { IRepoLinks } from '../../../../fpsReferences';
+import { IRepoLinks } from '../../fpsReferences';
 import { IEasyIcons, IEasyIconGroup, IEasyIconGroups, EasyIconLocation } from './eiTypes';
 import { urlCombine } from '@pnp/spfx-controls-react';
 import { getEasyIconElement } from './eiHelpIcons';

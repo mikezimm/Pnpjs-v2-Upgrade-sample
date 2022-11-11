@@ -4,7 +4,7 @@ import { Pivot, PivotItem, IPivotItemProps, PivotLinkFormat, PivotLinkSize,} fro
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2 } from '../../../../fpsReferences';
+import { getHighlightedText , getHelpfullErrorV2 } from '../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,7 +14,7 @@ import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import { getExpandColumns, getSelectColumns } from '../../../../fpsReferences';
+import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
 
 
 
@@ -29,7 +29,7 @@ import { ILoadPerformance, } from '@mikezimm/npmfunctions/dist/Performance/IPerf
 import { createBasePerformanceInit, } from '@mikezimm/npmfunctions/dist/Performance/functions';
 import { createPerformanceTableVisitor, createPerformanceRows } from '@mikezimm/npmfunctions/dist/Performance/tables';
 import { compoundArrayFilter, getPagesContent, getUsedTabs } from './functions';
-import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource } from './types';
+import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource } from './epTypes';
 import { IEasyIconProps, IEasyIcons } from '../EasyIcons/eiTypes';
 import { setEasyIconsObjectProps } from '../EasyIcons/eiFunctions';
 

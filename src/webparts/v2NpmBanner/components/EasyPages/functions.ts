@@ -8,15 +8,15 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
 //Interfaces
-import { DefaultOverflowTab, ISourceProps, } from './types'; //SourceInfo, 
+import { DefaultOverflowTab, ISourceProps, } from './epTypes'; //SourceInfo, 
 
-import { getExpandColumns, getSelectColumns } from '../../../../fpsReferences';
-import { createBasePerformanceInit, startPerformOp, updatePerformanceEnd } from '../../../../fpsReferences';
+import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
+import { createBasePerformanceInit, startPerformOp, updatePerformanceEnd } from '../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformanceOps } from '../../../../fpsReferences';
+import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformanceOps } from '../../fpsReferences';
 // import { warnMutuallyExclusive } from 'office-ui-fabric-react';
 
-import { getHelpfullErrorV2 } from '../../../../fpsReferences';
+import { getHelpfullErrorV2 } from '../../fpsReferences';
 import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons, } from "../EasyIcons/eiTypes";
 import { getEasyIcon } from "../EasyIcons/eiFunctions";
 

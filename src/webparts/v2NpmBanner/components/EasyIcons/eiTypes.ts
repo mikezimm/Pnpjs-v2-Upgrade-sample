@@ -1,3 +1,16 @@
+
+/**
+ * Minimum interface into Main Web Part Properties needed to use this feature
+ */
+//To be added to npmFunctions
+export interface IEasyIconsWPProps {
+  easyIconEnable: boolean; // Used 
+  easyIconKeys: string;
+  easyIconIgnore: string;
+}
+
+export const changeEasyIcons: string[] = ['easyIconEnable', 'easyIconKeys', 'easyIconIgnore', ];
+
 /**
  * Minimum interface into React Component needed to use this feature
  */
@@ -6,6 +19,8 @@ export interface IEasyIconProps {
   Keys: IEasyIconGroups[];
   Ignore: string[];
 }
+
+
 
 //Default Library Url for all EasyIcons
 

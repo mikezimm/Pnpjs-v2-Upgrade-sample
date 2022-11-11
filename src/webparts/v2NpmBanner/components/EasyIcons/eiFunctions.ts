@@ -1,6 +1,5 @@
 
-import { IEasyIconsWPProps } from '../../../../IV2NpmBannerWebPartProps';
-import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons, } from './eiTypes';
+import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons, IEasyIconsWPProps } from './eiTypes';
 
 import { getStringArrayFromString } from '@mikezimm/npmfunctions/dist/Services/Strings/stringServices';
 

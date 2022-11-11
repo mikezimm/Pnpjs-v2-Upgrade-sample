@@ -1,4 +1,23 @@
 
+import { IEveryoneAudience } from "@mikezimm/npmfunctions/dist/Services/PropPane/Audiences";
+/**
+ * Minimum interface into Main Web Part Properties needed to use this feature
+ */
+//To be added to npmFunctions
+export interface IEasyPagesWPProps {
+  easyPageEnable: boolean;
+  easyPagesAudience: IEveryoneAudience;
+  easyPageTabs: string;
+  easyPageOverflowTab?: string;
+  easyPageParent?: boolean; //Include parent site pages
+  easyPageAltUrl?: string; //Include alternate site's site pages
+  easyPageAltNav?: string; //Include navigation elements from other site
+  easyPageSeparateExtras?: boolean; //Put Parent/Alt links in separate tab ( default )
+  easyPageStyles?: string;  //Optional styles on entire page
+  easyPageContainer?: string;  //Optional styles on container element
+}
+
+export const DefaultEasyPagesTabs: string[] = [ 'Home', 'Help', 'Training', 'Links', 'Contents' ];
 
 // export const ModernSitePagesColumns: string[] = ['ID','Title','Description','Author/Title','Editor/Title','File/ServerRelativeUrl','BannerImageUrl/Url','FileSystemObjectType','FirstPublishedDate','PromotedState','FileSizeDisplay','OData__UIVersion','OData__UIVersionString','DocIcon'];
 export const ModernSitePagesColumns: string[] = ['ID','Title','Description','Author/Title','Editor/Title','File/ServerRelativeUrl','BannerImageUrl', 
