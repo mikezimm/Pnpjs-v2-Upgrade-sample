@@ -8,7 +8,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
 //Interfaces
-import { DefaultOverflowTab, ISourceProps, } from './epTypes'; //SourceInfo, 
+import { DefaultOverflowTab, EasyPagesDevTab, ISourceProps, } from './epTypes'; //SourceInfo, 
 
 import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
 import { createBasePerformanceInit, startPerformOp, updatePerformanceEnd } from '../../fpsReferences';
@@ -17,8 +17,25 @@ import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformance
 // import { warnMutuallyExclusive } from 'office-ui-fabric-react';
 
 import { getHelpfullErrorV2 } from '../../fpsReferences';
-import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons, } from "../EasyIcons/eiTypes";
+import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons,  } from "../EasyIcons/eiTypes";
 import { getEasyIcon } from "../EasyIcons/eiFunctions";
+
+import * as devLinks from '@mikezimm/npmFunctions/dist/Links/LinksDevDocs';
+
+export const EasyDevTypescript: IEasyLink = { Title: 'Typescript Playground', Description: `Experiment with interfaces here - ${EasyPagesDevTab}`, File: { ServerRelativeUrl: 'https://www.typescriptlang.org/play' }, type: 'current', } as any;
+export const EasyDevGridDocs: IEasyLink = { Title: 'CSS Grid Docs', Description: `Official Docs - ${EasyPagesDevTab}`, File: { ServerRelativeUrl: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout#guides' }, type: 'current', } as any;
+export const EasyDevGridGen: IEasyLink = { Title: 'CSS Grid Sandbox', Description: `grid.layoutit.com - ${EasyPagesDevTab}`, File: { ServerRelativeUrl: 'https://grid.layoutit.com/' },type: 'current', } as any;
+export const EasyDevJSON: IEasyLink = { Title: 'JSON Editor', Description: ` - ${EasyPagesDevTab}`, File: { ServerRelativeUrl: 'https://codebeautify.org/jsonviewer' }, type: 'current', } as any;
+export const EasyDevPnpJS: IEasyLink = { Title: 'Pnpjs.io', Description: ` - ${EasyPagesDevTab}`, File: { ServerRelativeUrl: 'https://pnp.github.io/pnpjs/packages/#sp' }, type: 'current', } as any;
+export const EasyDevRegex: IEasyLink = { Title: 'Regex 101', Description: `Test regex - ${EasyPagesDevTab}`, File: { ServerRelativeUrl: 'https://regex101.com/' }, type: 'current', } as any;
+export const EasyDevSPFxReact: IEasyLink = { Title: `SPFx React Controls - Github - ${EasyPagesDevTab}`, Description: '', File: { ServerRelativeUrl: 'https://github.com/SharePoint/sp-dev-fx-controls-react/tree/master/src/controls/' }, type: 'current', } as any;
+export const EasyDevSPFxReactIO: IEasyLink = { Title: `SPFx React Controls - IO - ${EasyPagesDevTab}`, Description: '', File: { ServerRelativeUrl: 'https://github.com/SharePoint/sp-dev-fx-controls-react/' }, type: 'current', } as any;
+export const EasyDevFluent: IEasyLink = { Title: `Fluent UI`, Description: `${EasyPagesDevTab}`, File: { ServerRelativeUrl: 'https://developer.microsoft.com/en-us/fluentui#/controls/web' }, type: 'current', } as any;
+export const EasyDevFliconIO: IEasyLink = { Title: `Flicon.io`, Description: `Fluent Icons - ${EasyPagesDevTab}`, File: { ServerRelativeUrl: 'https://flicon.io/' }, type: 'current', } as any;
+
+export const EasyDevPages: IEasyLink[] = [ EasyDevTypescript, EasyDevGridDocs, EasyDevGridGen,
+  EasyDevJSON, EasyDevPnpJS, EasyDevRegex, EasyDevSPFxReact, EasyDevSPFxReactIO, EasyDevFluent, EasyDevFliconIO
+];
 
 /**
  * This filters first by a meta string and then by text search string
@@ -80,7 +97,7 @@ export function getUsedTabs( sourceProps: ISourceProps, items: IEasyLink[] ) : s
  * @returns 
  */
 export interface IGetPagesContent { items: IEasyLink[], performance: ILoadPerformance }
-export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject: IEasyIcons = EasyIconObjectDefault ): Promise<IGetPagesContent> {
+export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject: IEasyIcons = EasyIconObjectDefault, parentLink: string, showTricks: boolean ): Promise<IGetPagesContent> {
 
   const performance: ILoadPerformance = createBasePerformanceInit( 1, false );
   performance.ops.fetch1 = startPerformOp( 'fetch1 - getPages', null );
@@ -117,6 +134,16 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
     console.log('sourceProps', sourceProps );
   }
 
+  if ( parentLink ) items.push( //'Title','Description','Author/Title','Editor/Title','File/ServerRelativeUrl','BannerImageUrl'
+    {
+      Title: '.. ^ Go to Parent Site',
+      Description: 'Quick link to site directly above this one',
+      File: { ServerRelativeUrl: parentLink },
+      type: 'current',
+    } as any
+  );
+
+  if ( showTricks === true ) { items = [ ...items, ...EasyDevPages ]; }
 
   // debugger;
   performance.ops.analyze1 = startPerformOp( 'analyze1 - addSearchMeta', null );
@@ -129,7 +156,6 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
   console.log( sourceProps.defType, sourceProps.listTitle , items );
 
   return { items: items, performance: performance };
-
 
 }
 

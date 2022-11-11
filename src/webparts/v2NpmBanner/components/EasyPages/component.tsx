@@ -34,13 +34,14 @@ import { createBasePerformanceInit, } from '@mikezimm/npmfunctions/dist/Performa
 import { createPerformanceTableVisitor, createPerformanceRows } from '@mikezimm/npmfunctions/dist/Performance/tables';
 
 import { compoundArrayFilter, getPagesContent, getUsedTabs } from './functions';
-import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource } from './epTypes';
+import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource, EasyPagesDevTab } from './epTypes';
 import { IEasyIconProps, IEasyIcons } from '../EasyIcons/eiTypes';
 import { setEasyIconsObjectProps } from '../EasyIcons/eiFunctions';
 
 export interface IEasyPagesProps {
   context: WebPartContext;
-  pageLayout: ISupportedHost;  //SharePointFullPage
+  pageLayout: ISupportedHost;  //  SharePointFullPage
+  showTricks: boolean;  // For special dev links in EasyPages
   pinState: IPinMeState;      // To be used when rebuilding the Banner and FetchBanner components
   expanded: boolean;
   toggleExpanded?: any;
@@ -76,12 +77,13 @@ const InfoIcon = 'History';
 
 const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
-  const { context, expanded, tabs, overflowTab, fetchParent, altSitePagesUrl, altSiteNavigation, styles, containerStyles } = props.easyPagesProps;
+  const { context, expanded, tabs, overflowTab, fetchParent, altSitePagesUrl, altSiteNavigation, styles, containerStyles, showTricks } = props.easyPagesProps;
+
 
   const [ tab, setTab ] = useState<string>( tabs.length > 0 ? tabs[0] : 'Pages' );
   const [ showTabs, setShowTabs ] = useState<string[]>( tabs.length > 0 ? [ ...tabs, ...[ InfoTab ] ]: ['Pages'] );
 
-  const [ currentSource, setCurrentSource ] = useState<ISourceProps>( createNewSitePagesSource( context.pageContext.web.absoluteUrl, tabs, overflowTab ));
+  const [ currentSource, setCurrentSource ] = useState<ISourceProps>( createNewSitePagesSource( context.pageContext.web.absoluteUrl, tabs, overflowTab, showTricks ));
   const [ expandedState, setExpandedState ] = useState<boolean>(expanded);
   // const [ expandedState, setExpandedState ] = useState<boolean>( false );
   const [ fetched, setFetched ] = useState<boolean>(false);
@@ -97,7 +99,8 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
     if ( expandedState === true && fetched === false ) {
       const getPages = async (): Promise<void> => {
-        const pagesResults = await getPagesContent( currentSource, props.EasyIconsObject );
+        const parentLink: string = context.pageContext.web.absoluteUrl !== context.pageContext.site.absoluteUrl ? context.pageContext.site.absoluteUrl : '';
+        const pagesResults = await getPagesContent( currentSource, props.EasyIconsObject, parentLink, showTricks );
         const actualTabs = getUsedTabs( currentSource, pagesResults.items );
         const links: IEasyLink[] = compoundArrayFilter( pagesResults.items, actualTabs[0], '' );
         setTab( actualTabs[0] );
@@ -165,7 +168,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
         onClick= { () => props.easyPagesProps.toggleExpanded() } className={ 'easy-pages-close' } />
 
     { tab === InfoTab ? createPerformanceTableVisitor( performance, ['fetch1', 'analyze1' ] ) : 
-      <div className = { 'easy-container' } style={ containerStyles }>
+      <div className = { [ 'easy-container', tab === EasyPagesDevTab ? 'easy-container-2col' : null ].join( ' ' ) } style={ containerStyles }>
         { filtered.map( link => { return easyLinkElement( link, '_blank'  ) } ) }
       </div>
     }

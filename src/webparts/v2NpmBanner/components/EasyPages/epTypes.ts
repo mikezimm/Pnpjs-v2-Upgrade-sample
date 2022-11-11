@@ -86,13 +86,15 @@ export const SitePagesSource : ISourceProps = {
   metaX:[],
 }
 
+export const EasyPagesDevTab = 'zDev';
 export const DefaultOverflowTab = 'Others';
 
-export function createNewSitePagesSource( webUrl: string, tabs: string[], overflowTab: string ): ISourceProps {
+export function createNewSitePagesSource( webUrl: string, tabs: string[], overflowTab: string, showTricks: boolean ): ISourceProps {
 
   const NewSource: ISourceProps = SitePagesSource;
   NewSource.webUrl = webUrl;
   NewSource.meta1 = tabs;
+  if ( showTricks === true && NewSource.meta1.indexOf( EasyPagesDevTab ) < 0 ) NewSource.meta1.push( EasyPagesDevTab )
   NewSource.overflowTab = overflowTab ? overflowTab : DefaultOverflowTab;
 
   return NewSource;
