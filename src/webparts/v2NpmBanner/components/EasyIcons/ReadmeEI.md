@@ -23,3 +23,5 @@
     } else if ( propertyPath === 'easyIconKeys' && !newValue )  {
       //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
       this.properties.easyIconKeys = EasyIconDefaultKeys.join(';');
+
+7. Add to PropPaneHelp

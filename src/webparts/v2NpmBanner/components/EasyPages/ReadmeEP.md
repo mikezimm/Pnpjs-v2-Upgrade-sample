@@ -27,3 +27,5 @@
 
     } else if ( propertyPath === 'easyPageOverflowTab' && !newValue )  {
       this.properties.easyPageOverflowTab = DefaultOverflowTab;
+
+7. Add to PropPaneHelp
