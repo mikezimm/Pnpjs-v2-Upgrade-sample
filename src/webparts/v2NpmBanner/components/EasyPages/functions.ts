@@ -8,17 +8,56 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
 //Interfaces
-import { DefaultOverflowTab, ISourceProps, } from './types'; //SourceInfo, 
+import { DefaultOverflowTab, EasyPagesDevTab, ISourceProps, } from './epTypes'; //SourceInfo, 
 
-import { getExpandColumns, getSelectColumns } from '../../../../fpsReferences';
-import { createBasePerformanceInit, startPerformOp, updatePerformanceEnd } from '../../../../fpsReferences';
+import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
+import { createBasePerformanceInit, startPerformOp, updatePerformanceEnd } from '../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformanceOps } from '../../../../fpsReferences';
+import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformanceOps } from '../../fpsReferences';
 // import { warnMutuallyExclusive } from 'office-ui-fabric-react';
 
-import { getHelpfullErrorV2 } from '../../../../fpsReferences';
-import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons, } from "../EasyIcons/eiTypes";
+import { getHelpfullErrorV2 } from '../../fpsReferences';
+import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons,  } from "../EasyIcons/eiTypes";
 import { getEasyIcon } from "../EasyIcons/eiFunctions";
+
+const SPFXParkLogo: string = `https://ih0.redbubble.net/image.815755990.6275/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg`;
+const MSFTLogo: string = `https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31`;
+const TheCKLogo: string = `https://0.gravatar.com/avatar/942805b409854696f15a519a39a2cedb?s=256&d=retro&r=PG`;
+// import * as devLinks from '@mikezimm/npmFunctions/dist/Links/LinksDevDocs';
+
+export const EasyDevTypescript: IEasyLink = { Title: 'Typescript Playground', Description: `Experiment with interfaces here - ${EasyPagesDevTab}`, 
+  File: { ServerRelativeUrl: 'https://www.typescriptlang.org/play' }, BannerImageUrl: { Url: 'https://cdn.jsdelivr.net/gh/gilbarbara/logos@02e637e09b55966e802dfe0bc93595594e0214bb/logos/typescript-icon.svg' }, type: 'current', } as any;
+
+export const EasyDevGridDocs: IEasyLink = { Title: 'CSS Grid Docs', Description: `Official Docs - ${EasyPagesDevTab}`, 
+  File: { ServerRelativeUrl: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout#guides' }, BannerImageUrl: { Url: 'https://miro.medium.com/max/770/1*RtAMWbxdwW2ujyrurU9plw.png' }, type: 'current', } as any;
+
+export const EasyDevGridGen: IEasyLink = { Title: 'CSS Grid Sandbox', Description: `grid.layoutit.com - ${EasyPagesDevTab}`, 
+  File: { ServerRelativeUrl: 'https://grid.layoutit.com/' }, BannerImageUrl: { Url: 'https://miro.medium.com/max/770/1*RtAMWbxdwW2ujyrurU9plw.png' },type: 'current', } as any;
+
+export const EasyDevJSON: IEasyLink = { Title: 'JSON Editor', Description: ` - ${EasyPagesDevTab}`, 
+  File: { ServerRelativeUrl: 'https://codebeautify.org/jsonviewer' }, BannerImageUrl: { Url: 'https://codebeautify.org/img/slogo.webp' }, type: 'current', } as any;
+
+export const EasyDevPnpJS: IEasyLink = { Title: 'Pnpjs.io', Description: ` - ${EasyPagesDevTab}`, 
+  File: { ServerRelativeUrl: 'https://pnp.github.io/pnpjs/packages/#sp' }, BannerImageUrl: { Url: 'https://pbs.twimg.com/profile_images/1260661706231087112/CvjfDhAm_400x400.jpg' }, type: 'current', } as any;
+
+export const EasyDevRegex: IEasyLink = { Title: 'Regex 101', Description: `Test regex - ${EasyPagesDevTab}`, 
+  File: { ServerRelativeUrl: 'https://regex101.com/' }, BannerImageUrl: { Url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Toolbaricon_RegEx.svg/240px-Toolbaricon_RegEx.svg.png' }, type: 'current', } as any;
+
+export const EasyDevSPFxReact: IEasyLink = { Title: `SPFx React Controls - Github - ${EasyPagesDevTab}`, Description: '', 
+  File: { ServerRelativeUrl: 'https://github.com/SharePoint/sp-dev-fx-controls-react/tree/master/src/controls/' }, BannerImageUrl: { Url: SPFXParkLogo }, type: 'current', } as any;
+
+export const EasyDevSPFxReactIO: IEasyLink = { Title: `SPFx React Controls - IO - ${EasyPagesDevTab}`, Description: '', 
+  File: { ServerRelativeUrl: 'https://github.com/SharePoint/sp-dev-fx-controls-react/' }, BannerImageUrl: { Url: SPFXParkLogo }, type: 'current', } as any;
+
+export const EasyDevFluent: IEasyLink = { Title: `Fluent UI`, Description: `${EasyPagesDevTab}`, 
+  File: { ServerRelativeUrl: 'https://developer.microsoft.com/en-us/fluentui#/controls/web' }, BannerImageUrl: { Url: MSFTLogo }, type: 'current', } as any;
+
+export const EasyDevFliconIO: IEasyLink = { Title: `Flicon.io`, Description: `Fluent Icons - ${EasyPagesDevTab}`, 
+  File: { ServerRelativeUrl: 'https://flicon.io/' }, BannerImageUrl: { Url: TheCKLogo }, type: 'current', } as any;
+
+export const EasyDevPages: IEasyLink[] = [ EasyDevTypescript, EasyDevGridDocs, EasyDevGridGen,
+  EasyDevJSON, EasyDevPnpJS, EasyDevRegex, EasyDevSPFxReact, EasyDevSPFxReactIO, EasyDevFluent, EasyDevFliconIO
+];
 
 /**
  * This filters first by a meta string and then by text search string
@@ -80,7 +119,7 @@ export function getUsedTabs( sourceProps: ISourceProps, items: IEasyLink[] ) : s
  * @returns 
  */
 export interface IGetPagesContent { items: IEasyLink[], performance: ILoadPerformance }
-export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject: IEasyIcons = EasyIconObjectDefault ): Promise<IGetPagesContent> {
+export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject: IEasyIcons = EasyIconObjectDefault, parentLink: string, showTricks: boolean ): Promise<IGetPagesContent> {
 
   const performance: ILoadPerformance = createBasePerformanceInit( 1, false );
   performance.ops.fetch1 = startPerformOp( 'fetch1 - getPages', null );
@@ -117,6 +156,16 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
     console.log('sourceProps', sourceProps );
   }
 
+  if ( parentLink ) items.push( //'Title','Description','Author/Title','Editor/Title','File/ServerRelativeUrl','BannerImageUrl'
+    {
+      Title: '.. ^ Go to Parent Site',
+      Description: 'Quick link to site directly above this one',
+      File: { ServerRelativeUrl: parentLink },
+      type: 'current',
+    } as any
+  );
+
+  if ( showTricks === true ) { items = [ ...items, ...EasyDevPages ]; }
 
   // debugger;
   performance.ops.analyze1 = startPerformOp( 'analyze1 - addSearchMeta', null );
@@ -130,12 +179,12 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
 
   return { items: items, performance: performance };
 
-
 }
 
 const DefaultThumbEasyContents : string = `https://cdn.hubblecontent.osi.office.net/m365content/publish/8833527d-1d55-40be-8d14-0e45b17ce81b/thumbnails/large.jpg`;
 const DefaultThumbExtreme : string = `https://cdn.hubblecontent.osi.office.net/m365content/publish/3232a7cd-821f-48bd-bf98-9d84185566a5/thumbnails/large.jpg`;
 const DefaultThumbEarth : string = `https://cdn.hubblecontent.osi.office.net/m365content/publish/a505371c-2fca-4d30-ba21-8e4d36e41e65/thumbnails/large.jpg`;
+
 export const DefaultSiteLogo : string = `_layouts/15/images/sitepagethumbnail.png`;
 
 /**

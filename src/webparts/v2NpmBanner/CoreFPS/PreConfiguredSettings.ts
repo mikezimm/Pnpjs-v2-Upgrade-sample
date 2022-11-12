@@ -11,8 +11,8 @@
 
 // import { encrptMeOriginalTest } from '../fpsReferences';
 
-import { EasyIconDefaultKeys } from '../components/PropPaneCols/components/EasyIcons/eiTypes';
-import { DefaultOverflowTab } from '../components/PropPaneCols/components/EasyPages/types';
+import { EasyIconDefaultKeys } from '../components/EasyIcons/eiTypes';
+import { DefaultEasyPagesTabs, DefaultOverflowTab } from '../components/EasyPages/epTypes';
 import { PresetFPSBanner, IPreConfigSettings, IAllPreConfigSettings } from '../fpsReferences';
 
 
@@ -53,7 +53,7 @@ export const WPPresetEverywhere : IPreConfigSettings = {
 
         easyPageEnable: true,
         easyPagesAudience: 'Everyone',
-        easyPageTabs:  'Home;Help;Training;Links;Contents',
+        easyPageTabs:  DefaultEasyPagesTabs.join(';'),
         easyPageOverflowTab:  DefaultOverflowTab,
         easyPageParent: false, //Include parent site pages
         easyPageAltUrl: '', //Include alternate site's site pages

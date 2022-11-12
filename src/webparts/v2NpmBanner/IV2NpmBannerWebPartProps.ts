@@ -14,6 +14,8 @@ import {
 } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerInterface";
 
 import { IEveryoneAudience } from '@mikezimm/npmfunctions/dist/Services/PropPane/Audiences';
+import { IEasyIconsWPProps } from './components/EasyIcons/eiTypes';
+import { IEasyPagesWPProps } from './components/EasyPages/epTypes';
  
 //Specific for this web part
 export const exportIgnorePropsThis: string[] = [];
@@ -33,28 +35,6 @@ export const importBlockProps: string[] = [...importBlockPropsFPS, ...importBloc
 export const changeEasyPages: string[] = ['easyPageEnable', 'easyPagesAudience', 'easyPageTabs', 'easyPageOverflowTab', 
   'easyPageParent', 'easyPageAltUrl', 'easyPageAltNav', 'easyPageSeparateExtras', 'easyPageStyles', 'easyPageContainer'];
 
-export const changeEasyIcons: string[] = ['easyIconEnable', 'easyIconKeys', 'easyIconIgnore', ];
-
-//To be added to npmFunctions
-export interface IEasyPagesWPProps {
-  easyPageEnable: boolean;
-  easyPagesAudience: IEveryoneAudience;
-  easyPageTabs: string;
-  easyPageOverflowTab?: string;
-  easyPageParent?: boolean; //Include parent site pages
-  easyPageAltUrl?: string; //Include alternate site's site pages
-  easyPageAltNav?: string; //Include navigation elements from other site
-  easyPageSeparateExtras?: boolean; //Put Parent/Alt links in separate tab ( default )
-  easyPageStyles?: string;  //Optional styles on entire page
-  easyPageContainer?: string;  //Optional styles on container element
-}
-
-//To be added to npmFunctions
-export interface IEasyIconsWPProps {
-  easyIconEnable: boolean; // Used 
-  easyIconKeys: string;
-  easyIconIgnore: string;
-}
 
 // export interface IV2NpmBannerWebPartProps extends IMinWPBannerProps {
 /**

@@ -2,8 +2,8 @@
 import { IFPSCorePinMeReactComponentProps, IFPSCorePinMeReactComponentState, ILoadPerformance } from '../fpsReferences';
 import { IWebpartHistory } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistory/Interface';
 import { IMinListProps } from './PropPaneCols/components/IPropPaneColsProps';
-import { IEasyPagesProps } from './PropPaneCols/components/EasyPages/component';
-import { IEasyIconProps, IEasyIcons } from './PropPaneCols/components/EasyIcons/eiTypes';
+import { IEasyPagesProps } from './EasyPages/component';
+import { IEasyIconProps, IEasyIcons } from './EasyIcons/eiTypes';
 
 
 export interface IV2NpmBannerProps  extends IFPSCorePinMeReactComponentProps {

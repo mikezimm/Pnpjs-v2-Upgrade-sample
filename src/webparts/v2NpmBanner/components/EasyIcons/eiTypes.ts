@@ -1,3 +1,16 @@
+
+/**
+ * Minimum interface into Main Web Part Properties needed to use this feature
+ */
+//To be added to npmFunctions
+export interface IEasyIconsWPProps {
+  easyIconEnable: boolean; // Used 
+  easyIconKeys: string;
+  easyIconIgnore: string;
+}
+
+export const changeEasyIcons: string[] = ['easyIconEnable', 'easyIconKeys', 'easyIconIgnore', ];
+
 /**
  * Minimum interface into React Component needed to use this feature
  */
@@ -6,6 +19,8 @@ export interface IEasyIconProps {
   Keys: IEasyIconGroups[];
   Ignore: string[];
 }
+
+
 
 //Default Library Url for all EasyIcons
 
@@ -33,8 +48,8 @@ export const EasyIconLocation = `${window.location.origin}/sites${EasyIconLibrar
  * IEasyIconGroups should have at least the same values as IEasyIconFolders... 
  *      BUT IEasyIconGroups can have additional ones like ProductsCaps which could be like Products but have a rule to make these all caps in regex
  */
-export type IEasyIconGroups =  'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'Words' | 'WebParts' ;
-export type IEasyIconFolders = 'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'Words' | 'WebParts' ;
+export type IEasyIconGroups =  'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'Software' | 'FunctionsW' | 'ProductsW' | 'WoW' | 'Words' | 'WebParts' ;
+export type IEasyIconFolders = 'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'Software' | 'FunctionsW'| 'ProductsW' | 'WoW' | 'Words' | 'WebParts' ;
 
 export type IEasyIconPriority = 'Title' | 'Description' | 'FileLeafRef' ;
 export type IEasyIconOptions = 's' | 'ing' | 'r' | 'er' | 'd' ;
@@ -70,13 +85,25 @@ export interface IEasyIcons {
     Colors: IEasyIconGroup;
     Locations: IEasyIconGroup;
     Transport: IEasyIconGroup;
+    Software: IEasyIconGroup;
+    ProductsW: IEasyIconGroup;  // Labels would be Text Words, Labels where the Word is the Icon
+    FunctionsW: IEasyIconGroup;  // Labels would be Text Words, Labels where the Word is the Icon
+    WoW: IEasyIconGroup;  // Labels would be Text Words, Labels where the Word is the Icon
     Words: IEasyIconGroup;  // Labels would be Text Words, Labels where the Word is the Icon
 
   }
 }
+//'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'Software' | 'FunctionsW' | 'ProductsW' | 'WoW' | 'Words' | 'WebParts' ;
+export const EasyIconDefaultKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'Software', 'FunctionsW', 'ProductsW', 'WoW', 'Words', 'WebParts'  ];
+export const EasyIconValidKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'Software', 'FunctionsW', 'ProductsW', 'WoW', 'Words', 'WebParts'  ];
 
-export const EasyIconDefaultKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'Words', 'WebParts'  ];
-export const EasyIconValidKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'Words', 'WebParts'  ];
+export const ProductWords : string [] = [ 'Armature', 'Curtain', 'Cushion', 'DAB', 'FAB', 'IC', 'KAB', 'Magnesium', 'Metal', 'PAB', 'Plastic', 'PTSAB', 'Thread', 'Webbing', 'Seatbelt', 'Airbag', 'Wheel', 'AB', 'SW', 'SB', 'IN', 'TE', 'Textile', 'Products' ];
+export const FunctionWords: string [] = [ 'Engineering', 'Purchasing', 'Finance', 'Manufacturing', 'Logistics', 'Legal', 'Human Resources' , 'Sales', 'Quality', 'Communications', 'Operations', 'Sustainability', 'IT', 'Information Technology' ];
+
+export const Software: string [] = [ 'JDE', 'Microsoft', 'Service Now', 'SharePoint', 'Windows', 'SAP', 'OneStream' ];
+
+
+export const WaysOfWorking: string[] = [ 'APS', 'Q5', '1P1p', 'VEVA', ];
 
 export const EasyIconObjectDefault : IEasyIcons = {
   Enabled: true,
@@ -90,8 +117,8 @@ export const EasyIconObjectDefault : IEasyIcons = {
     Products: {
       Folder: 'Products',
       Rules: '',
-      Icons: [ 'Armature', 'Curtain', 'Cushion', 'DAB', 'FAB', 'IC', 'KAB', 'Magnesium', 'Metal', 'PAB', 'Plastic', 'PTSAB', 'Thread', 'Webbing', ],
-      Suggestions: [ 'Products', 'Seatbelt', 'Airbag', 'Wheel', 'AB', 'SW', 'SB' ],
+      Icons: ProductWords,
+      Suggestions: [ '', '', '', '', '', '', '' ],
       Status: 'Active',
       Priority: 1,
       Options: [ 's' ],
@@ -110,8 +137,8 @@ export const EasyIconObjectDefault : IEasyIcons = {
     Customers: {
       Folder: 'Customers',
       Rules: '',
-      Icons: [ 'Audi', 'BMW', 'Daimler', 'FCA', 'Fiat', 'Ford', 'GM', 'Honda', 'Hyundai', 'Isuzu', 'Kia', 'Mercedes', 'Mitsubishi', 'Nissan', 'Rivian', 'Stellantis', 'Subaru', 'Tesla', 'Toyota', 'VW', ],
-      Suggestions: [ 'Customers', '', '', '', '', ],
+      Icons: [ 'Audi', 'BMW', 'Daimler', 'FCA', 'Fiat', 'Ford', 'GM', 'Honda', 'Hyundai', 'Isuzu', 'Kia', 'Mercedes', 'Mitsubishi', 'Nissan', 'Rivian', 'Stellantis', 'Subaru', 'Tesla', 'Toyota', 'VW', 'Customers', ],
+      Suggestions: [  '', '', '', '', ],
       Status: 'Active',
       Priority: 3,
     } ,
@@ -119,8 +146,8 @@ export const EasyIconObjectDefault : IEasyIcons = {
     Functions: {
       Folder: 'Functions',
       Rules: '',
-      Icons: [ '', '', '', '', '', '', ],
-      Suggestions: [ 'Engineering', 'Purchasing', 'Finance', 'Manufacturing', 'Logistics', 'Legal', ],
+      Icons: FunctionWords,
+      Suggestions: [  ],
       Status: 'Active',
       Priority: 4,
     } ,
@@ -157,8 +184,18 @@ export const EasyIconObjectDefault : IEasyIcons = {
     Transport: {
       Folder: 'Transport',
       Rules: '',
-      Icons: [  '', '', '', '', '', '', '', '', '', '', '', '', ],
-      Suggestions: [ 'Car', 'Truck', 'Cycle', 'MotorCycle', '', '', '', '', '', '', '', '', ],
+      Icons: [  'Car', 'Truck', 'Cycle', 'MotorCycle', '', '', '', '', '', ],
+      Suggestions: [ '', '', '', '', '', '', '', '', ],
+      Status: 'Active',
+      Priority: 4,
+      Options: [ 's' ],
+    } ,
+
+    Software: {
+      Folder: 'Software',
+      Rules: '',
+      Icons: Software,
+      Suggestions: [ '', '', '', '', '', '', '', '', ],
       Status: 'Active',
       Priority: 4,
       Options: [ 's' ],
@@ -177,7 +214,7 @@ export const EasyIconObjectDefault : IEasyIcons = {
     Adjectives: {
       Folder: 'Adjectives',
       Rules: '',
-      Icons: [  '', '', '', '', '', '', '', '', '',  ],
+      Icons: [  'Large', 'Medium', 'Small', 'Heavy', 'Light', 'First',  ],
       Suggestions: [ 'Large', 'Medium', 'Small', 'Heavy', 'Light', 'First', '', '', '', ],
       Status: 'Active',
       Priority: 4,
@@ -187,8 +224,8 @@ export const EasyIconObjectDefault : IEasyIcons = {
     Colors: {
       Folder: 'Colors',
       Rules: '',
-      Icons: [  '', '', '', '', '', '', '', '', '',  ],
-      Suggestions: [ 'Color', 'Red', 'Yellow', 'Green', 'Blue', 'Black', 'White', 'Bright', 'Dark', '', ],
+      Icons: [  'Color', 'Red', 'Yellow', 'Green', 'Blue', 'Black', 'White', 'Bright', 'Dark',  ],
+      Suggestions: [ '', '', '', '', '', '', '', '', '', ],
       Status: 'Active',
       Priority: 4,
       Options: [ 'er', 's' ],
@@ -197,21 +234,51 @@ export const EasyIconObjectDefault : IEasyIcons = {
     Locations: {
       Folder: 'Locations',
       Rules: '',
-      Icons: [  '', 'North America', '', '', 'Africa', '', '', 'Asia', '',  ],
-      Suggestions: [ 'NA', '', 'SA', 'South America', '', 'EU', 'Europe', 'CH', 'China', '', 'ROAP' ],
+      Icons: [  'NA', 'North America', 'SA', 'South America', 'Africa', 'EU', 'Europe', 'CH', 'China', 'Asia', 'ROAP',  ],
+      Suggestions: [ '', '', '', '', '', '', '', '', '', ],
       Status: 'Active',
       Priority: 4,
       Options: [  ],
     } ,
 
+    ProductsW: {
+      Folder: 'ProductsW',
+      Rules: '',
+      Icons: ProductWords,
+      Suggestions: [   '', '', '', ],
+      Status: 'Active',
+      Priority: 4,
+      Options: [ 's' ],
+    } ,
+
+    FunctionsW: {
+      Folder: 'FunctionsW',
+      Rules: '',
+      Icons: FunctionWords,
+      Suggestions: [   '', '', '', ],
+      Status: 'Active',
+      Priority: 4,
+      Options: [ 's' ],
+    } ,
+
+    WoW: {
+      Folder: 'WoW',
+      Rules: '',
+      Icons: WaysOfWorking,
+      Suggestions: [   '', '', '', ],
+      Status: 'Active',
+      Priority: 4,
+      Options: [ 's' ],
+    } ,
+
     Words: {
       Folder: 'Words',
       Rules: '',
-      Icons: [  '', '', '', '', '', '', '', '', '',  ],
-      Suggestions: [  '', '', '', '', '', '', '', '', '', ],
+      Icons: [  'Supplier', 'Vendor', 'Customer',   ],
+      Suggestions: [   '', '', '', ],
       Status: 'Active',
       Priority: 4,
-      Options: [  ],
+      Options: [ 's' ],
     } ,
 
     // Template: {

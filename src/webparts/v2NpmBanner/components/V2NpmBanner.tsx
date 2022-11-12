@@ -9,7 +9,7 @@ import { saveViewAnalytics } from '../CoreFPS/Analytics';
 
 // import FetchBanner from '../CoreFPS/FetchBannerElement';
 import FetchBanner from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/FetchBannerElement';
-import EasyPagesHook from './PropPaneCols/components/EasyPages/component';
+import EasyPagesHook from './EasyPages/component';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ISpecialMessage, specialUpgrade } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/special/interface';

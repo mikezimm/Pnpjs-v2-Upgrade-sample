@@ -4,7 +4,7 @@ import { Pivot, PivotItem, IPivotItemProps, PivotLinkFormat, PivotLinkSize,} fro
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2 } from '../../../../fpsReferences';
+import { getHighlightedText , getHelpfullErrorV2 } from '../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,7 +14,7 @@ import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import { getExpandColumns, getSelectColumns } from '../../../../fpsReferences';
+import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
 
 
 
@@ -25,16 +25,24 @@ require('./easypages.css');
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { easyLinkElement } from './elements';
 import { sortObjectArrayByStringKeyCollator } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
+
+import { ISupportedHost } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSInterfaces';
+import { IPinMeState } from "@mikezimm/npmfunctions/dist/Services/DOM/PinMe/FPSPinMenu";
+
 import { ILoadPerformance, } from '@mikezimm/npmfunctions/dist/Performance/IPerformance';
 import { createBasePerformanceInit, } from '@mikezimm/npmfunctions/dist/Performance/functions';
 import { createPerformanceTableVisitor, createPerformanceRows } from '@mikezimm/npmfunctions/dist/Performance/tables';
+
 import { compoundArrayFilter, getPagesContent, getUsedTabs } from './functions';
-import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource } from './types';
+import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource, EasyPagesDevTab } from './epTypes';
 import { IEasyIconProps, IEasyIcons } from '../EasyIcons/eiTypes';
 import { setEasyIconsObjectProps } from '../EasyIcons/eiFunctions';
 
 export interface IEasyPagesProps {
   context: WebPartContext;
+  pageLayout: ISupportedHost;  //  SharePointFullPage
+  showTricks: boolean;  // For special dev links in EasyPages
+  pinState: IPinMeState;      // To be used when rebuilding the Banner and FetchBanner components
   expanded: boolean;
   toggleExpanded?: any;
   tabs: string[];
@@ -69,12 +77,13 @@ const InfoIcon = 'History';
 
 const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
-  const { context, expanded, tabs, overflowTab, fetchParent, altSitePagesUrl, altSiteNavigation, styles, containerStyles } = props.easyPagesProps;
+  const { context, expanded, tabs, overflowTab, fetchParent, altSitePagesUrl, altSiteNavigation, styles, containerStyles, showTricks } = props.easyPagesProps;
+
 
   const [ tab, setTab ] = useState<string>( tabs.length > 0 ? tabs[0] : 'Pages' );
   const [ showTabs, setShowTabs ] = useState<string[]>( tabs.length > 0 ? [ ...tabs, ...[ InfoTab ] ]: ['Pages'] );
 
-  const [ currentSource, setCurrentSource ] = useState<ISourceProps>( createNewSitePagesSource( context.pageContext.web.absoluteUrl, tabs, overflowTab ));
+  const [ currentSource, setCurrentSource ] = useState<ISourceProps>( createNewSitePagesSource( context.pageContext.web.absoluteUrl, tabs, overflowTab, showTricks ));
   const [ expandedState, setExpandedState ] = useState<boolean>(expanded);
   // const [ expandedState, setExpandedState ] = useState<boolean>( false );
   const [ fetched, setFetched ] = useState<boolean>(false);
@@ -90,7 +99,8 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
     if ( expandedState === true && fetched === false ) {
       const getPages = async (): Promise<void> => {
-        const pagesResults = await getPagesContent( currentSource, props.EasyIconsObject );
+        const parentLink: string = context.pageContext.web.absoluteUrl !== context.pageContext.site.absoluteUrl ? context.pageContext.site.absoluteUrl : '';
+        const pagesResults = await getPagesContent( currentSource, props.EasyIconsObject, parentLink, showTricks );
         const actualTabs = getUsedTabs( currentSource, pagesResults.items );
         const links: IEasyLink[] = compoundArrayFilter( pagesResults.items, actualTabs[0], '' );
         setTab( actualTabs[0] );
@@ -131,8 +141,13 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
   }
 
-  const classNames = [ 'easy-pages', expandedState === true ? 'expand' : null ].join( ' ' );
-  const EasyPagesElement: JSX.Element = <div className = { classNames } style={ styles }>
+  //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/56
+  const classNames: string[] = [ 'easy-pages' ];
+  if ( expandedState === true ) classNames.push ( 'expand' );
+  if ( props.easyPagesProps.pageLayout === 'SharePointFullPage' || props.easyPagesProps.pageLayout === 'SingleWebPartAppPageLayout' ) classNames.push ( 'easy-pages-spa' );
+  if ( ( props.easyPagesProps.pinState === 'pinFull' || props.easyPagesProps.pinState === 'pinMini' ) && classNames.indexOf('easy-pages-spa') < 0 ) classNames.push ( 'easy-pages-spa' );
+
+  const EasyPagesElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
     <Pivot 
           linkFormat={PivotLinkFormat.links}
           linkSize={PivotLinkSize.normal}
@@ -153,7 +168,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
         onClick= { () => props.easyPagesProps.toggleExpanded() } className={ 'easy-pages-close' } />
 
     { tab === InfoTab ? createPerformanceTableVisitor( performance, ['fetch1', 'analyze1' ] ) : 
-      <div className = { 'easy-container' } style={ containerStyles }>
+      <div className = { [ 'easy-container', tab === EasyPagesDevTab ? 'easy-container-2col' : null ].join( ' ' ) } style={ containerStyles }>
         { filtered.map( link => { return easyLinkElement( link, '_blank'  ) } ) }
       </div>
     }

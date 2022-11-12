@@ -168,8 +168,9 @@
  import { importBlockProps,  } from './IV2NpmBannerWebPartProps';
 import { buildEasyPagesGroup } from './PropPaneGroups/EasyPages';
 import { getStringArrayFromString } from '@mikezimm/npmfunctions/dist/Services/Strings/stringServices';
-import { IEasyIconGroups } from './components/PropPaneCols/components/EasyIcons/eiTypes';
-import { setEasyIconsObjectProps } from './components/PropPaneCols/components/EasyIcons/eiFunctions';
+import { EasyIconDefaultKeys, IEasyIconGroups } from './components/EasyIcons/eiTypes';
+import { setEasyIconsObjectProps } from './components/EasyIcons/eiFunctions';
+import { DefaultEasyPagesTabs, DefaultOverflowTab } from './components/EasyPages/epTypes';
  
  /***
   *     .o88b. .d8888. .d8888.      d8888b. d88888b  .d88b.  db    db d888888b d8888b. d88888b .d8888. 
@@ -357,6 +358,9 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
 
         easyPagesProps: {
           context: this.context,
+          pageLayout: this.properties.pageLayout,
+          showTricks: bannerProps.showTricks,
+          pinState: this.properties.defPinState,
           expanded: false ,
           tabs: getStringArrayFromString( this.properties.easyPageTabs , ';', true, null, true ) ,
           overflowTab: this.properties.easyPageOverflowTab,
@@ -465,6 +469,17 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
             this.onPropertyPaneConfigurationStart,
             this._exitPropPaneChanged,
           );
+
+         } else if ( propertyPath === 'easyIconKeys' && !newValue )  {
+            //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
+            this.properties.easyIconKeys = EasyIconDefaultKeys.join(';');
+
+        } else if ( propertyPath === 'easyPageTabs' && !newValue )  {
+          //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
+          this.properties.easyPageTabs = DefaultEasyPagesTabs.join(';');
+
+        } else if ( propertyPath === 'easyPageOverflowTab' && !newValue )  {
+          this.properties.easyPageOverflowTab = DefaultOverflowTab;
 
          } else if ( propertyPath === 'bannerStyle' || propertyPath === 'bannerCmdStyle' )  {
 

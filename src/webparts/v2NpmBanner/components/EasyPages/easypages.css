@@ -4,12 +4,17 @@
   position: absolute;
   height: 0px;
   padding: 2em;
-  width: calc(100% - 60px -4em );
+  /* width: calc(100% - 60px -4em ); */
+  width: calc(100% - 6em );
 /*   background: transparent;
   color: transparent; */
   transition:.4s;
   opacity: 0;
   overflow: hidden;
+}
+
+.easy-pages-spa {
+  width: calc(100% - 6em );
 }
 
 .easy-pages-close {
@@ -65,6 +70,14 @@
   grid-column-gap: 50px;
   grid-row-gap: 6px;
 
+}
+
+@media screen and (min-width: 1100px) {
+  .easy-container-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  /* .easy-link-2col { width: 500px; }  NOT NEEDED */
 }
 
 .easy-link-image {

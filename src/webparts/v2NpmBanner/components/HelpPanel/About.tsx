@@ -6,7 +6,7 @@ import { repoLink, } from '../../fpsReferences';
 
 import { createAboutRow } from '../../fpsReferences';
 
-export const panelVersionNumber = '2022-11-07 -  1.0.0.07'; //Added to show in panel
+export const panelVersionNumber = '2022-11-12 -  1.0.0.09'; //Added to show in panel
 
 export function aboutTable( showRepoLinks: boolean ): { table: IHelpTable; } {
 
@@ -15,6 +15,10 @@ export function aboutTable( showRepoLinks: boolean ): { table: IHelpTable; } {
         headers: ['Date','Version','Focus'],
         rows: [],
     };
+
+    table.rows.push( createAboutRow('2022-11-12',"1.0.0.09","#45, #53, #56, #59, #62, #63, #64, #65, #66, #67", showRepoLinks === true ? repoLink : null ) );
+
+    table.rows.push( createAboutRow('2022-11-09',"1.0.0.08","#58,", showRepoLinks === true ? repoLink : null ) );
 
     table.rows.push( createAboutRow('2022-11-07',"1.0.0.07","#43, #44, #48, #49", showRepoLinks === true ? repoLink : null ) );
 

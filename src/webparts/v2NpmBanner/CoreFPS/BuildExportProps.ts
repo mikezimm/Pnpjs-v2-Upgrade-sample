@@ -44,7 +44,8 @@
 
 import { IV2NpmBannerWebPartProps, exportIgnoreProps, } from '../IV2NpmBannerWebPartProps';
 
-import { changeEasyPages, changeEasyIcons, } from '../IV2NpmBannerWebPartProps';
+import { changeEasyPages, } from '../IV2NpmBannerWebPartProps';
+import { changeEasyIcons, } from '../components/EasyIcons/eiTypes';
 
 import { changeCustomHelp, changeExpando, changePageStyle, changefpsOptions2,  } from '../fpsReferences';
 

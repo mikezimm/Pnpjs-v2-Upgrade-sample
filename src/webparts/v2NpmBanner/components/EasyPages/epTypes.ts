@@ -1,4 +1,23 @@
 
+import { IEveryoneAudience } from "@mikezimm/npmfunctions/dist/Services/PropPane/Audiences";
+/**
+ * Minimum interface into Main Web Part Properties needed to use this feature
+ */
+//To be added to npmFunctions
+export interface IEasyPagesWPProps {
+  easyPageEnable: boolean;
+  easyPagesAudience: IEveryoneAudience;
+  easyPageTabs: string;
+  easyPageOverflowTab?: string;
+  easyPageParent?: boolean; //Include parent site pages
+  easyPageAltUrl?: string; //Include alternate site's site pages
+  easyPageAltNav?: string; //Include navigation elements from other site
+  easyPageSeparateExtras?: boolean; //Put Parent/Alt links in separate tab ( default )
+  easyPageStyles?: string;  //Optional styles on entire page
+  easyPageContainer?: string;  //Optional styles on container element
+}
+
+export const DefaultEasyPagesTabs: string[] = [ 'Home', 'Help', 'Training', 'Links', 'Drilldown', 'Contents', 'Admin' ];
 
 // export const ModernSitePagesColumns: string[] = ['ID','Title','Description','Author/Title','Editor/Title','File/ServerRelativeUrl','BannerImageUrl/Url','FileSystemObjectType','FirstPublishedDate','PromotedState','FileSizeDisplay','OData__UIVersion','OData__UIVersionString','DocIcon'];
 export const ModernSitePagesColumns: string[] = ['ID','Title','Description','Author/Title','Editor/Title','File/ServerRelativeUrl','BannerImageUrl', 
@@ -67,13 +86,15 @@ export const SitePagesSource : ISourceProps = {
   metaX:[],
 }
 
+export const EasyPagesDevTab = 'zDev';
 export const DefaultOverflowTab = 'Others';
 
-export function createNewSitePagesSource( webUrl: string, tabs: string[], overflowTab: string ): ISourceProps {
+export function createNewSitePagesSource( webUrl: string, tabs: string[], overflowTab: string, showTricks: boolean ): ISourceProps {
 
   const NewSource: ISourceProps = SitePagesSource;
   NewSource.webUrl = webUrl;
   NewSource.meta1 = tabs;
+  if ( showTricks === true && NewSource.meta1.indexOf( EasyPagesDevTab ) < 0 ) NewSource.meta1.push( EasyPagesDevTab )
   NewSource.overflowTab = overflowTab ? overflowTab : DefaultOverflowTab;
 
   return NewSource;

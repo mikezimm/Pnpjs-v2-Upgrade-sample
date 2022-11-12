@@ -24,8 +24,8 @@ import { repoLink } from '../fpsReferences';
 
 import { ISitePreConfigProps, SitePresetsInfo } from '../fpsReferences';
 
-import { getEasyIconsHelp } from '../components/PropPaneCols/components/EasyIcons/eiHelp';
-import { EasyIconObjectDefault } from '../components/PropPaneCols/components/EasyIcons/eiTypes';
+import { getEasyIconsHelp } from '../components/EasyIcons/eiHelp';
+import { EasyIconObjectDefault } from '../components/EasyIcons/eiTypes';
 
 // require('@mikezimm/npmfunctions/dist/PropPaneHelp/PropPanelHelp.css');
 
