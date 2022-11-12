@@ -48,8 +48,8 @@ export const EasyIconLocation = `${window.location.origin}/sites${EasyIconLibrar
  * IEasyIconGroups should have at least the same values as IEasyIconFolders... 
  *      BUT IEasyIconGroups can have additional ones like ProductsCaps which could be like Products but have a rule to make these all caps in regex
  */
-export type IEasyIconGroups =  'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'FunctionsW' | 'ProductsW' | 'WoW' | 'Words' | 'WebParts' ;
-export type IEasyIconFolders = 'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'FunctionsW'| 'ProductsW' | 'WoW' | 'Words' | 'WebParts' ;
+export type IEasyIconGroups =  'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'Software' | 'FunctionsW' | 'ProductsW' | 'WoW' | 'Words' | 'WebParts' ;
+export type IEasyIconFolders = 'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'Software' | 'FunctionsW'| 'ProductsW' | 'WoW' | 'Words' | 'WebParts' ;
 
 export type IEasyIconPriority = 'Title' | 'Description' | 'FileLeafRef' ;
 export type IEasyIconOptions = 's' | 'ing' | 'r' | 'er' | 'd' ;
@@ -85,6 +85,7 @@ export interface IEasyIcons {
     Colors: IEasyIconGroup;
     Locations: IEasyIconGroup;
     Transport: IEasyIconGroup;
+    Software: IEasyIconGroup;
     ProductsW: IEasyIconGroup;  // Labels would be Text Words, Labels where the Word is the Icon
     FunctionsW: IEasyIconGroup;  // Labels would be Text Words, Labels where the Word is the Icon
     WoW: IEasyIconGroup;  // Labels would be Text Words, Labels where the Word is the Icon
@@ -92,12 +93,15 @@ export interface IEasyIcons {
 
   }
 }
-
-export const EasyIconDefaultKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'FunctionsW', 'ProductsW', 'WoW', 'Words', 'WebParts'  ];
-export const EasyIconValidKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'FunctionsW', 'ProductsW', 'WoW', 'Words', 'WebParts'  ];
+//'Products' | 'Processes' | 'Customers' | 'Functions' | 'Keywords' | 'Nouns' | 'Verbs' | 'Adjectives' | 'Colors' | 'Locations' | 'Transport' | 'Software' | 'FunctionsW' | 'ProductsW' | 'WoW' | 'Words' | 'WebParts' ;
+export const EasyIconDefaultKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'Software', 'FunctionsW', 'ProductsW', 'WoW', 'Words', 'WebParts'  ];
+export const EasyIconValidKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'Software', 'FunctionsW', 'ProductsW', 'WoW', 'Words', 'WebParts'  ];
 
 export const ProductWords : string [] = [ 'Armature', 'Curtain', 'Cushion', 'DAB', 'FAB', 'IC', 'KAB', 'Magnesium', 'Metal', 'PAB', 'Plastic', 'PTSAB', 'Thread', 'Webbing', 'Seatbelt', 'Airbag', 'Wheel', 'AB', 'SW', 'SB', 'IN', 'TE', 'Textile', 'Products' ];
 export const FunctionWords: string [] = [ 'Engineering', 'Purchasing', 'Finance', 'Manufacturing', 'Logistics', 'Legal', 'Human Resources' , 'Sales', 'Quality', 'Communications', 'Operations', 'Sustainability', 'IT', 'Information Technology' ];
+
+export const Software: string [] = [ 'JDE', 'Microsoft', 'Service Now', 'SharePoint', 'Windows', 'SAP', 'OneStream' ];
+
 
 export const WaysOfWorking: string[] = [ 'APS', 'Q5', '1P1p', 'VEVA', ];
 
@@ -181,6 +185,16 @@ export const EasyIconObjectDefault : IEasyIcons = {
       Folder: 'Transport',
       Rules: '',
       Icons: [  'Car', 'Truck', 'Cycle', 'MotorCycle', '', '', '', '', '', ],
+      Suggestions: [ '', '', '', '', '', '', '', '', ],
+      Status: 'Active',
+      Priority: 4,
+      Options: [ 's' ],
+    } ,
+
+    Software: {
+      Folder: 'Software',
+      Rules: '',
+      Icons: Software,
       Suggestions: [ '', '', '', '', '', '', '', '', ],
       Status: 'Active',
       Priority: 4,
