@@ -137,8 +137,8 @@ export const EasyIconObjectDefault : IEasyIcons = {
     Customers: {
       Folder: 'Customers',
       Rules: '',
-      Icons: [ 'Audi', 'BMW', 'Daimler', 'FCA', 'Fiat', 'Ford', 'GM', 'Honda', 'Hyundai', 'Isuzu', 'Kia', 'Mercedes', 'Mitsubishi', 'Nissan', 'Rivian', 'Stellantis', 'Subaru', 'Tesla', 'Toyota', 'VW', ],
-      Suggestions: [ 'Customers', '', '', '', '', ],
+      Icons: [ 'Audi', 'BMW', 'Daimler', 'FCA', 'Fiat', 'Ford', 'GM', 'Honda', 'Hyundai', 'Isuzu', 'Kia', 'Mercedes', 'Mitsubishi', 'Nissan', 'Rivian', 'Stellantis', 'Subaru', 'Tesla', 'Toyota', 'VW', 'Customers', ],
+      Suggestions: [  '', '', '', '', ],
       Status: 'Active',
       Priority: 3,
     } ,
