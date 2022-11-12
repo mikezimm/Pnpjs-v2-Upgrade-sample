@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Icon, } from 'office-ui-fabric-react/lib/Icon';
-import { escape } from '@microsoft/sp-lodash-subset';
+// import { Icon, } from 'office-ui-fabric-react/lib/Icon';
+// import { escape } from '@microsoft/sp-lodash-subset';
 import ReactJson from "react-json-view";
 
 import { PivotItem, } from 'office-ui-fabric-react/lib/Pivot';
 
 import { IRepoLinks } from '../../fpsReferences';
-import { IEasyIcons, IEasyIconGroup, IEasyIconGroups, EasyIconLocation } from './eiTypes';
-import { urlCombine } from '@pnp/spfx-controls-react';
+import { IEasyIcons } from './eiTypes'; //, IEasyIconGroup, IEasyIconGroups, EasyIconLocation
+// import { urlCombine } from '@pnp/spfx-controls-react';
 import { getEasyIconElement } from './eiHelpIcons';
 
 require('./easyicons.css');

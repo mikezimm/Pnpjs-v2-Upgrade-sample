@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Pivot, PivotItem, IPivotItemProps, PivotLinkFormat, PivotLinkSize,} from 'office-ui-fabric-react/lib/Pivot';
-import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
+import { Pivot, PivotItem, PivotLinkFormat, PivotLinkSize,} from 'office-ui-fabric-react/lib/Pivot';
+// import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getHighlightedText , getHelpfullErrorV2 } from '../../fpsReferences';
@@ -14,9 +14,7 @@ import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
-import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
-
-
+// import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
 
 require('./easypages.css');
 
@@ -24,6 +22,7 @@ require('./easypages.css');
 
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { easyLinkElement } from './elements';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { sortObjectArrayByStringKeyCollator } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
 
 import { ISupportedHost } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSInterfaces';
@@ -31,11 +30,15 @@ import { IPinMeState } from "@mikezimm/npmfunctions/dist/Services/DOM/PinMe/FPSP
 
 import { ILoadPerformance, } from '@mikezimm/npmfunctions/dist/Performance/IPerformance';
 import { createBasePerformanceInit, } from '@mikezimm/npmfunctions/dist/Performance/functions';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createPerformanceTableVisitor, createPerformanceRows } from '@mikezimm/npmfunctions/dist/Performance/tables';
 
 import { compoundArrayFilter, getPagesContent, getUsedTabs } from './functions';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource, EasyPagesDevTab } from './epTypes';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IEasyIconProps, IEasyIcons } from '../EasyIcons/eiTypes';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { setEasyIconsObjectProps } from '../EasyIcons/eiFunctions';
 
 export interface IEasyPagesProps {
@@ -77,12 +80,14 @@ const InfoIcon = 'History';
 
 const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { context, expanded, tabs, overflowTab, fetchParent, altSitePagesUrl, altSiteNavigation, styles, containerStyles, showTricks } = props.easyPagesProps;
 
 
   const [ tab, setTab ] = useState<string>( tabs.length > 0 ? tabs[0] : 'Pages' );
   const [ showTabs, setShowTabs ] = useState<string[]>( tabs.length > 0 ? [ ...tabs, ...[ InfoTab ] ]: ['Pages'] );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ currentSource, setCurrentSource ] = useState<ISourceProps>( createNewSitePagesSource( context.pageContext.web.absoluteUrl, tabs, overflowTab, showTricks ));
   const [ expandedState, setExpandedState ] = useState<boolean>(expanded);
   // const [ expandedState, setExpandedState ] = useState<boolean>( false );
@@ -90,8 +95,11 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   const [ performance, setPerformance ] = useState<ILoadPerformance>( createBasePerformanceInit( 1, false ));
   const [ filtered, setFiltered ] = useState<IEasyLink[]>([]);
   const [ current, setCurrent ] = useState<IEasyLink[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ parent, setParent ] = useState<IEasyLink[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ altPages, setAltPages ] = useState<IEasyLink[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ altNav, setAltNav ] = useState<IEasyLink[]>([]);
 
   useEffect(() => {

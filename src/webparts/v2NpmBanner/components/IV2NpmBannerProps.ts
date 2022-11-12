@@ -3,6 +3,7 @@ import { IFPSCorePinMeReactComponentProps, IFPSCorePinMeReactComponentState, ILo
 import { IWebpartHistory } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistory/Interface';
 import { IMinListProps } from './PropPaneCols/components/IPropPaneColsProps';
 import { IEasyPagesProps } from './EasyPages/component';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IEasyIconProps, IEasyIcons } from './EasyIcons/eiTypes';
 
 

@@ -360,7 +360,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
     const nearBannerElementsArray: any[] = [
       <Icon key='Link12' iconName='Link12' onClick={ this._toggleEasyLinks.bind(this) } style={ this.props.bannerProps.bannerCmdReactCSS }/>
-    ]
+    ];
 
     const Banner = <FetchBanner 
 
@@ -392,7 +392,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
       //   tabs: [ 'Home', 'Drilldown', 'Training', 'Links', 'Contents' ],
       // }}
       EasyIconsObject= { this.props.EasyIconsObject }
-    />
+    />;
 
     return (
       <section className={`${styles.v2NpmBanner} ${hasTeamsContext ? styles.teams : ''}`}>

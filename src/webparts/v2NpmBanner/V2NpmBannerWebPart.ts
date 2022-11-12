@@ -166,7 +166,7 @@
   */
  
  import { importBlockProps,  } from './IV2NpmBannerWebPartProps';
-import { buildEasyPagesGroup } from './PropPaneGroups/EasyPages';
+import { buildEasyPagesGroup } from './components/EasyPages/EasyPagesGroup';
 import { getStringArrayFromString } from '@mikezimm/npmfunctions/dist/Services/Strings/stringServices';
 import { EasyIconDefaultKeys, IEasyIconGroups } from './components/EasyIcons/eiTypes';
 import { setEasyIconsObjectProps } from './components/EasyIcons/eiFunctions';
@@ -470,9 +470,9 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
             this._exitPropPaneChanged,
           );
 
-         } else if ( propertyPath === 'easyIconKeys' && !newValue )  {
-            //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
-            this.properties.easyIconKeys = EasyIconDefaultKeys.join(';');
+        } else if ( propertyPath === 'easyIconKeys' && !newValue )  {
+          //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
+          this.properties.easyIconKeys = EasyIconDefaultKeys.join(';');
 
         } else if ( propertyPath === 'easyPageTabs' && !newValue )  {
           //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59

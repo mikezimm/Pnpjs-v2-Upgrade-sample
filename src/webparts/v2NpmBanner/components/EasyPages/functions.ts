@@ -8,6 +8,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
 //Interfaces
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DefaultOverflowTab, EasyPagesDevTab, ISourceProps, } from './epTypes'; //SourceInfo, 
 
 import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
