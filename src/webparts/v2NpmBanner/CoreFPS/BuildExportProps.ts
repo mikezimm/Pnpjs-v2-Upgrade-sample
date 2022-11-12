@@ -44,7 +44,7 @@
 
 import { IV2NpmBannerWebPartProps, exportIgnoreProps, } from '../IV2NpmBannerWebPartProps';
 
-import { changeEasyPages, } from '../IV2NpmBannerWebPartProps';
+import { changeEasyPages, } from '../components/EasyPages/epTypes';
 import { changeEasyIcons, } from '../components/EasyIcons/eiTypes';
 
 import { changeCustomHelp, changeExpando, changePageStyle, changefpsOptions2,  } from '../fpsReferences';
@@ -116,7 +116,7 @@ import { importBlockProps } from '../IV2NpmBannerWebPartProps'
 
     exportStructure.easyPages = changeEasyPages;
     exportStructure.easyIcons = changeEasyIcons;
-    
+
     exportStructure.changePinMe = changePinMe;
 
     exportStructure.Visitor = changeCustomHelp;

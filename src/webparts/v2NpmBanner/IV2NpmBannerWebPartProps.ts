@@ -32,10 +32,6 @@ export const importBlockPropsThis: string[] = ['showSomeProps'];
 
 export const importBlockProps: string[] = [...importBlockPropsFPS, ...importBlockPropsThis];
 
-export const changeEasyPages: string[] = ['easyPageEnable', 'easyPagesAudience', 'easyPageTabs', 'easyPageOverflowTab', 
-  'easyPageParent', 'easyPageAltUrl', 'easyPageAltNav', 'easyPageSeparateExtras', 'easyPageStyles', 'easyPageContainer'];
-
-
 // export interface IV2NpmBannerWebPartProps extends IMinWPBannerProps {
 /**
  * Extend with portions of FPS Props that are needed
