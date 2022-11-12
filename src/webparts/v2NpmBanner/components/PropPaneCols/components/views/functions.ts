@@ -5,6 +5,23 @@ import { IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
 
 import { IMinField } from "../IPropPaneColsProps";
 
+/**
+ * Best guess column widths based on keywords
+ * Applied in the order shown here
+ */
+
+const Keywords200W: string[] = [ 'Comments', ];
+const Keywords200Wlc: string[] = Keywords200W.map( s => s.toLocaleLowerCase());
+
+const Keywords50W: string[] = [ 'Product', 'Program', 'Customer', 'Cell', 'Line', 'Carline', 'Region', 'Country', 'State', 'Plant', 'Facility' ];
+const Keywords50Wlc: string[] = Keywords50W.map( s => s.toLocaleLowerCase());
+
+const Keywords150W: string[] = [ 'Account', 'User', 'UserName', 'Contact', ];
+const Keywords150Wlc: string[] = Keywords150W.map( s => s.toLocaleLowerCase());
+
+
+
+
 export function createViewFromFields( fields: IMinField[] ) : IViewField[] {
 
   const ViewFields: IViewField[] = [];
@@ -25,13 +42,13 @@ export function createThisViewField( field: IMinField ) : IViewField {
   switch ( field.FieldTypeKind ) {
 
     case FieldTypes.Text: 
-      // If it's single line of text, max length is 10*characters with max of 250
-      returnField.maxWidth = field.MaxLength ? Math.min( field.MaxLength * 10, 250 ) : returnField.maxWidth;
+      // If it's single line of text, max length is 10*characters with max of 175
+      returnField.maxWidth = field.MaxLength ? Math.min( field.MaxLength * 10, 175 ) : returnField.maxWidth;
       break;
 
     case FieldTypes.Note: 
-      // If it's single line of text, max length is 10*characters with max of 250
-      returnField.maxWidth = 250;
+      // If it's single line of text, max length is 10*characters with max of 175
+      returnField.maxWidth = 175;
       break;
 
     case FieldTypes.MultiChoice: 
@@ -77,7 +94,22 @@ export function createThisViewField( field: IMinField ) : IViewField {
 
   }
 
-  if ( field.InternalName === 'ID' ) {
+  /**
+   * Over-rides based on practical experience
+   */
+   if ( Keywords200Wlc.indexOf( field.Title.toLocaleLowerCase() ) > -1 ) {
+    returnField.minWidth = 150;
+    returnField.maxWidth = 200;
+
+  } else if ( Keywords150Wlc.indexOf( field.Title.toLocaleLowerCase() ) > -1 ) {
+    returnField.minWidth = 100;
+    returnField.maxWidth = 150;
+
+  } else if ( Keywords50Wlc.indexOf( field.Title.toLocaleLowerCase() ) > -1 ) {
+    returnField.minWidth = 40;
+    returnField.maxWidth = 75;
+
+  } else if ( field.InternalName === 'ID' ) {
     returnField.minWidth = 10;
     returnField.maxWidth = 30;
     returnField.linkPropertyName = 'goToPropsLink';
@@ -86,6 +118,7 @@ export function createThisViewField( field: IMinField ) : IViewField {
     returnField.displayName = 'Vers';
     returnField.minWidth = 6;
     returnField.maxWidth = 35;
+
   }
 
   return returnField;
