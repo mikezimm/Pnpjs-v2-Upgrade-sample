@@ -112,18 +112,8 @@ export function easyIconDivCard( EGroup: IEasyIconGroup , icon: string, src: str
   return img;
 }
 
-
 export function easyIconDivhero( EGroup: IEasyIconGroup , icon: string, src: string ) : JSX.Element {
   const img : JSX.Element = 
-      // <div className='bg-image-card'>
-      //   <div className='bg-image' style={{ backgroundImage: `url(${src})`}}>
-      //     <img key={ icon } className={ 'easy-icons-image' } src={ `${src}` } style={{ visibility: 'hidden' }} title={ `${EGroup.Folder}/${icon}` }/>
-      //   </div>
-      //   <div className='bg-image-caption'>
-      //     <span>This is some span text</span>
-      //   </div>
-      // </div>
-      
     <div className="hero-image"  style={{ backgroundImage: `url(${src})`}}>
       <img src={ src } style={{ visibility: 'hidden' }} />
       <div className="hero-text">
@@ -132,34 +122,13 @@ export function easyIconDivhero( EGroup: IEasyIconGroup , icon: string, src: str
         <button>Hire me</button>
       </div>
 
-    </div>
-
-    // <div className="fly-img-box" key={ icon }>
-		// 	<div className="inner" style={{ backgroundImage: `url(${src})`}}>
-		// 		{/* eslint-disable-next-line react/jsx-no-target-blank */}
-		// 		<a href={src} className="fly_click" target='_blank'>
-		// 			<div className="flex_this">
-		// 				<h1 className="fly_title">{ EGroup.Folder }</h1>
-		// 				<span className="fly_link">Link</span>
-		// 			</div>
-		// 		</a>
-		// 	</div>
-		// </div>
-    ;
+    </div>;
   return img;
 }
 
 export function easyIconDivfly( EGroup: IEasyIconGroup , icon: string, src: string ) : JSX.Element {
   const img : JSX.Element = 
-      // <div className='bg-image-card'>
-      //   <div className='bg-image' style={{ backgroundImage: `url(${src})`}}>
-      //     <img key={ icon } className={ 'easy-icons-image' } src={ `${src}` } style={{ visibility: 'hidden' }} title={ `${EGroup.Folder}/${icon}` }/>
-      //   </div>
-      //   <div className='bg-image-caption'>
-      //     <span>This is some span text</span>
-      //   </div>
-      // </div>
-      
+
     <div className="fly-img-box" key={ icon }>
 			<div className="inner" style={{ backgroundImage: `url(${src})`}}>
 				{/* eslint-disable-next-line react/jsx-no-target-blank */}
@@ -176,15 +145,7 @@ export function easyIconDivfly( EGroup: IEasyIconGroup , icon: string, src: stri
 }
 export function easyIconDivgeek( EGroup: IEasyIconGroup , icon: string, src: string ) : JSX.Element {
   const img : JSX.Element = 
-      // <div className='bg-image-card'>
-      //   <div className='bg-image' style={{ backgroundImage: `url(${src})`}}>
-      //     <img key={ icon } className={ 'easy-icons-image' } src={ `${src}` } style={{ visibility: 'hidden' }} title={ `${EGroup.Folder}/${icon}` }/>
-      //   </div>
-      //   <div className='bg-image-caption'>
-      //     <span>This is some span text</span>
-      //   </div>
-      // </div>
-      
+
       <div className='geekwrap' style={{ backgroundImage: `url(${src})`}}>
       <h1 className='geekh1'>GeeksforGeeks</h1>
       <img className='geekimg' src={src}

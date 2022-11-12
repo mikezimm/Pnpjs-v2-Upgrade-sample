@@ -50,7 +50,8 @@ export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParen
       onText: 'Yes',
   }));
 
-  groupFields.push( createAudienceGroup( 'easyPagesAudience', 'Min audience to see EasyPages', 'Everyone', !easyPageEnable ) );
+  // groupFields.push( createAudienceGroup( 'easyPagesAudience', 'Min audience to see EasyPages', 'Everyone', !easyPageEnable ) );
+  groupFields.push( createAudienceGroup( 'easyPagesAudience', 'Min audience to see EasyPages', 'Everyone', true ) );
 
   groupFields.push(
     PropertyPaneTextField('easyPageTabs', {
@@ -80,7 +81,8 @@ export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParen
         label: 'Include Parent site',
         offText: 'No',
         onText: 'Yes',
-        disabled: easyPageEnable === false ? true : false,
+        // disabled: easyPageEnable === false ? true : false,
+        disabled: true,
     }));
   }
 
@@ -88,7 +90,8 @@ export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParen
     PropertyPaneTextField('easyPageAltUrl', {
       label: 'Include Pages from this other site',
       description: '/sites/... Url (disabled if you are using parent site)',
-      disabled: easyPageEnable === false || easyPageParent === true || easyPageAltNav ? true : false,
+      // disabled: easyPageEnable === false || easyPageParent === true || easyPageAltNav ? true : false,
+      disabled: true,
       value: easyPageAltUrl,
   }));
 
@@ -96,7 +99,8 @@ export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParen
     PropertyPaneTextField('easyPageAltNav', {
       label: 'Include Navigation from this other site',
       description: '/sites/... Url (disabled if you are using parent site)',
-      disabled: easyPageEnable === false || easyPageParent === true || easyPageAltUrl ? true : false,
+      // disabled: easyPageEnable === false || easyPageParent === true || easyPageAltUrl ? true : false,
+      disabled: true,
       value: easyPageAltNav,
   }));
 
@@ -105,7 +109,8 @@ export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParen
       label: 'Parent/other Site links',
       offText: 'Mixed into custom tabs',
       onText: 'Separate Tabs',
-      disabled: easyPageEnable === false || ( !easyPageParent && !easyPageAltNav && !easyPageAltUrl ) ? true : false,
+      // disabled: easyPageEnable === false || ( !easyPageParent && !easyPageAltNav && !easyPageAltUrl ) ? true : false,
+      disabled: true,
   }));
 
   groupFields.push(

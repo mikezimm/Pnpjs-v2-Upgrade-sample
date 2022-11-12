@@ -30,11 +30,13 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
       <div className={ 'fps-pph-topic' }>What if I do not like the Icons that I see?</div>
       <ul>
         <li>Manually add the Thumbnail Icon to the item - where applicable
-          <li>Normal Site Pages:  Edit Page, click Page Details Gear, set Thumbnail</li>
-          <li>News Links:  Go to Site Pages, Edit the News Link, set Thumbnail</li>
-          <li>Sites and Subsites:  Site Gear, Change the Look, Header, Set Logo and Thumbnail</li>
-          <li>Files:  SharePoint auto-generates Thumbnails based on the content in the file</li>
-          <li>Lists, Libraries:  Not possible to set a Thumbnail at all</li>
+          <ul>
+            <li>Normal Site Pages:  Edit Page, click Page Details Gear, set Thumbnail</li>
+            <li>News Links:  Go to Site Pages, Edit the News Link, set Thumbnail</li>
+            <li>Sites and Subsites:  Site Gear, Change the Look, Header, Set Logo and Thumbnail</li>
+            <li>Files:  SharePoint auto-generates Thumbnails based on the content in the file</li>
+            <li>Lists, Libraries:  Not possible to set a Thumbnail at all</li>
+          </ul>
         </li>
 
         <li>Tell the web part what Icons to focus on
@@ -49,14 +51,14 @@ export function getEasyIconsHelp ( EasyIcons: IEasyIcons, repoLink: IRepoLinks )
       </ul>
       <div className={ 'fps-pph-topic' }>What Icons are available?</div>
 
-      { getEasyIconElement( EasyIcons, 'geek' ) }
+      {/* { getEasyIconElement( EasyIcons, 'geek' ) }
       { getEasyIconElement( EasyIcons, 'hero' ) }
-      { getEasyIconElement( EasyIcons, 'fly' ) }
+      { getEasyIconElement( EasyIcons, 'fly' ) } */}
       { getEasyIconElement( EasyIcons, 'Base' ) }
-      { getEasyIconElement( EasyIcons, '2' ) }
+      {/* { getEasyIconElement( EasyIcons, '2' ) }
       { getEasyIconElement( EasyIcons, '3' ) }
       { getEasyIconElement( EasyIcons, '4' ) }
-      { getEasyIconElement( EasyIcons, '5' ) }
+      { getEasyIconElement( EasyIcons, '5' ) } */}
 
     </div>;
 
