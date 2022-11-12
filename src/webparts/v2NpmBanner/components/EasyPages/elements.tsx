@@ -3,21 +3,33 @@ import { IEasyLink } from './component';
 
 import { EasyPagesDevTab } from './epTypes';
 
+const gulpServe: string = `?debug=true&noredir=true&debugManifestsFile=https://localhost:4321/temp/manifests.js`;
+
 export function easyLinkElement( link: IEasyLink, target: string = '_blank' ) : JSX.Element {
 
-  const imageIsDefault = link.imageUrl && link.imageUrl.indexOf('_layouts/15/images/sitepagethumbnail.png') > -1 ? true : false;
-  const newTarget = link.tabs.indexOf(EasyPagesDevTab) < 0 ? target : '_blank';
+  const { File, imageUrl, url, imageDesc, title, description, tabs } = link;
+
+  const linkUrl: string = File?.ServerRelativeUrl ? File.ServerRelativeUrl : '';
+
+  let linkIsSPO: boolean = linkUrl.indexOf( '.sharepoint.com' ) > 6 ? true : false; // If it's not SitePages, no gulp
+  if ( linkUrl.indexOf( '/sites/' ) === 0 ) linkIsSPO = true;
+  if ( linkUrl.toLowerCase().indexOf( '/sitepages/' ) < 0 ) linkIsSPO = false; // If it's not SitePages, no gulp
+
+  const gulpParam: string = linkIsSPO === true ? gulpServe : '';
+
+  const imageIsDefault = imageUrl && imageUrl.indexOf('_layouts/15/images/sitepagethumbnail.png') > -1 ? true : false;
+  const newTarget = tabs.indexOf(EasyPagesDevTab) < 0 ? target : '_blank';
+
   const newClass = [ 'easy-link' ];
-  if ( link.tabs.indexOf(EasyPagesDevTab) > -1 ) newClass.push( 'easy-link-2col' );
-  //	  display: grid;
-  //grid-template-columns: 300px 300px;
-  return <div className = { newClass.join( ' ' ) } onClick={ () => { window.open( link.url , newTarget ) } } >
-    <img className={ 'easy-link-image' } src={ link.imageUrl } style={{ height: imageIsDefault === true ? '20px' : '50px' }} title={ link.imageDesc }/>
+  if ( tabs.indexOf(EasyPagesDevTab) > -1 ) newClass.push( 'easy-link-2col' );
 
-    <div className='easy-link-title' style={{ fontSize: link.title ? '' : 'smaller', fontWeight: link.title ? null : 400 }}>
-        { link.title ? link.title : `Page does NOT have a title :(` }</div>
+  return <div className = { newClass.join( ' ' ) } onClick={ ( ev ) => { window.open( `${url}${ ev.altKey === true ? gulpParam : '' }` , newTarget ) } } >
+    <img className={ 'easy-link-image' } src={ imageUrl } style={{ height: imageIsDefault === true ? '20px' : '50px' }} title={ imageDesc }/>
 
-    <div className='easy-link-desc'>{link.description }</div>
+    <div className='easy-link-title' style={{ fontSize: title ? '' : 'smaller', fontWeight: title ? null : 400 }}>
+        { title ? title : `Page does NOT have a title :(` }</div>
+
+    <div className='easy-link-desc'>{description }</div>
   </div>;
 
 }

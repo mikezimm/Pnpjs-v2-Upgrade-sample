@@ -96,7 +96,7 @@ export interface IEasyIcons {
 export const EasyIconDefaultKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'FunctionsW', 'ProductsW', 'WoW', 'Words', 'WebParts'  ];
 export const EasyIconValidKeys: IEasyIconGroups[] = [ 'Products' , 'Processes' , 'Customers' , 'Functions' , 'Keywords' , 'Nouns' , 'Verbs' , 'Adjectives', 'Colors', 'Locations', 'Transport', 'FunctionsW', 'ProductsW', 'WoW', 'Words', 'WebParts'  ];
 
-export const ProductWords : string [] = [ 'Armature', 'Curtain', 'Cushion', 'DAB', 'FAB', 'IC', 'KAB', 'Magnesium', 'Metal', 'PAB', 'Plastic', 'PTSAB', 'Thread', 'Webbing', 'Products', 'Seatbelt', 'Airbag', 'Wheel', 'AB', 'SW', 'SB', 'IN', 'TE', 'Textiles' ];
+export const ProductWords : string [] = [ 'Armature', 'Curtain', 'Cushion', 'DAB', 'FAB', 'IC', 'KAB', 'Magnesium', 'Metal', 'PAB', 'Plastic', 'PTSAB', 'Thread', 'Webbing', 'Seatbelt', 'Airbag', 'Wheel', 'AB', 'SW', 'SB', 'IN', 'TE', 'Textile', 'Products' ];
 export const FunctionWords: string [] = [ 'Engineering', 'Purchasing', 'Finance', 'Manufacturing', 'Logistics', 'Legal', 'Human Resources' , 'Sales', 'Quality', 'Communications', 'Operations', 'Sustainability', 'IT', 'Information Technology' ];
 
 export const WaysOfWorking: string[] = [ 'APS', 'Q5', '1P1p', 'VEVA', ];
