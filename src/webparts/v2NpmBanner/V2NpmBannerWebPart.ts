@@ -357,6 +357,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
         },
 
         easyPagesProps: {
+          easyPageEnable: this.properties.easyPageEnable,
           context: this.context,
           pageLayout: this.properties.pageLayout,
           showTricks: bannerProps.showTricks,
@@ -368,6 +369,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           overflowTab: this.properties.easyPageOverflowTab,
           fetchParent: this.properties.easyPageParent,
           altSitePagesUrl: this.properties.easyPageAltUrl,
+          atlSiteTitle: this.properties.atlSiteTitle,
           // altSiteNavigation: this.properties.easyPageAltNav,
           styles: getReactCSSFromString( 'easyPageStyles', this.properties.easyPageStyles, {} ).parsed,
           containerStyles: getReactCSSFromString( 'easyPageContainer', this.properties.easyPageContainer, {} ).parsed,
@@ -476,9 +478,17 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
           this.properties.easyIconKeys = EasyIconDefaultKeys.join(';');
 
-        } else if ( propertyPath === 'easyPageTabs' && !newValue )  {
+        } else if ( propertyPath === 'easyPageTabsC' && !newValue )  {
           //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
-          this.properties.easyPageTabs = DefaultEasyPagesTabs.join(';');
+          this.properties.easyPageTabsC = DefaultEasyPagesTabs.join(';');
+
+        } else if ( propertyPath === 'easyPageTabsP' && !newValue )  {
+          //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
+          this.properties.easyPageTabsP = DefaultEasyPagesTabs.join(';');
+
+        } else if ( propertyPath === 'easyPageTabsA' && !newValue )  {
+          //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
+          this.properties.easyPageTabsA = DefaultEasyPagesTabs.join(';');
 
         } else if ( propertyPath === 'easyPageOverflowTab' && !newValue )  {
           this.properties.easyPageOverflowTab = DefaultOverflowTab;

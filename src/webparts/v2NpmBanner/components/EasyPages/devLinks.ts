@@ -36,6 +36,6 @@ export const EasyDevFluent: IEasyLink = { title: `Fluent UI`, description: `${Ea
 export const EasyDevFliconIO: IEasyLink = { title: `Flicon.io`, description: `Fluent Icons - ${EasyPagesDevTab}`, 
   url: 'https://flicon.io/' , imageUrl: TheCKLogo , type: 'current', tabs: [ EasyPagesDevTab ]  } as any;
 
-export const EasyDevPages: IEasyLink[] = [ EasyDevTypescript, EasyDevGridDocs, EasyDevGridGen,
-  EasyDevJSON, EasyDevPnpJS, EasyDevRegex, EasyDevSPFxReact, EasyDevSPFxReactIO, EasyDevFluent, EasyDevFliconIO
+export const EasyDevPages: IEasyLink[] = [ EasyDevTypescript, EasyDevJSON, EasyDevGridDocs, EasyDevGridGen,
+  EasyDevPnpJS, EasyDevRegex, EasyDevSPFxReact, EasyDevSPFxReactIO, EasyDevFluent, EasyDevFliconIO
 ];

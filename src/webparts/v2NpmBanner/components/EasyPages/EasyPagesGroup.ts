@@ -32,7 +32,7 @@ export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParen
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { easyPageEnable, easyPageTabsC, easyPageTabsP, easyPageTabsA, easyPageOverflowTab, easyPageParent, easyIconEnable, easyIconIgnore, easyIconKeys, 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    easyPagesAudience, easyPageAltNav, easyPageAltUrl, easyPageContainer, easyPageSeparateExtras, easyPageStyles } = wpProps;
+    easyPagesAudience, atlSiteTitle, easyPageAltUrl, easyPageContainer, easyPageStyles } = wpProps;
 
 // export interface IEasyPagesWPProps {
 //   easyPageEnable: boolean;
@@ -101,7 +101,7 @@ groupFields.push(
   PropertyPaneTextField('easyPageAltUrl', {
     label: 'Include Pages from this other site',
     description: '/sites/... Url (disabled if you are using parent site)',
-    disabled: easyPageEnable === false || easyPageParent === true || easyPageAltNav ? true : false,
+    disabled: easyPageEnable === false ? true : false,
     // disabled: true,
     value: easyPageAltUrl,
 }));
@@ -114,23 +114,13 @@ groupFields.push(
     value: easyPageTabsA,
 }));
 
-// groupFields.push(
-//   PropertyPaneTextField('easyPageAltNav', {
-//     label: 'Include Navigation from this other site',
-//     description: '/sites/... Url (disabled if you are using parent site)',
-//     // disabled: easyPageEnable === false || easyPageParent === true || easyPageAltUrl ? true : false,
-//     disabled: true,
-//     value: easyPageAltNav,
-// }));
-
-// groupFields.push(
-//   PropertyPaneToggle('easyPageSeparateExtras', {
-//     label: 'Parent/other Site links',
-//     offText: 'Mixed into custom tabs',
-//     onText: 'Separate Tabs',
-//     // disabled: easyPageEnable === false || ( !easyPageParent && !easyPageAltNav && !easyPageAltUrl ) ? true : false,
-//     disabled: true,
-// }));
+groupFields.push(
+  PropertyPaneTextField('atlSiteTitle', {
+    label: 'Alt Site: Title',
+    description: 'Button text for this site',
+    disabled: easyPageEnable === false || !easyPageAltUrl ? true : false,
+    value: atlSiteTitle,
+}));
 
 groupFields.push(
   PropertyPaneTextField('easyPageStyles', {
@@ -149,13 +139,6 @@ groupFields.push(
     disabled: easyPageEnable === false ? true : false,
     value: easyPageContainer,
 }));
-
-// //To be added to npmFunctions
-// export interface IEasyIconsWPProps {
-//   easyIconEnable: boolean; // Used 
-//   easyIconKeys: string;
-//   easyIconIgnore: string;
-// }
 
 groupFields.push(
   PropertyPaneToggle('easyIconEnable', {

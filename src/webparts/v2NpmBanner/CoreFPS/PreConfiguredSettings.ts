@@ -55,11 +55,11 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         easyPagesAudience: 'Everyone',
         easyPageTabsC:  DefaultEasyPagesTabs.join(';'),
         easyPageTabsP:  DefaultEasyPagesTabs.join(';'),
-        easyPageTabsA:  '',
+        easyPageTabsA:  DefaultEasyPagesTabs.join(';'),
         easyPageOverflowTab:  DefaultOverflowTab,
         easyPageParent: true, //Include parent site pages
         easyPageAltUrl: '', //Include alternate site's site pages
-        easyPageAltNav:  '', //Include navigation elements from other site
+        atlSiteTitle:  '', //Include navigation elements from other site
         easyPageSeparateExtras:  true, //Include navigation elements from other site
         easyPageStyles:  '',  //Optional styles on entire page
         easyPageContainer:  '',  //Optional styles on container element

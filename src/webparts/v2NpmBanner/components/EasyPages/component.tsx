@@ -48,6 +48,9 @@ export interface IEasyPagesProps {
   showTricks: boolean;  // For special dev links in EasyPages
   pinState: IPinMeState;      // To be used when rebuilding the Banner and FetchBanner components
   expanded: boolean;
+
+  easyPageEnable: boolean;
+
   toggleExpanded?: any;
   tabsC: string[];  // Tabs for Current site
   tabsP: string[];  // Tabs for Parent site
@@ -55,6 +58,7 @@ export interface IEasyPagesProps {
   overflowTab?: string;
   fetchParent?: boolean; //Include parent site pages
   altSitePagesUrl?: string; //Include alternate site's site pages
+  atlSiteTitle?: string;  // Button Text for Alternate Site
   // altSiteNavigation?: string; //Include navigation elements from other site
   styles?: React.CSSProperties;  //Optional styles on entire page
   containerStyles?: React.CSSProperties;  //Optional styles on container element
@@ -95,11 +99,12 @@ const InfoIcon = 'History';
 const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { context, expanded, tabsC, tabsP, tabsA, overflowTab, fetchParent, altSitePagesUrl, styles, containerStyles, showTricks } = props.easyPagesProps;
+  const { context, expanded, tabsC, tabsP, tabsA, overflowTab, fetchParent, altSitePagesUrl, atlSiteTitle, styles, containerStyles, showTricks } = props.easyPagesProps;
 
+  const realAltSite : IEasyPageSource = atlSiteTitle ? atlSiteTitle as IEasyPageSource : altSitePagesUrl as IEasyPageSource;
   const [ source, setSource ] = useState<IEasyPageSource>( 'Current' );
   const [ tab, setTab ] = useState<string>( tabsC.length > 0 ? tabsC[0] : 'Pages' );
-  const [ activeTabs, setActiveTabs ] = useState<string[]>( tabsC ? tabsC : ['Pages'] );
+  const [ activeTabs, setActiveTabs ] = useState<string[]>( tabsC.length > 0 ? [ ...tabsC, ...[ InfoTab ] ]: ['Pages'] );
   const [ expandedState, setExpandedState ] = useState<boolean>(expanded);
   const [ filtered, setFiltered ] = useState<IEasyLink[]>([]);
 
@@ -114,10 +119,10 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
    * CURRENT SITE STATE
    */
   const [ tabC, setTabC ] = useState<string>( tabsC.length > 0 ? tabsC[0] : 'Pages' );
-  const [ sourceC, setSourceC ] = useState<ISourceProps>( createNewSitePagesSource( 'Current', context.pageContext.web.absoluteUrl, tabsC, overflowTab, showTricks ));
+  const [ sourceC, setSourceC ] = useState<ISourceProps>( () => createNewSitePagesSource( 'Current', context.pageContext.web.absoluteUrl, tabsC, overflowTab, showTricks ));
   const [ showTabsC, setShowTabsC ] = useState<string[]>( tabsC.length > 0 ? [ ...tabsC, ...[ InfoTab ] ]: ['Pages'] );
   const [ fetchedC, setFetchedC ] = useState<boolean>(false);
-  const [ performanceC, setPerformanceC ] = useState<ILoadPerformance>( createBasePerformanceInit( 1, false ));
+  const [ performanceC, setPerformanceC ] = useState<ILoadPerformance>( () => createBasePerformanceInit( 1, false ));
   const [ pagesC, setPagesC ] = useState<IEasyLink[]>([]);
 
   /**
@@ -126,10 +131,10 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   const [ tabP, setTabP ] = useState<string>( tabsP.length > 0 ? tabsP[0] : 'Pages' );
   const [ showTabsP, setShowTabsP ] = useState<string[]>( tabsP.length > 0 ? [ ...tabsP, ...[ InfoTab ] ]: ['Pages'] );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [ sourceP, setSourceP ] = useState<ISourceProps>( createNewSitePagesSource( 'Parent',  parentUrl, tabsP, overflowTab, showTricks ));
+  const [ sourceP, setSourceP ] = useState<ISourceProps>( () => createNewSitePagesSource( 'Parent',  parentUrl, tabsP, overflowTab, showTricks ));
   const [ fetchedP, setFetchedP ] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [ performanceP, setPerformanceP ] = useState<ILoadPerformance>( createBasePerformanceInit( 1, false ));
+  const [ performanceP, setPerformanceP ] = useState<ILoadPerformance>( () => createBasePerformanceInit( 1, false ));
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ pagesP, setPagesP ] = useState<IEasyLink[]>([]);
 
@@ -140,9 +145,9 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   const [ tabA, setTabA ] = useState<string>( tabsA.length > 0 ? tabsA[0] : 'Pages' );
   const [ showTabsA, setShowTabsA ] = useState<string[]>( tabsA.length > 0 ? [ ...tabsA, ...[ InfoTab ] ]: ['Pages'] );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [ sourceA, setSourceA ] = useState<ISourceProps>( createNewSitePagesSource( 'Alternate', altSitePagesUrl, tabsA, overflowTab, showTricks ));
+  const [ sourceA, setSourceA ] = useState<ISourceProps>( () => createNewSitePagesSource( realAltSite, altSitePagesUrl, tabsA, overflowTab, showTricks ));
   const [ fetchedA, setFetchedA ] = useState<boolean>(false);
-  const [ performanceA, setPerformanceA ] = useState<ILoadPerformance>( createBasePerformanceInit( 1, false ));
+  const [ performanceA, setPerformanceA ] = useState<ILoadPerformance>( () => createBasePerformanceInit( 1, false ));
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ pagesA, setPagesA ] = useState<IEasyLink[]>([]);
 
@@ -165,6 +170,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       const getPages = async (): Promise<void> => {
         const pagesResults = await getPagesContent( sourceC, props.EasyIconsObject, parentUrl, showTricks );
         const actualTabs = getUsedTabs( sourceC, pagesResults.items );
+        actualTabs.push( InfoTab );
         const links: IEasyLink[] = compoundArrayFilter( pagesResults.items, actualTabs[0], '' );
         setTab( actualTabs[0] );
         setTabC( actualTabs[0] );
@@ -184,7 +190,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       };
     }
 
-  }, );
+  }, [ source, expandedState ] );
 
 /***
  *    d8888b.  .d8b.  d8888b. d88888b d8b   db d888888b      .d8888. d888888b d888888b d88888b 
@@ -204,6 +210,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       const getPages = async (): Promise<void> => {
         const pagesResults = await getPagesContent( sourceP, props.EasyIconsObject, '', showTricks );
         const actualTabs = getUsedTabs( sourceP, pagesResults.items );
+        actualTabs.push( InfoTab );
         const links: IEasyLink[] = compoundArrayFilter( pagesResults.items, actualTabs[0], '' );
         setTab( actualTabs[0] );
         setTabP( actualTabs[0] );
@@ -223,7 +230,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       };
     }
 
-  }, );
+  }, [ source, expandedState ] );
 
 /***
  *     .d8b.  db      d888888b d88888b d8888b. d8b   db  .d8b.  d888888b d88888b      .d8888. d888888b d888888b d88888b 
@@ -239,10 +246,11 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   useEffect(() => {
     //  https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
 
-    if ( expandedState === true && fetchedA === false && source === 'Alternate'  ) {
+    if ( expandedState === true && fetchedA === false && source === realAltSite  ) {
       const getPages = async (): Promise<void> => {
         const pagesResults = await getPagesContent( sourceA, props.EasyIconsObject, '', showTricks );
         const actualTabs = getUsedTabs( sourceA, pagesResults.items );
+        actualTabs.push( InfoTab );
         const links: IEasyLink[] = compoundArrayFilter( pagesResults.items, actualTabs[0], '' );
         setTab( actualTabs[0] );
         setTabA( actualTabs[0] );
@@ -262,7 +270,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       };
     }
 
-  }, );
+  }, [ source, expandedState ] );
 
 
   /***
@@ -298,7 +306,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
   const setSourceAlternate = ( ): void => {
     const links: IEasyLink[] = compoundArrayFilter( pagesA, tabA, '' );
-    setSource( 'Alternate' );
+    setSource( realAltSite );
     setTab( tabA );
     setActiveTabs( showTabsA );
     setFiltered( links );
@@ -318,20 +326,25 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
     const itemKey: IEasyPageSource = !item.props.headerText ? InfoTab as IEasyPageSource : item.props.headerText as IEasyPageSource;
     if ( itemKey === 'Current' ) setSourceCurrent( );
     if ( itemKey === 'Parent' ) setSourceParent( );
-    if ( itemKey === 'Alternate' ) setSourceAlternate( );
+    if ( itemKey === realAltSite ) setSourceAlternate( );
     if ( itemKey === EasyPagesDevTab ) setSourceDev( );
 
   }
 
   const onTextSearch = ( item: any, text: string = '' ): void => {
     const SearchValue : string = typeof item === 'string' ? item : item && item.target && item.target.value ? item.target.value : '';
-    const allLinks: IEasyLink[] = source === 'Current' ? pagesC : source === 'Parent' ? pagesC : source === 'Alternate' ? pagesA : EasyDevPages;
+    let allLinks: IEasyLink[] = [];
+    if ( source === 'Current' ) allLinks = pagesC ;
+    if ( source === 'Parent' ) allLinks = pagesP ;
+    if ( source === realAltSite ) allLinks = pagesA ;
+    if ( source === EasyPagesDevTab ) allLinks = EasyDevPages ;
+
     const links: IEasyLink[] = compoundArrayFilter( allLinks, SearchValue, text );
     setFiltered( links );
     setTab( SearchValue );
     if ( source  === 'Current' ) setTabC( SearchValue )
     if ( source  === 'Parent' ) setTabP( SearchValue )
-    if ( source  === 'Alternate' ) setTabA( SearchValue )
+    if ( source  === realAltSite ) setTabA( SearchValue )
   }
 
   // item SHOULD BE IPivotItemProps but have to cast as any in order to get itemKey and headerText
@@ -364,12 +377,12 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
   const sourceTabs: IEasyPageSource[] = [ 'Current' ];
   if ( fetchParent === true ) sourceTabs.push( 'Parent' );
-  if ( altSitePagesUrl ) sourceTabs.push( 'Alternate' );
+  if ( altSitePagesUrl ) sourceTabs.push( realAltSite );
   if ( showTricks === true )  sourceTabs.push( EasyPagesDevTab );
 
   let showPerformance: ILoadPerformance = performanceC;
   if ( source === 'Parent' )showPerformance = performanceP;
-  if ( source === 'Alternate' )showPerformance = performanceA;
+  if ( source === realAltSite )showPerformance = performanceA;
   if ( source === EasyPagesDevTab )showPerformance = null;
 
   const EasyPagesElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
