@@ -30,7 +30,7 @@ import { IV2NpmBannerWebPartProps } from '../../IV2NpmBannerWebPartProps';
 export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParent: boolean ) : IPropertyPaneGroup {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { easyPageEnable, easyPageTabs, easyPageOverflowTab, easyPageParent, easyIconEnable, easyIconIgnore, easyIconKeys, 
+const { easyPageEnable, easyPageTabsC, easyPageTabsP, easyPageTabsA, easyPageOverflowTab, easyPageParent, easyIconEnable, easyIconIgnore, easyIconKeys, 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     easyPagesAudience, easyPageAltNav, easyPageAltUrl, easyPageContainer, easyPageSeparateExtras, easyPageStyles } = wpProps;
 
@@ -68,7 +68,7 @@ groupFields.push(
     label: 'Current Site: Tabs (Keywords)',
     description: 'Semi-colon separated keywords to group pages by',
     disabled: easyPageEnable === false ? true : false,
-    value: easyPageTabs,
+    value: easyPageTabsC,
 }));
 
 
@@ -84,8 +84,8 @@ if ( hasParent === true ) {
       label: 'Include Parent site',
       offText: 'No',
       onText: 'Yes',
-      // disabled: easyPageEnable === false ? true : false,
-      disabled: true,
+      disabled: easyPageEnable === false ? true : false,
+      // disabled: true,
   }));
 }
 
@@ -94,15 +94,15 @@ groupFields.push(
     label: 'Parent Site: Tabs (Keywords)',
     description: 'Semi-colon separated keywords to group pages by',
     disabled: easyPageEnable === false || hasParent === false || easyPageParent === false ? true : false,
-    value: easyPageTabs,
+    value: easyPageTabsP,
 }));
 
 groupFields.push(
   PropertyPaneTextField('easyPageAltUrl', {
     label: 'Include Pages from this other site',
     description: '/sites/... Url (disabled if you are using parent site)',
-    // disabled: easyPageEnable === false || easyPageParent === true || easyPageAltNav ? true : false,
-    disabled: true,
+    disabled: easyPageEnable === false || easyPageParent === true || easyPageAltNav ? true : false,
+    // disabled: true,
     value: easyPageAltUrl,
 }));
 
@@ -111,7 +111,7 @@ groupFields.push(
     label: 'Alt Site: Tabs (Keywords)',
     description: 'Semi-colon separated keywords to group pages by',
     disabled: easyPageEnable === false || !easyPageAltUrl ? true : false,
-    value: easyPageTabs,
+    value: easyPageTabsA,
 }));
 
 // groupFields.push(
