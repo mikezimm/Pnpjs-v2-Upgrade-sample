@@ -355,25 +355,32 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           domElement: this.context.domElement,
           pageLayout: this.properties.pageLayout,
         },
+        easyPagesCommonProps: {
 
-        easyPagesProps: {
-          easyPageEnable: this.properties.easyPageEnable,
           context: this.context,
           pageLayout: this.properties.pageLayout,
-          showTricks: bannerProps.showTricks,
+          expandedState: false,
           pinState: this.properties.defPinState,
           expanded: false ,
-          tabsC: getStringArrayFromString( this.properties.easyPageTabsC , ';', true, null, true ) ,
-          tabsP: getStringArrayFromString( this.properties.easyPageTabsP , ';', true, null, true ) ,
-          tabsA: getStringArrayFromString( this.properties.easyPageTabsA , ';', true, null, true ) ,
           overflowTab: this.properties.easyPageOverflowTab,
-          fetchParent: this.properties.easyPageParent,
-          altSitePagesUrl: this.properties.easyPageAltUrl,
-          atlSiteTitle: this.properties.atlSiteTitle,
+
           // altSiteNavigation: this.properties.easyPageAltNav,
           styles: getReactCSSFromString( 'easyPageStyles', this.properties.easyPageStyles, {} ).parsed,
           containerStyles: getReactCSSFromString( 'easyPageContainer', this.properties.easyPageContainer, {} ).parsed,
         },
+
+        easyPagesExtraProps: {
+
+          fetchParent: this.properties.easyPageParent,
+          altSitePagesUrl: this.properties.easyPageAltUrl,
+          atlSiteTitle: this.properties.atlSiteTitle,
+          showTricks: bannerProps.showTricks,
+          easyPageEnable: this.properties.easyPageEnable,
+          tabsC: getStringArrayFromString( this.properties.easyPageTabsC , ';', true, null, true ) ,
+          tabsP: getStringArrayFromString( this.properties.easyPageTabsP , ';', true, null, true ) ,
+          tabsA: getStringArrayFromString( this.properties.easyPageTabsA , ';', true, null, true ) ,
+        },
+
         EasyIconsObject: setEasyIconsObjectProps( this.properties ),
 
       }

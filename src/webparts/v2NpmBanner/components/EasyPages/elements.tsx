@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IEasyLink } from './component';
+import { IEasyLink } from './componentSources';
 
 import { EasyPagesDevTab } from './epTypes';
 

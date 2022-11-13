@@ -9,7 +9,7 @@ import { saveViewAnalytics } from '../CoreFPS/Analytics';
 
 // import FetchBanner from '../CoreFPS/FetchBannerElement';
 import FetchBanner from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/FetchBannerElement';
-import EasyPagesHook from './EasyPages/component';
+import EasyPagesHook from './EasyPages/componentSources';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ISpecialMessage, specialUpgrade } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/special/interface';
@@ -385,12 +385,8 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
     />;
 
     const EasyPagesElement = <EasyPagesHook 
-      easyPagesProps={ { ...this.props.easyPagesProps, ...{ expanded: this.state.showEasyPages, toggleExpanded: this._toggleEasyLinks.bind(this) } } }
-      // easyPagesProps={{
-      //   context: this.props.context as any,
-      //   expanded: this.state.showEasyPages ,
-      //   tabs: [ 'Home', 'Drilldown', 'Training', 'Links', 'Contents' ],
-      // }}
+      easyPagesExtraProps={ { ...this.props.easyPagesExtraProps, ...{ expanded: this.state.showEasyPages, toggleExpanded: this._toggleEasyLinks.bind(this) } } }
+      easyPagesCommonProps= { this.props.easyPagesCommonProps }
       EasyIconsObject= { this.props.EasyIconsObject }
     />;
 

@@ -1,4 +1,4 @@
-import { IEasyLink } from "./component";
+import { IEasyLink } from "./componentSources";
 import { EasyPagesDevTab } from "./epTypes";
 
 const SPFXParkLogo: string = `https://ih0.redbubble.net/image.815755990.6275/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg`;

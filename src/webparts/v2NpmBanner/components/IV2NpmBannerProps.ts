@@ -2,7 +2,8 @@
 import { IFPSCorePinMeReactComponentProps, IFPSCorePinMeReactComponentState, ILoadPerformance } from '../fpsReferences';
 import { IWebpartHistory } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistory/Interface';
 import { IMinListProps } from './PropPaneCols/components/IPropPaneColsProps';
-import { IEasyPagesProps } from './EasyPages/component';
+import { IEasyPagesSourceProps,  } from './EasyPages/componentPage';
+import { IEasyPagesExtraProps } from './EasyPages/componentSources';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IEasyIconProps, IEasyIcons } from './EasyIcons/eiTypes';
 
@@ -21,7 +22,8 @@ export interface IV2NpmBannerProps  extends IFPSCorePinMeReactComponentProps {
 
   lists: IMinListProps[];
 
-  easyPagesProps: IEasyPagesProps;
+  easyPagesCommonProps: IEasyPagesSourceProps;  // General props which apply to all Sources/Pages
+  easyPagesExtraProps: IEasyPagesExtraProps;  // General props which are used on the SourcesPage but not component page
   EasyIconsObject: IEasyIcons;
 
 }

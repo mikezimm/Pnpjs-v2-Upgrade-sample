@@ -82,7 +82,7 @@ export function getUsedTabs( sourceProps: ISourceProps, items: IEasyLink[] ) : s
  * @returns 
  */
 export interface IGetPagesContent { items: IEasyLink[], performance: ILoadPerformance }
-export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject: IEasyIcons = EasyIconObjectDefault, parentLink: string, ): Promise<IGetPagesContent> {
+export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject: IEasyIcons = EasyIconObjectDefault, parentLink: string, showTricks: boolean ): Promise<IGetPagesContent> {
 
   const performance: ILoadPerformance = createBasePerformanceInit( 1, false );
   performance.ops.fetch1 = startPerformOp( 'fetch1 - getPages', null );

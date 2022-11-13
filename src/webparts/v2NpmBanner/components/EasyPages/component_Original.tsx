@@ -167,7 +167,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
     if ( expandedState === true && fetchedC === false && source === 'Current' ) {
       const getPages = async (): Promise<void> => {
-        const pagesResults = await getPagesContent( sourceC, props.EasyIconsObject, parentUrl, showTricks );
+        const pagesResults = await getPagesContent( sourceC, props.EasyIconsObject, parentUrl, );
         const actualTabs = getUsedTabs( sourceC, pagesResults.items );
         actualTabs.push( InfoTab );
         const links: IEasyLink[] = compoundArrayFilter( pagesResults.items, actualTabs[0], '' );
@@ -207,7 +207,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
     if ( expandedState === true && fetchedP === false && source === 'Parent'  ) {
       const getPages = async (): Promise<void> => {
-        const pagesResults = await getPagesContent( sourceP, props.EasyIconsObject, '', showTricks );
+        const pagesResults = await getPagesContent( sourceP, props.EasyIconsObject, '', );
         const actualTabs = getUsedTabs( sourceP, pagesResults.items );
         actualTabs.push( InfoTab );
         const links: IEasyLink[] = compoundArrayFilter( pagesResults.items, actualTabs[0], '' );
@@ -247,7 +247,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
     if ( expandedState === true && fetchedA === false && source === realAltSite  ) {
       const getPages = async (): Promise<void> => {
-        const pagesResults = await getPagesContent( sourceA, props.EasyIconsObject, '', showTricks );
+        const pagesResults = await getPagesContent( sourceA, props.EasyIconsObject, '', );
         const actualTabs = getUsedTabs( sourceA, pagesResults.items );
         actualTabs.push( InfoTab );
         const links: IEasyLink[] = compoundArrayFilter( pagesResults.items, actualTabs[0], '' );

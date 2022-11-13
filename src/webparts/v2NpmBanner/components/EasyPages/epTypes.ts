@@ -1,6 +1,6 @@
 
 import { IEveryoneAudience } from "@mikezimm/npmfunctions/dist/Services/PropPane/Audiences";
-import { IEasyPageSource } from "./component";
+import { IEasyPageSource } from "./componentSources";
 /**
  * Minimum interface into Main Web Part Properties needed to use this feature
  */
