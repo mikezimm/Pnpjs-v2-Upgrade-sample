@@ -114,7 +114,6 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ altNav, setAltNav ] = useState<IEasyLink[]>([]);  // Currently not used
 
-
   /**
    * CURRENT SITE STATE
    */
