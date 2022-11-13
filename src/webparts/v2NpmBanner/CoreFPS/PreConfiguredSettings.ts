@@ -53,7 +53,9 @@ export const WPPresetEverywhere : IPreConfigSettings = {
 
         easyPageEnable: true,
         easyPagesAudience: 'Everyone',
-        easyPageTabs:  DefaultEasyPagesTabs.join(';'),
+        easyPageTabsC:  DefaultEasyPagesTabs.join(';'),
+        easyPageTabsP:  DefaultEasyPagesTabs.join(';'),
+        easyPageTabsA:  '',
         easyPageOverflowTab:  DefaultOverflowTab,
         easyPageParent: false, //Include parent site pages
         easyPageAltUrl: '', //Include alternate site's site pages

@@ -5,20 +5,27 @@ import { IEveryoneAudience } from "@mikezimm/npmfunctions/dist/Services/PropPane
  */
 //To be added to npmFunctions
 export interface IEasyPagesWPProps {
-  easyPageEnable: boolean;
   easyPagesAudience: IEveryoneAudience;
-  easyPageTabs: string;
   easyPageOverflowTab?: string;
+
+  easyPageEnable: boolean;
+  easyPageTabsC: string;
+
   easyPageParent?: boolean; //Include parent site pages
+  easyPageTabsP: string;
+
   easyPageAltUrl?: string; //Include alternate site's site pages
-  easyPageAltNav?: string; //Include navigation elements from other site
-  easyPageSeparateExtras?: boolean; //Put Parent/Alt links in separate tab ( default )
+  easyPageTabsA: string;
+
+  // easyPageAltNav?: string; //Include navigation elements from other site
+  // easyPageSeparateExtras?: boolean; //Put Parent/Alt links in separate tab ( default )
+
   easyPageStyles?: string;  //Optional styles on entire page
   easyPageContainer?: string;  //Optional styles on container element
 }
 
-export const changeEasyPages: string[] = ['easyPageEnable', 'easyPagesAudience', 'easyPageTabs', 'easyPageOverflowTab', 
-  'easyPageParent', 'easyPageAltUrl', 'easyPageAltNav', 'easyPageSeparateExtras', 'easyPageStyles', 'easyPageContainer'];
+export const changeEasyPages: string[] = ['easyPageEnable', 'easyPagesAudience', 'easyPageTabsC', 'easyPageOverflowTab', 
+  'easyPageParent', 'easyPageTabsP', 'easyPageAltUrl', 'easyPageTabsA', 'easyPageAltNav', 'easyPageSeparateExtras', 'easyPageStyles', 'easyPageContainer'];
 
 export const DefaultEasyPagesTabs: string[] = [ 'Home', 'Help', 'Training', 'Links', 'Drilldown', 'Contents', 'Admin' ];
 

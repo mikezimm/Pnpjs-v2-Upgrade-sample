@@ -242,7 +242,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
      if ( JSON.stringify( prevProps.EasyIconsObject.GroupKeys ) !== JSON.stringify( this.props.EasyIconsObject.GroupKeys ) ) {
       refresh = true;
      }
-     if ( JSON.stringify( prevProps.easyPagesProps.tabs ) !== JSON.stringify( this.props.easyPagesProps.tabs ) ) {
+     if ( JSON.stringify( prevProps.easyPagesProps.tabsC ) !== JSON.stringify( this.props.easyPagesProps.tabsC ) ) {
       refresh = true;
      }
 

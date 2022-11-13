@@ -56,20 +56,21 @@ groupFields.push(
 groupFields.push( createAudienceGroup( 'easyPagesAudience', 'Min audience to see EasyPages', 'Everyone', true ) );
 
 groupFields.push(
-  PropertyPaneTextField('easyPageTabs', {
-    label: 'Easy Pages Tabs (Keywords)',
-    description: 'Semi-colon separated keywords to group pages by',
-    disabled: easyPageEnable === false ? true : false,
-    value: easyPageTabs,
-}));
-
-groupFields.push(
   PropertyPaneTextField('easyPageOverflowTab', {
     label: 'Easy Pages Overflow Tab',
     description: 'Category to put pages into that do not fit into other categories',
     disabled: easyPageEnable === false ? true : false,
     value: easyPageOverflowTab,
 }));
+
+groupFields.push(
+  PropertyPaneTextField('easyPageTabsC', {
+    label: 'Current Site: Tabs (Keywords)',
+    description: 'Semi-colon separated keywords to group pages by',
+    disabled: easyPageEnable === false ? true : false,
+    value: easyPageTabs,
+}));
+
 
 //   easyPageParent?: boolean; //Include parent site pages
 //   easyPageAltUrl?: string; //Include alternate site's site pages
@@ -89,6 +90,14 @@ if ( hasParent === true ) {
 }
 
 groupFields.push(
+  PropertyPaneTextField('easyPageTabsP', {
+    label: 'Parent Site: Tabs (Keywords)',
+    description: 'Semi-colon separated keywords to group pages by',
+    disabled: easyPageEnable === false || hasParent === false || easyPageParent === false ? true : false,
+    value: easyPageTabs,
+}));
+
+groupFields.push(
   PropertyPaneTextField('easyPageAltUrl', {
     label: 'Include Pages from this other site',
     description: '/sites/... Url (disabled if you are using parent site)',
@@ -98,22 +107,30 @@ groupFields.push(
 }));
 
 groupFields.push(
-  PropertyPaneTextField('easyPageAltNav', {
-    label: 'Include Navigation from this other site',
-    description: '/sites/... Url (disabled if you are using parent site)',
-    // disabled: easyPageEnable === false || easyPageParent === true || easyPageAltUrl ? true : false,
-    disabled: true,
-    value: easyPageAltNav,
+  PropertyPaneTextField('easyPageTabsA', {
+    label: 'Alt Site: Tabs (Keywords)',
+    description: 'Semi-colon separated keywords to group pages by',
+    disabled: easyPageEnable === false || !easyPageAltUrl ? true : false,
+    value: easyPageTabs,
 }));
 
-groupFields.push(
-  PropertyPaneToggle('easyPageSeparateExtras', {
-    label: 'Parent/other Site links',
-    offText: 'Mixed into custom tabs',
-    onText: 'Separate Tabs',
-    // disabled: easyPageEnable === false || ( !easyPageParent && !easyPageAltNav && !easyPageAltUrl ) ? true : false,
-    disabled: true,
-}));
+// groupFields.push(
+//   PropertyPaneTextField('easyPageAltNav', {
+//     label: 'Include Navigation from this other site',
+//     description: '/sites/... Url (disabled if you are using parent site)',
+//     // disabled: easyPageEnable === false || easyPageParent === true || easyPageAltUrl ? true : false,
+//     disabled: true,
+//     value: easyPageAltNav,
+// }));
+
+// groupFields.push(
+//   PropertyPaneToggle('easyPageSeparateExtras', {
+//     label: 'Parent/other Site links',
+//     offText: 'Mixed into custom tabs',
+//     onText: 'Separate Tabs',
+//     // disabled: easyPageEnable === false || ( !easyPageParent && !easyPageAltNav && !easyPageAltUrl ) ? true : false,
+//     disabled: true,
+// }));
 
 groupFields.push(
   PropertyPaneTextField('easyPageStyles', {
