@@ -11,8 +11,6 @@ import { createNewSitePagesSource, ISourceProps, EasyPagesDevTab, EasyPagesRepoT
 import { IEasyIcons } from '../EasyIcons/eiTypes';
 
 import EasyPagesPageHook, { IEasyPagesSourceProps, ISourceName, InfoTab, InfoIcon } from './componentPage';
-// import { IRepoLinks } from '../../fpsReferences';
-
 
 export interface IEasyPagesExtraProps {
 
@@ -30,7 +28,7 @@ export interface IEasyPagesExtraProps {
 
   fetchParent?: boolean; //Include parent site pages
   altSitePagesUrl?: string; //Include alternate site's site pages
-  atlSiteTitle?: string;  // Button Text for Alternate Site
+  altSiteTitle?: string;  // Button Text for Alternate Site
 
 }
 
@@ -54,11 +52,11 @@ export interface IEasyPagesHookProps {
 const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { context, styles, containerStyles, } = props.easyPagesCommonProps;
+  const { context, styles, containerStyles,repo } = props.easyPagesCommonProps;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { expanded, overflowTab, tabsC, tabsP, tabsA, fetchParent, altSitePagesUrl, atlSiteTitle, showTricks } = props.easyPagesExtraProps;
+  const { expanded, overflowTab, tabsC, tabsP, tabsA, fetchParent, altSitePagesUrl, altSiteTitle, showTricks } = props.easyPagesExtraProps;
 
-  const realAltSite : ISourceName = atlSiteTitle ? atlSiteTitle as ISourceName : altSitePagesUrl as ISourceName;
+  const realAltSite : ISourceName = altSiteTitle ? altSiteTitle as ISourceName : altSitePagesUrl as ISourceName;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ parentUrl , setParentUrl ] =  useState<string>( context.pageContext.web.absoluteUrl !== context.pageContext.site.absoluteUrl ? context.pageContext.site.absoluteUrl : '' );  // Needed here because it's also used in current site
 
@@ -71,7 +69,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   const [ sourceP, setSourceP ] = useState<ISourceProps>( () => createNewSitePagesSource( 'Parent',  parentUrl, tabsP, overflowTab, showTricks ));
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ sourceA, setSourceA ] = useState<ISourceProps>( () => createNewSitePagesSource( realAltSite, altSitePagesUrl, tabsA, overflowTab, showTricks ));
-  
+
   /***
  *     .d88b.  d8b   db       .o88b. db      d888888b  .o88b. db   dD .d8888. 
  *    .8P  Y8. 888o  88      d8P  Y8 88        `88'   d8P  Y8 88 ,8P' 88'  YP 
@@ -137,6 +135,8 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   if ( expandedState === true ) classNames.push ( 'expand' );
   if ( props.easyPagesCommonProps.pageLayout === 'SharePointFullPage' || props.easyPagesCommonProps.pageLayout === 'SingleWebPartAppPageLayout' ) classNames.push ( 'easy-pages-spa' );
   if ( ( props.easyPagesCommonProps.pinState === 'pinFull' || props.easyPagesCommonProps.pinState === 'pinMini' ) && classNames.indexOf('easy-pages-spa') < 0 ) classNames.push ( 'easy-pages-spa' );
+
+  if ( repo.href.toLowerCase().indexOf('drilldown') > -1 ) classNames.push( 'ep-drilldown' );
 
   // fetchParent?: boolean; //Include parent site pages
   // altSitePagesUrl?: string; //Include alternate site's site pages

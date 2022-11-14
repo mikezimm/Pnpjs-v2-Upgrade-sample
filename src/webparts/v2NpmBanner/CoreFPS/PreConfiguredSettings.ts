@@ -59,7 +59,7 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         easyPageOverflowTab:  DefaultOverflowTab,
         easyPageParent: true, //Include parent site pages
         easyPageAltUrl: '', //Include alternate site's site pages
-        atlSiteTitle:  '', //Include navigation elements from other site
+        altSiteTitle:  '', //Include navigation elements from other site
         easyPageSeparateExtras:  true, //Include navigation elements from other site
         easyPageStyles:  '',  //Optional styles on entire page
         easyPageContainer:  '',  //Optional styles on container element

@@ -32,7 +32,7 @@ export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParen
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { easyPageEnable, easyPageTabsC, easyPageTabsP, easyPageTabsA, easyPageOverflowTab, easyPageParent, easyIconEnable, easyIconIgnore, easyIconKeys, 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    easyPagesAudience, atlSiteTitle, easyPageAltUrl, easyPageContainer, easyPageStyles } = wpProps;
+    easyPagesAudience, altSiteTitle, easyPageAltUrl, easyPageContainer, easyPageStyles } = wpProps;
 
 // export interface IEasyPagesWPProps {
 //   easyPageEnable: boolean;
@@ -115,11 +115,11 @@ groupFields.push(
 }));
 
 groupFields.push(
-  PropertyPaneTextField('atlSiteTitle', {
+  PropertyPaneTextField('altSiteTitle', {
     label: 'Alt Site: Title',
     description: 'Button text for this site',
     disabled: easyPageEnable === false || !easyPageAltUrl ? true : false,
-    value: atlSiteTitle,
+    value: altSiteTitle,
 }));
 
 groupFields.push(

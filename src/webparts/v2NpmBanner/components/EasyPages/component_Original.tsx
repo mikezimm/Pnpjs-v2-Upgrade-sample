@@ -58,7 +58,7 @@ export interface IEasyPagesProps {
   overflowTab?: string;
   fetchParent?: boolean; //Include parent site pages
   altSitePagesUrl?: string; //Include alternate site's site pages
-  atlSiteTitle?: string;  // Button Text for Alternate Site
+  altSiteTitle?: string;  // Button Text for Alternate Site
   // altSiteNavigation?: string; //Include navigation elements from other site
   styles?: React.CSSProperties;  //Optional styles on entire page
   containerStyles?: React.CSSProperties;  //Optional styles on container element
@@ -99,9 +99,9 @@ const InfoIcon = 'History';
 const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { context, expanded, tabsC, tabsP, tabsA, overflowTab, fetchParent, altSitePagesUrl, atlSiteTitle, styles, containerStyles, showTricks } = props.easyPagesProps;
+  const { context, expanded, tabsC, tabsP, tabsA, overflowTab, fetchParent, altSitePagesUrl, altSiteTitle, styles, containerStyles, showTricks } = props.easyPagesProps;
 
-  const realAltSite : IEasyPageSource = atlSiteTitle ? atlSiteTitle as IEasyPageSource : altSitePagesUrl as IEasyPageSource;
+  const realAltSite : IEasyPageSource = altSiteTitle ? altSiteTitle as IEasyPageSource : altSitePagesUrl as IEasyPageSource;
   const [ source, setSource ] = useState<IEasyPageSource>( 'Current' );
   const [ tab, setTab ] = useState<string>( tabsC.length > 0 ? tabsC[0] : 'Pages' );
   const [ activeTabs, setActiveTabs ] = useState<string[]>( tabsC.length > 0 ? [ ...tabsC, ...[ InfoTab ] ]: ['Pages'] );

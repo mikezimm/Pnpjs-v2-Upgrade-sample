@@ -372,7 +372,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           expanded: false ,
           fetchParent: this.properties.easyPageParent,
           altSitePagesUrl: this.properties.easyPageAltUrl,
-          atlSiteTitle: this.properties.atlSiteTitle,
+          altSiteTitle: this.properties.altSiteTitle,
           showTricks: bannerProps.showTricks,
           easyPageEnable: this.properties.easyPageEnable,
 

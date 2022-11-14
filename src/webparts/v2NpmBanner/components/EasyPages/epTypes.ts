@@ -17,7 +17,7 @@ export interface IEasyPagesWPProps {
   easyPageTabsP: string;
 
   easyPageAltUrl?: string; //Include alternate site's site pages
-  atlSiteTitle?: string;  // Button Text for Alternate Site
+  altSiteTitle?: string;  // Button Text for Alternate Site
   easyPageTabsA: string;
 
   // easyPageAltNav?: string; //Include navigation elements from other site
@@ -28,7 +28,7 @@ export interface IEasyPagesWPProps {
 }
 
 export const changeEasyPages: string[] = ['easyPageEnable', 'easyPagesAudience', 'easyPageTabsC', 'easyPageOverflowTab', 
-  'easyPageParent', 'easyPageTabsP', 'easyPageAltUrl', 'easyPageTabsA', 'atlSiteTitle', 'easyPageStyles', 'easyPageContainer'];
+  'easyPageParent', 'easyPageTabsP', 'easyPageAltUrl', 'easyPageTabsA', 'altSiteTitle', 'easyPageStyles', 'easyPageContainer'];
 
 export const DefaultEasyPagesTabs: string[] = [ 'Home', 'Help', 'Training', 'Links', 'Drilldown', 'Contents', 'Admin' ];
 
