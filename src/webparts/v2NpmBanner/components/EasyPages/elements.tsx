@@ -26,7 +26,7 @@ export function easyLinkElement( link: IEasyLink, target: string = '_blank' ) : 
   return <div className = { newClass.join( ' ' ) } onClick={ ( ev ) => { window.open( `${linkUrl}${ ev.altKey === true ? gulpParam : '' }` , newTarget ) } } >
     <img className={ 'easy-link-image' } src={ imageUrl } style={{ height: imageIsDefault === true ? '20px' : '50px' }} title={ imageDesc }/>
 
-    <div className='easy-link-title' style={{ fontSize: title ? '' : 'smaller', fontWeight: title ? null : 400 }}>
+    <div className='easy-link-title' style={{ fontSize: title ? '' : 'smaller', fontWeight: title ? null : 400 }} title={  linkUrl }>
         { title ? title : `Page does NOT have a title :(` }</div>
 
     <div className='easy-link-desc'>{description }</div>

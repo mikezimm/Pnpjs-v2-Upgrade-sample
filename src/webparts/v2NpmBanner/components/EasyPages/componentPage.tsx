@@ -1,18 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Pivot, PivotItem, PivotLinkFormat, PivotLinkSize,} from 'office-ui-fabric-react/lib/Pivot';
-// import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2 } from '../../fpsReferences';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Toggle, } from 'office-ui-fabric-react/lib/Toggle';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 // import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
 
@@ -67,8 +55,8 @@ export interface IEasyPagesPageProps {
 
 
 export interface IEasyPagesPageHookProps {
-  easyPagesCommonProps: IEasyPagesSourceProps;  // General props which apply to all Sources/Pages
   easyPagesPageProps: IEasyPagesPageProps;  // Props specific to this Source/Page component
+  easyPagesCommonProps: IEasyPagesSourceProps;  // General props which apply to all Sources/Pages
   EasyIconsObject: IEasyIcons;
 }
 
@@ -98,22 +86,25 @@ const InfoIcon = 'History';
  *                                                                                     
  */
 
-  const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
+const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { context, styles, containerStyles, } = props.easyPagesCommonProps;
   const { expandedState, tabs, source, sourceName, parentUrl } = props.easyPagesPageProps;
 
+  /**
+   * State related to tabs visible items
+   */
   const [ tab, setTab ] = useState<string>( tabs.length > 0 ? tabs[0] : 'Pages' );
-  const [ filtered, setFiltered ] = useState<IEasyLink[]>([]);
+  const [ filtered, setFiltered ] = useState<IEasyLink[]>( sourceName === EasyPagesDevTab ? EasyDevPages : [] );
   const [ activeTabs, setActiveTabs ] = useState<string[]>( tabs.length > 0 ? [ ...tabs, ...[ InfoTab ] ]: ['Pages'] );
 
   /**
-   * CURRENT SITE STATE
+   * State related to fetching the source props
    */
-  const [ fetched, setFetched ] = useState<boolean>(false);
+  const [ fetched, setFetched ] = useState<boolean>( sourceName === EasyPagesDevTab ? true : false );
   const [ performance, setPerformance ] = useState<ILoadPerformance>( () => createBasePerformanceInit( 1, false ));
-  const [ pages, setPages ] = useState<IEasyLink[]>([]);
+  const [ pages, setPages ] = useState<IEasyLink[]>( sourceName === EasyPagesDevTab ? EasyDevPages : [] );
 
 /***
  *     .o88b. db    db d8888b. d8888b. d88888b d8b   db d888888b      .d8888. d888888b d888888b d88888b 
@@ -191,10 +182,11 @@ const InfoIcon = 'History';
  */
 
   //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/56
-  const classNames: string[] = [ 'easy-pages' ];
-  if ( expandedState === true ) classNames.push ( 'expand' );
-  if ( props.easyPagesCommonProps.pageLayout === 'SharePointFullPage' || props.easyPagesCommonProps.pageLayout === 'SingleWebPartAppPageLayout' ) classNames.push ( 'easy-pages-spa' );
-  if ( ( props.easyPagesCommonProps.pinState === 'pinFull' || props.easyPagesCommonProps.pinState === 'pinMini' ) && classNames.indexOf('easy-pages-spa') < 0 ) classNames.push ( 'easy-pages-spa' );
+  const classNames: string[] = [ 'source-page' ];
+  // const classNames: string[] = [ 'easy-pages' ];
+  if ( expandedState !== true ) classNames.push ( 'hide-source-page' );
+  // if ( props.easyPagesCommonProps.pageLayout === 'SharePointFullPage' || props.easyPagesCommonProps.pageLayout === 'SingleWebPartAppPageLayout' ) classNames.push ( 'easy-pages-spa' );
+  // if ( ( props.easyPagesCommonProps.pinState === 'pinFull' || props.easyPagesCommonProps.pinState === 'pinMini' ) && classNames.indexOf('easy-pages-spa') < 0 ) classNames.push ( 'easy-pages-spa' );
 
   const EasyPagesPageElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
 

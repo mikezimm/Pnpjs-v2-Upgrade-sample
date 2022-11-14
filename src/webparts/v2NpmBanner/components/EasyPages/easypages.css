@@ -142,3 +142,25 @@
   background: #eee !important;
   transition:.4s;
 }
+
+
+.source-page {
+  /* position: absolute;
+  height: 0px;
+  padding: 2em;
+  width: calc(100% - 6em ); */
+
+/*   background: transparent;
+  color: transparent; */
+  height: auto;
+  opacity: 1;
+  overflow: hidden;
+  transition:.4s;
+}
+
+.hide-source-page {
+  height: 0px;
+  opacity: 0;
+  overflow: hidden;
+  transition:.4s;
+}

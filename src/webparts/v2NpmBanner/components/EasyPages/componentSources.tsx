@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Pivot, PivotItem, PivotLinkFormat, PivotLinkSize,} from 'office-ui-fabric-react/lib/Pivot';
+import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 require('./easypages.css');
 
@@ -168,8 +169,10 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       })}
 
     </Pivot>
+    <Icon iconName={ 'ChromeClose' } title={ 'Close Easy Pages panel'} 
+        onClick= { () => props.easyPagesExtraProps.toggleExpanded() } className={ 'easy-pages-close' } />
+
     <EasyPagesPageHook
-      easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
       easyPagesPageProps = {{
         expandedState: expandedState === true && source === 'Current' ? true : false,
         tabs: tabsC,
@@ -177,9 +180,42 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
         sourceName: 'Current',
         parentUrl: parentUrl,
       }}
+      easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
       EasyIconsObject = { props.EasyIconsObject }
     />
-
+    <EasyPagesPageHook
+      easyPagesPageProps = {{
+        expandedState: expandedState === true && source === 'Parent' ? true : false,
+        tabs: tabsP,
+        source: sourceP,
+        sourceName: 'Parent',
+        parentUrl: '',
+      }}
+      easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
+      EasyIconsObject = { props.EasyIconsObject }
+    />
+    <EasyPagesPageHook
+      easyPagesPageProps = {{
+        expandedState: expandedState === true && source === realAltSite ? true : false,
+        tabs: tabsA,
+        source: sourceA,
+        sourceName: realAltSite,
+        parentUrl: '',
+      }}
+      easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
+      EasyIconsObject = { props.EasyIconsObject }
+    />
+    <EasyPagesPageHook
+      easyPagesPageProps = {{
+        expandedState: expandedState === true && source === EasyPagesDevTab ? true : false,
+        tabs: [],
+        source: sourceA,
+        sourceName: EasyPagesDevTab,
+        parentUrl: '',
+      }}
+      easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
+      EasyIconsObject = { props.EasyIconsObject }
+    />
   </div>;
 
   return ( EasyPagesSourceElement );
