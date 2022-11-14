@@ -242,7 +242,13 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
      if ( JSON.stringify( prevProps.EasyIconsObject.GroupKeys ) !== JSON.stringify( this.props.EasyIconsObject.GroupKeys ) ) {
       refresh = true;
      }
-     if ( JSON.stringify( prevProps.easyPagesProps.tabsC ) !== JSON.stringify( this.props.easyPagesProps.tabsC ) ) {
+     if ( JSON.stringify( prevProps.easyPagesExtraProps.tabsC ) !== JSON.stringify( this.props.easyPagesExtraProps.tabsC ) ) {
+      refresh = true;
+     }
+     if ( JSON.stringify( prevProps.easyPagesExtraProps.tabsP ) !== JSON.stringify( this.props.easyPagesExtraProps.tabsP ) ) {
+      refresh = true;
+     }
+     if ( JSON.stringify( prevProps.easyPagesExtraProps.tabsA ) !== JSON.stringify( this.props.easyPagesExtraProps.tabsA ) ) {
       refresh = true;
      }
 
@@ -386,7 +392,8 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
     const EasyPagesElement = <EasyPagesHook 
       easyPagesExtraProps={ { ...this.props.easyPagesExtraProps, ...{ expanded: this.state.showEasyPages, toggleExpanded: this._toggleEasyLinks.bind(this) } } }
-      easyPagesCommonProps= { this.props.easyPagesCommonProps }
+      easyPagesCommonProps= { this.props.easyPagesCommonProp }
+      // easyPagesCommonProps= { this.props.easyPagesCommonProps }
       EasyIconsObject= { this.props.EasyIconsObject }
     />;
 

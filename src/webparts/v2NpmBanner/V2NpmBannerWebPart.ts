@@ -359,10 +359,8 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
 
           context: this.context,
           pageLayout: this.properties.pageLayout,
-          expandedState: false,
+
           pinState: this.properties.defPinState,
-          expanded: false ,
-          overflowTab: this.properties.easyPageOverflowTab,
 
           // altSiteNavigation: this.properties.easyPageAltNav,
           styles: getReactCSSFromString( 'easyPageStyles', this.properties.easyPageStyles, {} ).parsed,
@@ -370,12 +368,15 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
         },
 
         easyPagesExtraProps: {
-
+          expanded: false ,
           fetchParent: this.properties.easyPageParent,
           altSitePagesUrl: this.properties.easyPageAltUrl,
           atlSiteTitle: this.properties.atlSiteTitle,
           showTricks: bannerProps.showTricks,
           easyPageEnable: this.properties.easyPageEnable,
+
+          overflowTab: this.properties.easyPageOverflowTab,
+
           tabsC: getStringArrayFromString( this.properties.easyPageTabsC , ';', true, null, true ) ,
           tabsP: getStringArrayFromString( this.properties.easyPageTabsP , ';', true, null, true ) ,
           tabsA: getStringArrayFromString( this.properties.easyPageTabsA , ';', true, null, true ) ,

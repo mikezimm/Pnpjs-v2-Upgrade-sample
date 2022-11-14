@@ -50,10 +50,6 @@ export interface IEasyPagesSourceProps {
   pageLayout: ISupportedHost;  //  SharePointFullPage
 
   pinState: IPinMeState;      // To be used when rebuilding the Banner and FetchBanner components
-  expanded: boolean;
-  expandedState: boolean;
-
-  overflowTab?: string;
 
   styles?: React.CSSProperties;  //Optional styles on entire page
   containerStyles?: React.CSSProperties;  //Optional styles on container element
@@ -61,6 +57,7 @@ export interface IEasyPagesSourceProps {
 }
 
 export interface IEasyPagesPageProps {
+  expandedState: boolean;  //Is this particular page expanded
   tabs: string[];  // Tabs for Current site
   source: ISourceProps;
   sourceName: ISourceName;
@@ -104,8 +101,8 @@ const InfoIcon = 'History';
   const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { context, expandedState, styles, containerStyles, } = props.easyPagesCommonProps;
-  const { tabs, source, sourceName, parentUrl } = props.easyPagesPageProps;
+  const { context, styles, containerStyles, } = props.easyPagesCommonProps;
+  const { expandedState, tabs, source, sourceName, parentUrl } = props.easyPagesPageProps;
 
   const [ tab, setTab ] = useState<string>( tabs.length > 0 ? tabs[0] : 'Pages' );
   const [ filtered, setFiltered ] = useState<IEasyLink[]>([]);
@@ -154,7 +151,7 @@ const InfoIcon = 'History';
       };
     }
 
-  }, [ source, expandedState ] );
+  }, [ sourceName, expandedState ] );
   /***
  *     .d88b.  d8b   db       .o88b. db      d888888b  .o88b. db   dD .d8888. 
  *    .8P  Y8. 888o  88      d8P  Y8 88        `88'   d8P  Y8 88 ,8P' 88'  YP 

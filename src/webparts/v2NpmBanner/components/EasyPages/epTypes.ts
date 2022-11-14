@@ -1,5 +1,6 @@
 
 import { IEveryoneAudience } from "@mikezimm/npmfunctions/dist/Services/PropPane/Audiences";
+import { ISourceName } from "./componentPage";
 import { IEasyPageSource } from "./componentSources";
 /**
  * Minimum interface into Main Web Part Properties needed to use this feature
@@ -101,7 +102,7 @@ export const SitePagesSource : ISourceProps = {
 export const EasyPagesDevTab = 'zDev';
 export const DefaultOverflowTab = 'Others';
 
-export function createNewSitePagesSource( source: IEasyPageSource, webUrl: string, tabs: string[], overflowTab: string, showTricks: boolean ): ISourceProps {
+export function createNewSitePagesSource( source: ISourceName, webUrl: string, tabs: string[], overflowTab: string, showTricks: boolean ): ISourceProps {
 
   const NewSource: ISourceProps = JSON.parse(JSON.stringify(SitePagesSource)) ;
   NewSource.webUrl = webUrl;
