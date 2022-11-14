@@ -364,9 +364,9 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
     if ( fpsconsole === true ) console.log('React Render - this._performance:', JSON.parse(JSON.stringify(this._performance)) );
 
-    const nearBannerElementsArray: any[] = [
+    const nearBannerElementsArray: any[] = this.props.bannerProps.beAUser !== true && ( this.props.easyPagesExtraProps.easyPageEnable || this.props.bannerProps.showTricks === true ) ? [
       <Icon key='Link12' iconName='Link12' onClick={ this._toggleEasyLinks.bind(this) } style={ this.props.bannerProps.bannerCmdReactCSS }/>
-    ];
+    ] : [];
 
     const Banner = <FetchBanner 
 

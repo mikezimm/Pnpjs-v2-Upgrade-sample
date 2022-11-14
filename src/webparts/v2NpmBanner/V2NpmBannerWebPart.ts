@@ -370,11 +370,11 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
 
         easyPagesExtraProps: {
           expanded: false ,
-          fetchParent: this.properties.easyPageParent,
-          altSitePagesUrl: this.properties.easyPageAltUrl,
-          altSiteTitle: this.properties.altSiteTitle,
           showTricks: bannerProps.showTricks,
           easyPageEnable: this.properties.easyPageEnable,
+          fetchParent: this.properties.easyPageEnable === true ? this.properties.easyPageParent : false,
+          altSitePagesUrl: this.properties.easyPageEnable === true ? this.properties.easyPageAltUrl : '',
+          altSiteTitle: this.properties.altSiteTitle,
 
           overflowTab: this.properties.easyPageOverflowTab,
 
