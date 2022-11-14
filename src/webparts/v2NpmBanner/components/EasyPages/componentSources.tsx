@@ -142,7 +142,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   // altSitePagesUrl?: string; //Include alternate site's site pages
 
   const sourceTabs: ISourceName[] = [ 'Current' ];
-  if ( fetchParent === true ) sourceTabs.push( 'Parent' );
+  if ( fetchParent === true && parentUrl ) sourceTabs.push( 'Parent' );
   if ( altSitePagesUrl ) sourceTabs.push( realAltSite );
   if ( showTricks === true )  sourceTabs.push( EasyPagesDevTab );
   if ( showTricks === true )  sourceTabs.push( EasyPagesRepoTab );

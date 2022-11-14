@@ -51,7 +51,7 @@ export const WPPresetEverywhere : IPreConfigSettings = {
 
       //Move these to npmFunctions when code is moved
 
-        easyPageEnable: true,
+        easyPageEnable: true, //Disabled by default on Drilldown until can test in prod
         easyPagesAudience: 'Everyone',
         easyPageTabsC:  DefaultEasyPagesTabs.join(';'),
         easyPageTabsP:  DefaultEasyPagesTabs.join(';'),
