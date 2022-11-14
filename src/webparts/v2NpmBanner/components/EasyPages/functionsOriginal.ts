@@ -1,7 +1,7 @@
 import { sortObjectArrayByStringKeyCollator } from "@mikezimm/npmfunctions/dist/Services/Arrays/sorting";
-import { IEasyLink } from "./componentSources";
+import { IEasyLink } from "./componentPage";
 
-import { Web, } from '@pnp/sp/presets/all';
+import { Web, } from '@pnp/sp/webs';
 
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -9,18 +9,18 @@ import "@pnp/sp/items";
 
 //Interfaces
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { DefaultOverflowTab, EasyPagesDevTab, ISourceProps, } from './epTypes'; //SourceInfo, 
+import { ISourceProps, } from './epTypes'; //SourceInfo, 
 
 import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
 import { createBasePerformanceInit, startPerformOp, updatePerformanceEnd } from '../../fpsReferences';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformanceOps } from '../../fpsReferences';
+import { ILoadPerformance,  } from '../../fpsReferences';
 // import { warnMutuallyExclusive } from 'office-ui-fabric-react';
 
 import { getHelpfullErrorV2 } from '../../fpsReferences';
 import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons,  } from "../EasyIcons/eiTypes";
 import { getEasyIcon } from "../EasyIcons/eiFunctions";
-import { EasyDevPages } from "./devLinks";
+
 
 /**
  * This filters first by a meta string and then by text search string

@@ -1,7 +1,7 @@
 
 import { IEveryoneAudience } from "@mikezimm/npmfunctions/dist/Services/PropPane/Audiences";
 import { ISourceName } from "./componentPage";
-import { IEasyPageSource } from "./componentSources";
+
 /**
  * Minimum interface into Main Web Part Properties needed to use this feature
  */
@@ -88,7 +88,7 @@ export const SitePagesSource : ISourceProps = {
   isModern: true,
   // restFilter: "Id ne 'X' and ContentTypeId ne '0x012000F6C75276DBE501468CA3CC575AD8E159' and Title ne 'Home'",
   restFilter: "Id ne 'X' and ContentTypeId ne '0x012000F6C75276DBE501468CA3CC575AD8E159'",
-  jsFilter: '',
+  jsFilter: ``, // Sample:  item.Title ==='Home'
   defSearchButtons: [],  // [ 'Last30Days', 'Last90Days' ],
   orderBy: { //Including even though it does not seem to do anything
     prop: 'Title',
@@ -102,6 +102,7 @@ export const SitePagesSource : ISourceProps = {
 }
 
 export const EasyPagesDevTab = 'zDev';
+export const EasyPagesRepoTab = 'zGit';
 export const DefaultOverflowTab = 'Others';
 
 export function createNewSitePagesSource( source: ISourceName, webUrl: string, tabs: string[], overflowTab: string, showTricks: boolean ): ISourceProps {

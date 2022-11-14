@@ -359,6 +359,7 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
 
           context: this.context,
           pageLayout: this.properties.pageLayout,
+          repo: repoLink,  //This can eventually be taken from bannerProps directly
 
           pinState: this.properties.defPinState,
 

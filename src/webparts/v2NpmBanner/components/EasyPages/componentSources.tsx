@@ -6,14 +6,12 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 require('./easypages.css');
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource, EasyPagesDevTab } from './epTypes';
+import { createNewSitePagesSource, ISourceProps, EasyPagesDevTab, EasyPagesRepoTab } from './epTypes';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IEasyIconProps, IEasyIcons } from '../EasyIcons/eiTypes';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { setEasyIconsObjectProps } from '../EasyIcons/eiFunctions';
-import { EasyDevPages } from './devLinks';
+import { IEasyIcons } from '../EasyIcons/eiTypes';
 
-import EasyPagesPageHook, { IEasyPagesPageHookProps, IEasyPagesSourceProps, IEasyPagesPageProps, } from './componentPage';
+import EasyPagesPageHook, { IEasyPagesSourceProps, ISourceName, InfoTab, InfoIcon } from './componentPage';
+// import { IRepoLinks } from '../../fpsReferences';
 
 
 export interface IEasyPagesExtraProps {
@@ -42,22 +40,6 @@ export interface IEasyPagesHookProps {
   EasyIconsObject: IEasyIcons; 
 }
 
-export interface IEasyLink extends Partial<any> {
-  title: string;
-  description: string;
-  url: string;
-  imageUrl: string;
-  imageDesc: string;
-  searchTextLC: string;
-  type: 'current' | 'parent' | 'other' | 'nav';
-  tabs: string[];
-}
-
-export type IEasyPageSource = 'Current' | 'Parent' | 'Alternate' | typeof EasyPagesDevTab ;
-const InfoTab = 'FetchInfoZz79';
-const InfoIcon = 'History';
-
-
 /***
  *    .d8888. d888888b  .d8b.  d8888b. d888888b      db   db  .d88b.   .d88b.  db   dD 
  *    88'  YP `~~88~~' d8' `8b 88  `8D `~~88~~'      88   88 .8P  Y8. .8P  Y8. 88 ,8P' 
@@ -76,12 +58,11 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { expanded, overflowTab, tabsC, tabsP, tabsA, fetchParent, altSitePagesUrl, atlSiteTitle, showTricks } = props.easyPagesExtraProps;
 
-
-  const realAltSite : IEasyPageSource = atlSiteTitle ? atlSiteTitle as IEasyPageSource : altSitePagesUrl as IEasyPageSource;
+  const realAltSite : ISourceName = atlSiteTitle ? atlSiteTitle as ISourceName : altSitePagesUrl as ISourceName;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ parentUrl , setParentUrl ] =  useState<string>( context.pageContext.web.absoluteUrl !== context.pageContext.site.absoluteUrl ? context.pageContext.site.absoluteUrl : '' );  // Needed here because it's also used in current site
 
-  const [ source, setSource ] = useState<IEasyPageSource>( 'Current' );
+  const [ source, setSource ] = useState<ISourceName>( 'Current' );
   const [ expandedState, setExpandedState ] = useState<boolean>(expanded);
 
   const [ sourceC, setSourceC ] = useState<ISourceProps>( () => createNewSitePagesSource( 'Current', context.pageContext.web.absoluteUrl, tabsC, overflowTab, showTricks ));
@@ -120,14 +101,20 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
     setSource( EasyPagesDevTab );
   }
 
+  const setSourceGit = ( ): void => {
+    // const links: IEasyLink[] = compoundArrayFilter( altPages, showTabsA[0], '' );
+    setSource( EasyPagesRepoTab );
+  }
+
   // item SHOULD BE IPivotItemProps but have to cast as any in order to get itemKey and headerText
   const sourceClick = ( item?: PivotItem, ev?: React.MouseEvent<HTMLElement> ): void => {
     //Because of Performance Tab, need to adjust what is returned.   have to use .indexOf because itemKey value is .$FetchInfo
-    const itemKey: IEasyPageSource = !item.props.headerText ? InfoTab as IEasyPageSource : item.props.headerText as IEasyPageSource;
+    const itemKey: ISourceName = !item.props.headerText ? InfoTab as ISourceName : item.props.headerText as ISourceName;
     if ( itemKey === 'Current' ) setSourceCurrent( );
     if ( itemKey === 'Parent' ) setSourceParent( );
     if ( itemKey === realAltSite ) setSourceAlternate( );
     if ( itemKey === EasyPagesDevTab ) setSourceDev( );
+    if ( itemKey === EasyPagesRepoTab ) setSourceGit( );
 
   }
 
@@ -151,10 +138,11 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   // fetchParent?: boolean; //Include parent site pages
   // altSitePagesUrl?: string; //Include alternate site's site pages
 
-  const sourceTabs: IEasyPageSource[] = [ 'Current' ];
+  const sourceTabs: ISourceName[] = [ 'Current' ];
   if ( fetchParent === true ) sourceTabs.push( 'Parent' );
   if ( altSitePagesUrl ) sourceTabs.push( realAltSite );
   if ( showTricks === true )  sourceTabs.push( EasyPagesDevTab );
+  if ( showTricks === true )  sourceTabs.push( EasyPagesRepoTab );
 
   const EasyPagesSourceElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
 
@@ -219,7 +207,19 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
       EasyIconsObject = { props.EasyIconsObject }
     />
-    
+
+    <EasyPagesPageHook
+      easyPagesPageProps = {{
+        expandedState: expandedState === true && source === EasyPagesRepoTab ? true : false,
+        tabs: [],
+        source: sourceA,
+        sourceName: EasyPagesRepoTab,
+        parentUrl: '',
+      }}
+      easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
+      EasyIconsObject = { props.EasyIconsObject }
+    />
+
   </div>;
 
   return ( EasyPagesSourceElement );

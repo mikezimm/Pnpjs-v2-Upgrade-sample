@@ -1,5 +1,7 @@
-import { IEasyLink } from "./componentSources";
-import { EasyPagesDevTab } from "./epTypes";
+import { getLinkColumns } from "@mikezimm/npmfunctions/dist/Lists/getV1/getFunctions";
+import { IRepoLinks } from "../../fpsReferences";
+import { IEasyLink } from "./componentPage";
+import { EasyPagesDevTab,EasyPagesRepoTab } from "./epTypes";
 
 const SPFXParkLogo: string = `https://ih0.redbubble.net/image.815755990.6275/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg`;
 const MSFTLogo: string = `https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31`;
@@ -39,3 +41,26 @@ export const EasyDevFliconIO: IEasyLink = { title: `Flicon.io`, description: `Fl
 export const EasyDevPages: IEasyLink[] = [ EasyDevTypescript, EasyDevJSON, EasyDevGridDocs, EasyDevGridGen,
   EasyDevPnpJS, EasyDevRegex, EasyDevSPFxReact, EasyDevSPFxReactIO, EasyDevFluent, EasyDevFliconIO
 ];
+
+export function getZGitLinks( repo : IRepoLinks ) : IEasyLink[] {
+
+  const links: IEasyLink[] = [];
+
+  links.push(  { title: `Issues`, description: `${repo.desc}/Issues`, 
+                 url: `${repo.href}` , imageUrl: TheCKLogo , type: 'current', tabs: [ EasyPagesRepoTab ]  } as any );
+
+  links.push(  { title: `Open Priority Issues`, description: `${repo.desc}/Issues`, 
+                 url: `${repo.href}/Issues?q=is:issue+is:open+label:Priority` , imageUrl: TheCKLogo , type: 'current', tabs: [ EasyPagesRepoTab ]  } as any );
+
+  links.push(  { title: `Open Priority Issues - NOT Complete`, description: `${repo.desc}/Issues`, 
+                 url: `${repo.href}/Issues?q=is:issue+is:open+label:Priority-label:Complete` , imageUrl: TheCKLogo , type: 'current', tabs: [ EasyPagesRepoTab ]  } as any );
+
+  links.push(  { title: `Open Priority Issues - Completed`, description: `${repo.desc}/Issues`, 
+                 url: `${repo.href}/Issues?q=is:issue+is:open+label:Priority+label:Complete` , imageUrl: TheCKLogo , type: 'current', tabs: [ EasyPagesRepoTab ]  } as any );
+
+  links.push(  { title: `Closed Issues`, description: `${repo.desc}/Issues`, 
+                url: `${repo.href}/Issues?q=is:issue+is:closed` , imageUrl: TheCKLogo , type: 'current', tabs: [ EasyPagesRepoTab ]  } as any );
+
+  return links;
+
+}

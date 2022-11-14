@@ -1,5 +1,5 @@
 import { sortObjectArrayByStringKeyCollator } from "@mikezimm/npmfunctions/dist/Services/Arrays/sorting";
-import { IEasyLink } from "./componentSources";
+import { IEasyLink } from "./componentPage";
 
 import { Web, } from '@pnp/sp/presets/all';
 
@@ -107,6 +107,24 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
       items = await web.lists.getByTitle( sourceProps.listTitle ).items
       .select(selectThese).expand(expandThese).filter(restFilter).orderBy(orderBy.prop, orderBy.asc ).getAll();
       performance.ops.fetch1 = updatePerformanceEnd( performance.ops.fetch1, true, items.length );
+
+      // 2022-11-13:  Verified this does get quick launch items
+      // {
+      //   "odata.type": "SP.NavigationNode",
+      //   "odata.id": "https://tenant.sharepoint.com/sites/SolutionTesting/DDv2/_api/Web/Navigation/GetNodeById(2002)",
+      //   "odata.editLink": "Web/Navigation/GetNodeById(2002)",
+      //   "AudienceIds": null,
+      //   "CurrentLCID": 1033,
+      //   "Id": 2002,
+      //   "IsDocLib": true,
+      //   "IsExternal": true,
+      //   "IsVisible": true,
+      //   "ListTemplateType": 0,
+      //   "Title": "Notebook",
+      //   "Url": "/sites/SolutionTesting/DDv2/_layouts/15/Doc.aspx?sourcedoc={dc2ddca8-7375-4af8-b4bd-76bfa96fde26}&action=editnew"
+      // }
+      // const quick = await web.navigation.quicklaunch();
+      // console.log( `${sourceProps.webUrl} quick launch:` , quick );
 
     } else {
       items = await web.lists.getByTitle( sourceProps.listTitle ).items

@@ -19,18 +19,20 @@ import { IPinMeState } from "@mikezimm/npmfunctions/dist/Services/DOM/PinMe/FPSP
 import { ILoadPerformance, } from '@mikezimm/npmfunctions/dist/Performance/IPerformance';
 import { createBasePerformanceInit, } from '@mikezimm/npmfunctions/dist/Performance/functions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createPerformanceTableVisitor, createPerformanceRows } from '@mikezimm/npmfunctions/dist/Performance/tables';
+import { createPerformanceTableVisitor, } from '@mikezimm/npmfunctions/dist/Performance/tables';
 
 import { compoundArrayFilter, getPagesContent, getUsedTabs } from './functions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createNewSitePagesSource, DefaultOverflowTab, ISourceProps, SitePagesSource, EasyPagesDevTab } from './epTypes';
+import { ISourceProps, EasyPagesDevTab, EasyPagesRepoTab } from './epTypes';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IEasyIconProps, IEasyIcons } from '../EasyIcons/eiTypes';
+import { IEasyIcons } from '../EasyIcons/eiTypes';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { setEasyIconsObjectProps } from '../EasyIcons/eiFunctions';
-import { EasyDevPages } from './devLinks';
+import { EasyDevPages, getZGitLinks } from './devLinks';
+import { IRepoLinks } from '../../fpsReferences';
 
-export type ISourceName = 'Current' | 'Parent' | 'Alternate' | typeof EasyPagesDevTab ;
+export type ISourceName = 'Current' | 'Parent' | 'Alternate' | typeof EasyPagesDevTab | typeof EasyPagesRepoTab ;
+
+export const EasyPageNoFetchTabs: ISourceName[] = [ EasyPagesDevTab, EasyPagesRepoTab ] ;
 
 export interface IEasyPagesSourceProps {
 
@@ -42,6 +44,7 @@ export interface IEasyPagesSourceProps {
   styles?: React.CSSProperties;  //Optional styles on entire page
   containerStyles?: React.CSSProperties;  //Optional styles on container element
 
+  repo: IRepoLinks;   //This can eventually be taken from bannerProps directly
 }
 
 export interface IEasyPagesPageProps {
@@ -71,8 +74,8 @@ export interface IEasyLink extends Partial<any> {
   tabs: string[];
 }
 
-const InfoTab = 'FetchInfoZz79';
-const InfoIcon = 'History';
+export const InfoTab = 'FetchInfoZz79';
+export const InfoIcon = 'History';
 
 
 /***
@@ -89,22 +92,22 @@ const InfoIcon = 'History';
 const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { context, styles, containerStyles, } = props.easyPagesCommonProps;
+  const { context, styles, containerStyles, repo } = props.easyPagesCommonProps;
   const { expandedState, tabs, source, sourceName, parentUrl } = props.easyPagesPageProps;
 
   /**
    * State related to tabs visible items
    */
   const [ tab, setTab ] = useState<string>( tabs.length > 0 ? tabs[0] : 'Pages' );
-  const [ filtered, setFiltered ] = useState<IEasyLink[]>( sourceName === EasyPagesDevTab ? EasyDevPages : [] );
+  const [ filtered, setFiltered ] = useState<IEasyLink[]>( sourceName === EasyPagesDevTab ? EasyDevPages : sourceName === EasyPagesRepoTab ? () => getZGitLinks( repo ) : [] );
   const [ activeTabs, setActiveTabs ] = useState<string[]>( tabs.length > 0 ? [ ...tabs, ...[ InfoTab ] ]: ['Pages'] );
 
   /**
    * State related to fetching the source props
    */
-  const [ fetched, setFetched ] = useState<boolean>( sourceName === EasyPagesDevTab ? true : false );
+  const [ fetched, setFetched ] = useState<boolean>( EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? true : false );
   const [ performance, setPerformance ] = useState<ILoadPerformance>( () => createBasePerformanceInit( 1, false ));
-  const [ pages, setPages ] = useState<IEasyLink[]>( sourceName === EasyPagesDevTab ? EasyDevPages : [] );
+  const [ pages, setPages ] = useState<IEasyLink[]>( EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? EasyDevPages : [] );
 
 /***
  *     .o88b. db    db d8888b. d8888b. d88888b d8b   db d888888b      .d8888. d888888b d888888b d88888b 
@@ -190,7 +193,7 @@ const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
 
   const EasyPagesPageElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
 
-    { sourceName === EasyPagesDevTab ? null : <Pivot 
+    { EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? null : <Pivot 
           linkFormat={PivotLinkFormat.links}
           linkSize={PivotLinkSize.normal}
       //   style={{ flexGrow: 1, paddingLeft: '10px' }}
@@ -204,7 +207,7 @@ const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
     </Pivot>}
 
     { tab === InfoTab ? createPerformanceTableVisitor( performance, ['fetch1', 'analyze1' ] ) : 
-      <div className = { [ 'easy-container', sourceName === EasyPagesDevTab ? 'easy-container-2col' : null ].join( ' ' ) } style={ containerStyles }>
+      <div className = { [ 'easy-container', EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? 'easy-container-2col' : null ].join( ' ' ) } style={ containerStyles }>
         { filtered.map( link => { return easyLinkElement( link, '_blank'  ) } ) }
       </div>
     }
