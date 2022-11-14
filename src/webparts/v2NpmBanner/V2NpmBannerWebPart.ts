@@ -355,21 +355,34 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           domElement: this.context.domElement,
           pageLayout: this.properties.pageLayout,
         },
+        easyPagesCommonProps: {
 
-        easyPagesProps: {
           context: this.context,
           pageLayout: this.properties.pageLayout,
-          showTricks: bannerProps.showTricks,
+          repo: repoLink,  //This can eventually be taken from bannerProps directly
+
           pinState: this.properties.defPinState,
-          expanded: false ,
-          tabs: getStringArrayFromString( this.properties.easyPageTabs , ';', true, null, true ) ,
-          overflowTab: this.properties.easyPageOverflowTab,
-          fetchParent: this.properties.easyPageParent,
-          altSitePagesUrl: this.properties.easyPageAltUrl,
-          altSiteNavigation: this.properties.easyPageAltNav,
+
+          // altSiteNavigation: this.properties.easyPageAltNav,
           styles: getReactCSSFromString( 'easyPageStyles', this.properties.easyPageStyles, {} ).parsed,
           containerStyles: getReactCSSFromString( 'easyPageContainer', this.properties.easyPageContainer, {} ).parsed,
         },
+
+        easyPagesExtraProps: {
+          expanded: false ,
+          fetchParent: this.properties.easyPageParent,
+          altSitePagesUrl: this.properties.easyPageAltUrl,
+          atlSiteTitle: this.properties.atlSiteTitle,
+          showTricks: bannerProps.showTricks,
+          easyPageEnable: this.properties.easyPageEnable,
+
+          overflowTab: this.properties.easyPageOverflowTab,
+
+          tabsC: getStringArrayFromString( this.properties.easyPageTabsC , ';', true, null, true ) ,
+          tabsP: getStringArrayFromString( this.properties.easyPageTabsP , ';', true, null, true ) ,
+          tabsA: getStringArrayFromString( this.properties.easyPageTabsA , ';', true, null, true ) ,
+        },
+
         EasyIconsObject: setEasyIconsObjectProps( this.properties ),
 
       }
@@ -474,9 +487,17 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
           this.properties.easyIconKeys = EasyIconDefaultKeys.join(';');
 
-        } else if ( propertyPath === 'easyPageTabs' && !newValue )  {
+        } else if ( propertyPath === 'easyPageTabsC' && !newValue )  {
           //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
-          this.properties.easyPageTabs = DefaultEasyPagesTabs.join(';');
+          this.properties.easyPageTabsC = DefaultEasyPagesTabs.join(';');
+
+        } else if ( propertyPath === 'easyPageTabsP' && !newValue )  {
+          //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
+          this.properties.easyPageTabsP = DefaultEasyPagesTabs.join(';');
+
+        } else if ( propertyPath === 'easyPageTabsA' && !newValue )  {
+          //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
+          this.properties.easyPageTabsA = DefaultEasyPagesTabs.join(';');
 
         } else if ( propertyPath === 'easyPageOverflowTab' && !newValue )  {
           this.properties.easyPageOverflowTab = DefaultOverflowTab;

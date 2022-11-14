@@ -30,9 +30,9 @@ import { IV2NpmBannerWebPartProps } from '../../IV2NpmBannerWebPartProps';
 export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParent: boolean ) : IPropertyPaneGroup {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { easyPageEnable, easyPageTabs, easyPageOverflowTab, easyPageParent, easyIconEnable, easyIconIgnore, easyIconKeys, 
+const { easyPageEnable, easyPageTabsC, easyPageTabsP, easyPageTabsA, easyPageOverflowTab, easyPageParent, easyIconEnable, easyIconIgnore, easyIconKeys, 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    easyPagesAudience, easyPageAltNav, easyPageAltUrl, easyPageContainer, easyPageSeparateExtras, easyPageStyles } = wpProps;
+    easyPagesAudience, atlSiteTitle, easyPageAltUrl, easyPageContainer, easyPageStyles } = wpProps;
 
 // export interface IEasyPagesWPProps {
 //   easyPageEnable: boolean;
@@ -56,20 +56,21 @@ groupFields.push(
 groupFields.push( createAudienceGroup( 'easyPagesAudience', 'Min audience to see EasyPages', 'Everyone', true ) );
 
 groupFields.push(
-  PropertyPaneTextField('easyPageTabs', {
-    label: 'Easy Pages Tabs (Keywords)',
-    description: 'Semi-colon separated keywords to group pages by',
-    disabled: easyPageEnable === false ? true : false,
-    value: easyPageTabs,
-}));
-
-groupFields.push(
   PropertyPaneTextField('easyPageOverflowTab', {
     label: 'Easy Pages Overflow Tab',
     description: 'Category to put pages into that do not fit into other categories',
     disabled: easyPageEnable === false ? true : false,
     value: easyPageOverflowTab,
 }));
+
+groupFields.push(
+  PropertyPaneTextField('easyPageTabsC', {
+    label: 'Current Site: Tabs (Keywords)',
+    description: 'Semi-colon separated keywords to group pages by',
+    disabled: easyPageEnable === false ? true : false,
+    value: easyPageTabsC,
+}));
+
 
 //   easyPageParent?: boolean; //Include parent site pages
 //   easyPageAltUrl?: string; //Include alternate site's site pages
@@ -83,36 +84,42 @@ if ( hasParent === true ) {
       label: 'Include Parent site',
       offText: 'No',
       onText: 'Yes',
-      // disabled: easyPageEnable === false ? true : false,
-      disabled: true,
+      disabled: easyPageEnable === false ? true : false,
+      // disabled: true,
   }));
 }
+
+groupFields.push(
+  PropertyPaneTextField('easyPageTabsP', {
+    label: 'Parent Site: Tabs (Keywords)',
+    description: 'Semi-colon separated keywords to group pages by',
+    disabled: easyPageEnable === false || hasParent === false || easyPageParent === false ? true : false,
+    value: easyPageTabsP,
+}));
 
 groupFields.push(
   PropertyPaneTextField('easyPageAltUrl', {
     label: 'Include Pages from this other site',
     description: '/sites/... Url (disabled if you are using parent site)',
-    // disabled: easyPageEnable === false || easyPageParent === true || easyPageAltNav ? true : false,
-    disabled: true,
+    disabled: easyPageEnable === false ? true : false,
+    // disabled: true,
     value: easyPageAltUrl,
 }));
 
 groupFields.push(
-  PropertyPaneTextField('easyPageAltNav', {
-    label: 'Include Navigation from this other site',
-    description: '/sites/... Url (disabled if you are using parent site)',
-    // disabled: easyPageEnable === false || easyPageParent === true || easyPageAltUrl ? true : false,
-    disabled: true,
-    value: easyPageAltNav,
+  PropertyPaneTextField('easyPageTabsA', {
+    label: 'Alt Site: Tabs (Keywords)',
+    description: 'Semi-colon separated keywords to group pages by',
+    disabled: easyPageEnable === false || !easyPageAltUrl ? true : false,
+    value: easyPageTabsA,
 }));
 
 groupFields.push(
-  PropertyPaneToggle('easyPageSeparateExtras', {
-    label: 'Parent/other Site links',
-    offText: 'Mixed into custom tabs',
-    onText: 'Separate Tabs',
-    // disabled: easyPageEnable === false || ( !easyPageParent && !easyPageAltNav && !easyPageAltUrl ) ? true : false,
-    disabled: true,
+  PropertyPaneTextField('atlSiteTitle', {
+    label: 'Alt Site: Title',
+    description: 'Button text for this site',
+    disabled: easyPageEnable === false || !easyPageAltUrl ? true : false,
+    value: atlSiteTitle,
 }));
 
 groupFields.push(
@@ -132,13 +139,6 @@ groupFields.push(
     disabled: easyPageEnable === false ? true : false,
     value: easyPageContainer,
 }));
-
-// //To be added to npmFunctions
-// export interface IEasyIconsWPProps {
-//   easyIconEnable: boolean; // Used 
-//   easyIconKeys: string;
-//   easyIconIgnore: string;
-// }
 
 groupFields.push(
   PropertyPaneToggle('easyIconEnable', {
