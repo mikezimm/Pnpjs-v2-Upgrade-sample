@@ -65,10 +65,13 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
   const [ source, setSource ] = useState<ISourceName>( 'Current' );
   const [ expandedState, setExpandedState ] = useState<boolean>(expanded);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ sourceC, setSourceC ] = useState<ISourceProps>( () => createNewSitePagesSource( 'Current', context.pageContext.web.absoluteUrl, tabsC, overflowTab, showTricks ));
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ sourceP, setSourceP ] = useState<ISourceProps>( () => createNewSitePagesSource( 'Parent',  parentUrl, tabsP, overflowTab, showTricks ));
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ sourceA, setSourceA ] = useState<ISourceProps>( () => createNewSitePagesSource( realAltSite, altSitePagesUrl, tabsA, overflowTab, showTricks ));
-
+  
   /***
  *     .d88b.  d8b   db       .o88b. db      d888888b  .o88b. db   dD .d8888. 
  *    .8P  Y8. 888o  88      d8P  Y8 88        `88'   d8P  Y8 88 ,8P' 88'  YP 

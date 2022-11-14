@@ -20,7 +20,6 @@ import { IPerformanceOp, ILoadPerformance, IHistoryPerformance, ILoadPerformance
 import { getHelpfullErrorV2 } from '../../fpsReferences';
 import { EasyIconLocation, EasyIconObjectDefault, IEasyIcons,  } from "../EasyIcons/eiTypes";
 import { getEasyIcon } from "../EasyIcons/eiFunctions";
-import { EasyDevPages } from "./devLinks";
 
 /**
  * This filters first by a meta string and then by text search string
