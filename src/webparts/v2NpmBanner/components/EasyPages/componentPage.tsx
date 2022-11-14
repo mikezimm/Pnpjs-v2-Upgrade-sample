@@ -190,7 +190,7 @@ const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
 
   const EasyPagesPageElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
 
-    <Pivot 
+    { sourceName === EasyPagesDevTab ? null : <Pivot 
           linkFormat={PivotLinkFormat.links}
           linkSize={PivotLinkSize.normal}
       //   style={{ flexGrow: 1, paddingLeft: '10px' }}
@@ -201,7 +201,7 @@ const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
         return <PivotItem key={ tab } itemKey={ tab } headerText={ tab !== InfoTab ? tab : '' } itemIcon={ tab === InfoTab ? InfoIcon : null } />
       })}
 
-    </Pivot>
+    </Pivot>}
 
     { tab === InfoTab ? createPerformanceTableVisitor( performance, ['fetch1', 'analyze1' ] ) : 
       <div className = { [ 'easy-container', sourceName === EasyPagesDevTab ? 'easy-container-2col' : null ].join( ' ' ) } style={ containerStyles }>

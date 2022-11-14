@@ -138,6 +138,9 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
 
   items = sortObjectArrayByStringKeyCollator( items, 'asc', 'title', true, 'en' );
 
+  // eslint-disable-next-line no-eval
+  if ( sourceProps.jsFilter ) items = items.filter( item => eval( sourceProps.jsFilter ) === true );
+
   console.log( sourceProps.defType, sourceProps.listTitle , items );
 
   return { items: items, performance: performance };
@@ -158,32 +161,32 @@ export const DefaultSiteLogo : string = `_layouts/15/images/sitepagethumbnail.pn
  */
 export function addSearchMeta ( items: IEasyLink[], sourceProps: ISourceProps, EasyIcons: IEasyIcons  ): IEasyLink[] {
 
-  items.map( page => {
-    page.tabs = [];
-    page.title = page.Title;
-    page.description = page.Description;
-    page.url = page.File.ServerRelativeUrl;
-    page.imageUrl =  page.BannerImageUrl?.Url;
-    page.imageDesc = page.BannerImageUrl?.Description;
-    if ( !page.imageUrl || page.imageUrl.indexOf( DefaultSiteLogo ) > - 1 ) {
-      if ( page.title?.indexOf( 'Contents' ) > -1 ) { page.imageUrl = DefaultThumbEasyContents; }
-      else if ( page.title?.toLocaleLowerCase().indexOf( 'extreme' ) > -1 ) { page.imageUrl = DefaultThumbExtreme; }
-      else if ( page.title === 'Home' ) { page.imageUrl = DefaultThumbEarth; }
+  items.map( item => {
+    item.tabs = [];
+    item.title = item.Title;
+    item.description = item.Description;
+    item.url = item.File?.ServerRelativeUrl;
+    item.imageUrl =  item.BannerImageUrl?.Url;
+    item.imageDesc = item.BannerImageUrl?.Description;
+    if ( !item.imageUrl || item.imageUrl.indexOf( DefaultSiteLogo ) > - 1 ) {
+      if ( item.title?.indexOf( 'Contents' ) > -1 ) { item.imageUrl = DefaultThumbEasyContents; }
+      else if ( item.title?.toLocaleLowerCase().indexOf( 'extreme' ) > -1 ) { item.imageUrl = DefaultThumbExtreme; }
+      else if ( item.title === 'Home' ) { item.imageUrl = DefaultThumbEarth; }
       else {
-        const EasyIconUrl = getEasyIcon( EasyIcons, page );
-        if ( EasyIconUrl ) page.imageUrl = EasyIconUrl ? EasyIconUrl : page.imageUrl; // If one is found, then use it, else use the defaul sitepagelogo
-        if ( EasyIconUrl ) page.imageDesc = EasyIconUrl ? `Using EasyIcon:) ${ EasyIconUrl.replace( EasyIconLocation, '' )}` : page.imageDesc; // If one is found, then use it, else use the defaul sitepagelogo
+        const EasyIconUrl = getEasyIcon( EasyIcons, item );
+        if ( EasyIconUrl ) item.imageUrl = EasyIconUrl ? EasyIconUrl : item.imageUrl; // If one is found, then use it, else use the defaul sitepagelogo
+        if ( EasyIconUrl ) item.imageDesc = EasyIconUrl ? `Using EasyIcon:) ${ EasyIconUrl.replace( EasyIconLocation, '' )}` : item.imageDesc; // If one is found, then use it, else use the defaul sitepagelogo
       }
 
     }
-    page.searchTextLC = `${page.Title} || ${page.Description}`.toLocaleLowerCase();
+    item.searchTextLC = `${item.Title} || ${item.Description}`.toLocaleLowerCase();
     sourceProps.meta1.map( ( tab : string ) => {
-      if ( page.searchTextLC.indexOf( tab.toLocaleLowerCase() ) > -1 ) page.tabs.push( tab );
+      if ( item.searchTextLC.indexOf( tab.toLocaleLowerCase() ) > -1 ) item.tabs.push( tab );
     } );
   });
 
-  items.map( page => {
-    if ( page.tabs.length === 0 ) page.tabs.push( sourceProps.overflowTab );
+  items.map( item => {
+    if ( item.tabs.length === 0 ) item.tabs.push( sourceProps.overflowTab );
 
   });
 

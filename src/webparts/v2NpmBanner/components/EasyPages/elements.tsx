@@ -9,7 +9,7 @@ export function easyLinkElement( link: IEasyLink, target: string = '_blank' ) : 
 
   const { File, imageUrl, url, imageDesc, title, description, tabs } = link;
 
-  const linkUrl: string = File?.ServerRelativeUrl ? File.ServerRelativeUrl : url;
+  const linkUrl: string = File?.ServerRelativeUrl ? File.ServerRelativeUrl : url ? url : '';
 
   let linkIsSPO: boolean = linkUrl.indexOf( '.sharepoint.com' ) > 6 ? true : false; // If it's not SitePages, no gulp
   if ( linkUrl.indexOf( '/sites/' ) === 0 ) linkIsSPO = true;

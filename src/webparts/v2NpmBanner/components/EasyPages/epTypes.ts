@@ -53,6 +53,7 @@ export interface ISourceProps {
     searchProps: string[];
     selectThese?: string[];
     restFilter?: string;
+    jsFilter?: string; //Format of eval
     searchSource: string;
     searchSourceDesc: string;
     itemFetchCol?: string[]; //higher cost columns to fetch on opening panel
@@ -87,6 +88,7 @@ export const SitePagesSource : ISourceProps = {
   isModern: true,
   // restFilter: "Id ne 'X' and ContentTypeId ne '0x012000F6C75276DBE501468CA3CC575AD8E159' and Title ne 'Home'",
   restFilter: "Id ne 'X' and ContentTypeId ne '0x012000F6C75276DBE501468CA3CC575AD8E159'",
+  jsFilter: '',
   defSearchButtons: [],  // [ 'Last30Days', 'Last90Days' ],
   orderBy: { //Including even though it does not seem to do anything
     prop: 'Title',

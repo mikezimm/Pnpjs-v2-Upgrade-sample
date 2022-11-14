@@ -183,6 +183,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
       EasyIconsObject = { props.EasyIconsObject }
     />
+
     <EasyPagesPageHook
       easyPagesPageProps = {{
         expandedState: expandedState === true && source === 'Parent' ? true : false,
@@ -194,6 +195,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
       EasyIconsObject = { props.EasyIconsObject }
     />
+
     <EasyPagesPageHook
       easyPagesPageProps = {{
         expandedState: expandedState === true && source === realAltSite ? true : false,
@@ -205,6 +207,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
       EasyIconsObject = { props.EasyIconsObject }
     />
+
     <EasyPagesPageHook
       easyPagesPageProps = {{
         expandedState: expandedState === true && source === EasyPagesDevTab ? true : false,
@@ -216,6 +219,7 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
       easyPagesCommonProps={ props.easyPagesCommonProps }  // General props which apply to all Sources/Pages
       EasyIconsObject = { props.EasyIconsObject }
     />
+    
   </div>;
 
   return ( EasyPagesSourceElement );
