@@ -12,17 +12,27 @@
   transition:.4s;
   opacity: 0;
   overflow: hidden;
+
+  /* https://github.com/mikezimm/drilldown7/issues/266 */
+  transform-origin: top;
+  transform: scaleY(0);
 }
 
 .ep-drilldown {
-  width: calc(100% - 88px );
+    width: calc(100% - 88px );
 }
 
 .easy-pages-spa {
   width: calc(100% - 6em );
 }
 
+/* https://github.com/mikezimm/drilldown7/issues/263 */
+.ep-drilldown-spa {
+  width: calc(100% - 4em );
+}
+
 .easy-pages-close {
+  overflow: hidden;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -33,6 +43,7 @@
   font-size: large;
   border-radius: 5px;
   transition:.4s;
+
 }
 
 .easy-pages-close:hover {
@@ -55,6 +66,10 @@
   box-shadow: 2px 13px 18px 6px rgba(0,0,0,0.47);
   -webkit-box-shadow: 2px 13px 18px 6px rgba(0,0,0,0.47);
   -moz-box-shadow: 2px 13px 18px 6px rgba(0,0,0,0.47);
+
+  /* https://github.com/mikezimm/drilldown7/issues/266 */
+  transform-origin: top;
+  transform: scaleY(1);
 }
 
 .easy-container {

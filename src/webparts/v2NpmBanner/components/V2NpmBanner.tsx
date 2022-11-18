@@ -366,13 +366,13 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
     // eslint-disable-next-line prefer-const
     let nearBannerElementsArray: any[] = [];
-    if ( this.props.bannerProps.beAUser !== true )  {
-      if ( this.props.easyPagesExtraProps.easyPageEnable === true || this.props.bannerProps.showTricks === true )  {
+    // if ( this.props.bannerProps.beAUser !== true )  {
+      if ( this.props.easyPagesExtraProps.easyPageEnable === true )  {
         nearBannerElementsArray.push( [
           <Icon key='Link12' iconName='Link12' onClick={ this._toggleEasyLinks.bind(this) } style={ this.props.bannerProps.bannerCmdReactCSS }/>
         ] );
       }
-    }
+    // }
 
     const Banner = <FetchBanner 
 
