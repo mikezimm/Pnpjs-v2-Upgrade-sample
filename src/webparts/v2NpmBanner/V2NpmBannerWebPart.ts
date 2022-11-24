@@ -364,23 +364,27 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           pinState: this.properties.defPinState,
 
           // altSiteNavigation: this.properties.easyPageAltNav,
-          styles: getReactCSSFromString( 'easyPageStyles', this.properties.easyPageStyles, {} ).parsed,
-          containerStyles: getReactCSSFromString( 'easyPageContainer', this.properties.easyPageContainer, {} ).parsed,
+          styles: getReactCSSFromString( 'EasyPageStyles', this.properties.EasyPageStyles, {} ).parsed,
+          containerStyles: getReactCSSFromString( 'EasyPageContainerStyles', this.properties.EasyPageContainerStyles, {} ).parsed,
         },
 
         easyPagesExtraProps: {
-          expanded: false ,
+          easyPagesExpanded: false ,
           showTricks: bannerProps.showTricks,
-          easyPageEnable: this.properties.easyPageEnable,
-          fetchParent: this.properties.easyPageEnable === true ? this.properties.easyPageParent : false,
-          altSitePagesUrl: this.properties.easyPageEnable === true ? this.properties.easyPageAltUrl : '',
-          altSiteTitle: this.properties.altSiteTitle,
+          EasyPagesEnable: this.properties.EasyPagesEnable,
+          EasyPageParentFetch: this.properties.EasyPagesEnable === true ? this.properties.EasyPageParent : false,
+          EasyPageUrlA: this.properties.EasyPagesEnable === true ? this.properties.EasyPageUrlA : '',
+          EasyPagesSiteTitleA: this.properties.EasyPagesSiteTitleA,
 
-          overflowTab: this.properties.easyPageOverflowTab,
+          EasyPageUrlB: this.properties.EasyPagesEnable === true ? this.properties.EasyPageUrlB : '',
+          EasyPagesSiteTitleB: this.properties.EasyPagesSiteTitleB,
 
-          tabsC: getStringArrayFromString( this.properties.easyPageTabsC , ';', true, null, true ) ,
-          tabsP: getStringArrayFromString( this.properties.easyPageTabsP , ';', true, null, true ) ,
-          tabsA: getStringArrayFromString( this.properties.easyPageTabsA , ';', true, null, true ) ,
+          EasyPageOverflowTab: this.properties.EasyPageOverflowTab,
+
+          tabsC: getStringArrayFromString( this.properties.EasyPageTabsC , ';', true, null, true ) ,
+          tabsP: getStringArrayFromString( this.properties.EasyPageTabsP , ';', true, null, true ) ,
+          tabsA: getStringArrayFromString( this.properties.EasyPageTabsA , ';', true, null, true ) ,
+          tabsB: getStringArrayFromString( this.properties.EasyPageTabsB , ';', true, null, true ) ,
         },
 
         EasyIconsObject: setEasyIconsObjectProps( this.properties ),
@@ -487,20 +491,24 @@ export default class V2NpmBannerWebPart extends BaseClientSideWebPart<IV2NpmBann
           //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
           this.properties.easyIconKeys = EasyIconDefaultKeys.join(';');
 
-        } else if ( propertyPath === 'easyPageTabsC' && !newValue )  {
+        } else if ( propertyPath === 'EasyPageTabsC' && !newValue )  {
           //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
-          this.properties.easyPageTabsC = DefaultEasyPagesTabs.join(';');
+          this.properties.EasyPageTabsC = DefaultEasyPagesTabs.join(';');
 
-        } else if ( propertyPath === 'easyPageTabsP' && !newValue )  {
+        } else if ( propertyPath === 'EasyPageTabsP' && !newValue )  {
           //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
-          this.properties.easyPageTabsP = DefaultEasyPagesTabs.join(';');
+          this.properties.EasyPageTabsP = DefaultEasyPagesTabs.join(';');
 
-        } else if ( propertyPath === 'easyPageTabsA' && !newValue )  {
+        } else if ( propertyPath === 'EasyPageTabsA' && !newValue )  {
           //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
-          this.properties.easyPageTabsA = DefaultEasyPagesTabs.join(';');
+          this.properties.EasyPageTabsA = DefaultEasyPagesTabs.join(';');
 
-        } else if ( propertyPath === 'easyPageOverflowTab' && !newValue )  {
-          this.properties.easyPageOverflowTab = DefaultOverflowTab;
+        } else if ( propertyPath === 'EasyPageTabsB' && !newValue )  {
+          //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/59
+          this.properties.EasyPageTabsB = DefaultEasyPagesTabs.join(';');
+
+        } else if ( propertyPath === 'EasyPageOverflowTab' && !newValue )  {
+          this.properties.EasyPageOverflowTab = DefaultOverflowTab;
 
          } else if ( propertyPath === 'bannerStyle' || propertyPath === 'bannerCmdStyle' )  {
 

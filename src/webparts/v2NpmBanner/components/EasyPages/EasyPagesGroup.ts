@@ -30,14 +30,14 @@ import { IV2NpmBannerWebPartProps } from '../../IV2NpmBannerWebPartProps';
 export function buildEasyPagesGroup( wpProps: IV2NpmBannerWebPartProps, hasParent: boolean ) : IPropertyPaneGroup {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { easyPageEnable, easyPageTabsC, easyPageTabsP, easyPageTabsA, easyPageOverflowTab, easyPageParent, easyIconEnable, easyIconIgnore, easyIconKeys, 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    easyPagesAudience, altSiteTitle, easyPageAltUrl, easyPageContainer, easyPageStyles } = wpProps;
+const { EasyPagesEnable, EasyPageTabsC, EasyPageTabsP, EasyPageTabsA, EasyPageTabsB, EasyPageOverflowTab, EasyPageParent, easyIconEnable, easyIconIgnore, easyIconKeys, 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  EasyPagesAudience, EasyPagesSiteTitleA, EasyPageUrlA, EasyPagesSiteTitleB, EasyPageUrlB, EasyPageContainerStyles, EasyPageStyles } = wpProps;
 
 // export interface IEasyPagesWPProps {
-//   easyPageEnable: boolean;
+//   EasyPagesEnable: boolean;
 //   easyPageTabs: string;
-//   easyPageOverflowTab?: string;
+//   EasyPageOverflowTab?: string;
 // }
 
 
@@ -46,132 +46,158 @@ const { easyPageEnable, easyPageTabsC, easyPageTabsP, easyPageTabsA, easyPageOve
 const groupFields: IPropertyPaneField<any>[] = [];
 
 groupFields.push(
-  PropertyPaneToggle('easyPageEnable', {
-    label: 'Enable EasyPages',
-    offText: 'No',
-    onText: 'Yes',
+PropertyPaneToggle('EasyPagesEnable', {
+  label: 'Enable EasyPages',
+  offText: 'No',
+  onText: 'Yes',
 }));
 
-// groupFields.push( createAudienceGroup( 'easyPagesAudience', 'Min audience to see EasyPages', 'Everyone', !easyPageEnable ) );
-groupFields.push( createAudienceGroup( 'easyPagesAudience', 'Min audience to see EasyPages', 'Everyone', true ) );
+// groupFields.push( createAudienceGroup( 'EasyPagesAudience', 'Min audience to see EasyPages', 'Everyone', !EasyPagesEnable ) );
+groupFields.push( createAudienceGroup( 'EasyPagesAudience', 'Min audience to see EasyPages', 'Everyone', true ) );
 
 groupFields.push(
-  PropertyPaneTextField('easyPageOverflowTab', {
-    label: 'Easy Pages Overflow Tab',
-    description: 'Category to put pages into that do not fit into other categories',
-    disabled: easyPageEnable === false ? true : false,
-    value: easyPageOverflowTab,
+PropertyPaneTextField('EasyPageOverflowTab', {
+  label: 'Easy Pages Overflow Tab',
+  description: 'Category to put pages into that do not fit into other categories',
+  disabled: EasyPagesEnable === false ? true : false,
+  value: EasyPageOverflowTab,
 }));
 
 groupFields.push(
-  PropertyPaneTextField('easyPageTabsC', {
-    label: 'Current Site: Tabs (Keywords)',
-    description: 'Semi-colon separated keywords to group pages by',
-    disabled: easyPageEnable === false ? true : false,
-    value: easyPageTabsC,
+PropertyPaneTextField('EasyPageTabsC', {
+  label: 'Current Site: Tabs (Keywords)',
+  description: 'Semi-colon separated keywords to group pages by',
+  disabled: EasyPagesEnable === false ? true : false,
+  value: EasyPageTabsC,
 }));
 
 
-//   easyPageParent?: boolean; //Include parent site pages
-//   easyPageAltUrl?: string; //Include alternate site's site pages
+//   EasyPageParent?: boolean; //Include parent site pages
+//   EasyPageUrlA?: string; //Include alternate site's site pages
 //   easyPageAltNav?: string; //Include navigation elements from other site
-//   easyPageStyles?: React.CSSProperties;  //Optional styles on entire page
-//   easyPageContainer?: React.CSSProperties;  //Optional styles on container element
+//   EasyPageStyles?: React.CSSProperties;  //Optional styles on entire page
+//   EasyPageContainerStyles?: React.CSSProperties;  //Optional styles on container element
 
 if ( hasParent === true ) {
-  groupFields.push(
-    PropertyPaneToggle('easyPageParent', {
-      label: 'Include Parent site',
-      offText: 'No',
-      onText: 'Yes',
-      disabled: easyPageEnable === false ? true : false,
-      // disabled: true,
-  }));
+groupFields.push(
+  PropertyPaneToggle('EasyPageParent', {
+    label: 'Include Parent site',
+    offText: 'No',
+    onText: 'Yes',
+    disabled: EasyPagesEnable === false ? true : false,
+    // disabled: true,
+}));
 }
 
 groupFields.push(
-  PropertyPaneTextField('easyPageTabsP', {
-    label: 'Parent Site: Tabs (Keywords)',
-    description: 'Semi-colon separated keywords to group pages by',
-    disabled: easyPageEnable === false || hasParent === false || easyPageParent === false ? true : false,
-    value: easyPageTabsP,
+PropertyPaneTextField('EasyPageTabsP', {
+  label: 'Parent Site: Tabs (Keywords)',
+  description: 'Semi-colon separated keywords to group pages by',
+  disabled: EasyPagesEnable === false || hasParent === false || EasyPageParent === false ? true : false,
+  value: EasyPageTabsP,
 }));
 
 groupFields.push(
-  PropertyPaneTextField('easyPageAltUrl', {
-    label: 'Include Pages from this other site',
-    description: '/sites/... Url (disabled if you are using parent site)',
-    disabled: easyPageEnable === false ? true : false,
-    // disabled: true,
-    value: easyPageAltUrl,
+PropertyPaneTextField('EasyPageUrlA', {
+  label: 'Include Pages from this other site A',
+  description: '/sites/... Url (disabled if you are using parent site)',
+  disabled: EasyPagesEnable === false ? true : false,
+  // disabled: true,
+  value: EasyPageUrlA,
 }));
 
 groupFields.push(
-  PropertyPaneTextField('easyPageTabsA', {
-    label: 'Alt Site: Tabs (Keywords)',
-    description: 'Semi-colon separated keywords to group pages by',
-    disabled: easyPageEnable === false || !easyPageAltUrl ? true : false,
-    value: easyPageTabsA,
+PropertyPaneTextField('EasyPageTabsA', {
+  label: 'Alt Site: Tabs (Keywords)',
+  description: 'Semi-colon separated keywords to group pages by',
+  disabled: EasyPagesEnable === false || !EasyPageUrlA ? true : false,
+  value: EasyPageTabsA,
 }));
 
 groupFields.push(
-  PropertyPaneTextField('altSiteTitle', {
-    label: 'Alt Site: Title',
-    description: 'Button text for this site',
-    disabled: easyPageEnable === false || !easyPageAltUrl ? true : false,
-    value: altSiteTitle,
+PropertyPaneTextField('EasyPagesSiteTitleA', {
+  label: 'Alt Site: Title',
+  description: 'Button text for this site',
+  disabled: EasyPagesEnable === false || !EasyPageUrlA ? true : false,
+  value: EasyPagesSiteTitleA,
 }));
 
 groupFields.push(
-  PropertyPaneTextField('easyPageStyles', {
-    label: 'Optional Easy Page styles on Entire Component',
-    description: 'React.CSSProperties format.',
-    multiline: true,
-    disabled: easyPageEnable === false ? true : false,
-    value: easyPageStyles,
+PropertyPaneTextField('EasyPageUrlB', {
+  label: 'Include Pages from this other site B',
+  description: '/sites/... Url (disabled if you are using parent site)',
+  disabled: EasyPagesEnable === false ? true : false,
+  // disabled: true,
+  value: EasyPageUrlB,
 }));
 
 groupFields.push(
-  PropertyPaneTextField('easyPageContainer', {
-    label: 'Optional Easy Page styles on Container',
-    description: 'React.CSSProperties format.',
-    multiline: true,
-    disabled: easyPageEnable === false ? true : false,
-    value: easyPageContainer,
+PropertyPaneTextField('EasyPageTabsB', {
+  label: 'B Site: Tabs (Keywords)',
+  description: 'Semi-colon separated keywords to group pages by',
+  disabled: EasyPagesEnable === false || !EasyPageUrlB ? true : false,
+  value: EasyPageTabsB,
 }));
 
 groupFields.push(
-  PropertyPaneToggle('easyIconEnable', {
-    label: 'Enable EasyIcons',
-    offText: 'No',
-    onText: 'Yes',
+PropertyPaneTextField('EasyPagesSiteTitleB', {
+  label: 'B Site: Title',
+  description: 'Button text for this site',
+  disabled: EasyPagesEnable === false || !EasyPageUrlB ? true : false,
+  value: EasyPagesSiteTitleB,
 }));
 
 groupFields.push(
-  PropertyPaneTextField('easyIconKeys', {
-    label: 'Easy Icon keys',
-    description: 'See Github Wiki for examples',
-    multiline: true,
-    disabled: easyIconEnable === false ? true : false,
-    value: easyIconKeys,
+PropertyPaneTextField('EasyPageStyles', {
+  label: 'Optional Easy Page styles on Entire Component',
+  description: 'React.CSSProperties format.',
+  multiline: true,
+  disabled: EasyPagesEnable === false ? true : false,
+  value: EasyPageStyles,
 }));
 
 groupFields.push(
-  PropertyPaneTextField('easyIconIgnore', {
-    label: 'Easy Icons to Ignore',
-    description: 'See Github Wiki for examples',
-    multiline: true,
-    disabled: easyIconEnable === false ? true : false,
-    value: easyIconIgnore,
+PropertyPaneTextField('EasyPageContainerStyles', {
+  label: 'Optional Easy Page styles on Container',
+  description: 'React.CSSProperties format.',
+  multiline: true,
+  disabled: EasyPagesEnable === false ? true : false,
+  value: EasyPageContainerStyles,
+}));
+
+groupFields.push(
+PropertyPaneToggle('easyIconEnable', {
+  label: 'Enable EasyIcons',
+  offText: 'No',
+  onText: 'Yes',
+}));
+
+groupFields.push(
+PropertyPaneTextField('easyIconKeys', {
+  label: 'Easy Icon keys',
+  description: 'See Github Wiki for examples',
+  multiline: true,
+  disabled: easyIconEnable === false ? true : false,
+  value: easyIconKeys,
+}));
+
+groupFields.push(
+PropertyPaneTextField('easyIconIgnore', {
+  label: 'Easy Icons to Ignore',
+  description: 'See Github Wiki for examples',
+  multiline: true,
+  disabled: easyIconEnable === false ? true : false,
+  value: easyIconIgnore,
 }));
 
 
 const ExportThisGroup: IPropertyPaneGroup = {
-  groupName: `EasyPages and EasyIcons`,
-  isCollapsed: true,
-  groupFields: groupFields
+groupName: `EasyPages and EasyIcons`,
+isCollapsed: true,
+groupFields: groupFields
 };
 
 return ExportThisGroup;
 
 }
+

@@ -64,12 +64,12 @@ export function getUsedTabs( sourceProps: ISourceProps, items: IEasyLink[] ) : s
   items.map( item => {
     item.tabs.map( tab => { 
       if ( foundTabs.indexOf( tab ) < 0 ) foundTabs.push( tab );
-      if ( tab === sourceProps.overflowTab ) showOverFlow = true;
+      if ( tab === sourceProps.EasyPageOverflowTab ) showOverFlow = true;
     } )
   })
   const sortedTabs: string[] = [];
   sourceProps.meta1.map( tab => { if ( foundTabs.indexOf( tab ) > -1 ) sortedTabs.push( tab ) ;} );
-  if ( showOverFlow === true ) sortedTabs.push( sourceProps.overflowTab );
+  if ( showOverFlow === true ) sortedTabs.push( sourceProps.EasyPageOverflowTab );
 
   return sortedTabs;
 
@@ -156,7 +156,7 @@ export async function getPagesContent( sourceProps: ISourceProps, EasyIconObject
   items = sortObjectArrayByStringKeyCollator( items, 'asc', 'title', true, 'en' );
 
   // eslint-disable-next-line no-eval
-  if ( sourceProps.jsFilter ) items = items.filter( item => eval( sourceProps.jsFilter ) === true );
+  if ( sourceProps.evalFilter ) items = items.filter( item => eval( sourceProps.evalFilter ) === true );
 
   console.log( sourceProps.defType, sourceProps.listTitle , items );
 
@@ -203,7 +203,7 @@ export function addSearchMeta ( items: IEasyLink[], sourceProps: ISourceProps, E
   });
 
   items.map( item => {
-    if ( item.tabs.length === 0 ) item.tabs.push( sourceProps.overflowTab );
+    if ( item.tabs.length === 0 ) item.tabs.push( sourceProps.EasyPageOverflowTab );
 
   });
 
