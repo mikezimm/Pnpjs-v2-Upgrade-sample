@@ -99,13 +99,13 @@ const InfoIcon = 'History';
 const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { context, expanded, tabsC, tabsP, tabsA, EasyPageOverflowTab, EasyPageParentFetch, EasyPageUrlA, EasyPagesSiteTitleA, styles, containerStyles, showTricks } = props.easyPagesProps;
+  const { context, easyPagesExpanded, tabsC, tabsP, tabsA, EasyPageOverflowTab, EasyPageParentFetch, EasyPageUrlA, EasyPagesSiteTitleA, styles, containerStyles, showTricks } = props.easyPagesProps;
 
   const realAltSite : IEasyPageSource = EasyPagesSiteTitleA ? EasyPagesSiteTitleA as IEasyPageSource : EasyPageUrlA as IEasyPageSource;
   const [ source, setSource ] = useState<IEasyPageSource>( 'Current' );
   const [ tab, setTab ] = useState<string>( tabsC.length > 0 ? tabsC[0] : 'Pages' );
   const [ activeTabs, setActiveTabs ] = useState<string[]>( tabsC.length > 0 ? [ ...tabsC, ...[ InfoTab ] ]: ['Pages'] );
-  const [ expandedState, setExpandedState ] = useState<boolean>(expanded);
+  const [ expandedState, setExpandedState ] = useState<boolean>(easyPagesExpanded);
   const [ filtered, setFiltered ] = useState<IEasyLink[]>([]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -284,8 +284,8 @@ const EasyPagesHook: React.FC<IEasyPagesHookProps> = ( props ) => {
  */
 
   useEffect(() => {
-    setExpandedState( expanded )
-  }, [ expanded ] );
+    setExpandedState( expandedState )
+  }, [ expandedState ] );
 
   const setSourceCurrent = ( ): void => {
     const links: IEasyLink[] = compoundArrayFilter( pagesC, tabC, '' );

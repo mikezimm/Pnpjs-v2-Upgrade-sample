@@ -30,6 +30,8 @@ import FieldPanel from './PropPaneCols/PropPaneColsClass';
 import { IQuickCommandsDesign } from './PropPaneCols/components/command/IAccordion';
 import { IViewField } from '@pnp/spfx-controls-react/lib/ListView';
 
+import Molecule from './Molecule/ComponentMolecule';
+
 //Use this to add more console.logs for this component
 const urlParams : URLSearchParams = new URLSearchParams( window.location.search );
 const fpsconsole : boolean = urlParams.get( 'fpsconsole' ) === 'true' ? true : false;
@@ -423,6 +425,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
             saveViews={ this._saveViews.bind( this ) }
           />
         </div>
+        <Molecule />
       </section>
     );
   }
