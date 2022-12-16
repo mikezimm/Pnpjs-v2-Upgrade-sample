@@ -47,7 +47,7 @@ export interface ICommandBuilderHookProps {
 
 }
 
-require('./command.css');
+require('@mikezimm/fps-styles/dist/AccordionStyles.css');
 
 // export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null, expanded: boolean, showFieldPanel: any, onExpandRight: any = null ) : JSX.Element { //onCmdFieldClick: any
 

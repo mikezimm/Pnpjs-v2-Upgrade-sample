@@ -22,7 +22,7 @@ import { fetchFields } from './components/fetch/funcions';
 
 import SelectedTableHook from './components/selected/TableHook';
 
-require('./components/PropPaneCols.css');
+require('@mikezimm/fps-styles/dist/PropPaneCols.css');
 
 export default class FieldPanel extends React.Component< IFieldPanelProps, IFieldPanelState > {
 
