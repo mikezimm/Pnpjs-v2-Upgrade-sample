@@ -1,7 +1,7 @@
 
 import { IWeb, Web, } from "@pnp/sp/presets/all";
 import { IMinField, IMinListProps, IsEditable, IFieldPanelFetchState } from "../IPropPaneColsProps";
-import { getHelpfullErrorV2 } from '../../../../fpsReferences';
+import { getHelpfullErrorV2 } from '@mikezimm/fps-library-v2/lib/logic/Errors/friendly';
 
   // export async function clickFetchFields(  list: IMinListProps, setState: any, updatePerformance: any ) : Promise<void> {
 export async function fetchFields(  list: IMinListProps ) : Promise<IFieldPanelFetchState> {
@@ -100,7 +100,7 @@ export async function fetchFields(  list: IMinListProps ) : Promise<IFieldPanelF
       fetched: false,
       searchText: '',
       searchProp: '',
-      errMessage: getHelpfullErrorV2( e, false, true, `FetchFunction ~ 101`, ),
+      errMessage: getHelpfullErrorV2( e, false, true, `FetchFunction ~ 101`, ).returnMess,
     };
 
     return FieldPanelState;

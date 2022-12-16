@@ -8,7 +8,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 import ReactJson from 'react-json-view';
 
 import { IButtonSummary, IQuickCommandsDesign } from './IAccordion';
-import { IQuickButton } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
+import { IQuickButton } from '@mikezimm/fps-library-v2/lib/components/interfaces/QuickCommands/IQuickCommands';
 
 export interface IPanelItemProps {
   CommandDesign: IQuickCommandsDesign;

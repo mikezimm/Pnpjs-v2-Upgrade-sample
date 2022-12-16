@@ -26,4 +26,6 @@ export interface IV2NpmBannerProps  extends IFPSCoreReactComponentProps {
  */
  export interface IV2NpmBannerState extends IFPSCorePinMeReactComponentState {
 
+  errMessage: string;
+  
 }
