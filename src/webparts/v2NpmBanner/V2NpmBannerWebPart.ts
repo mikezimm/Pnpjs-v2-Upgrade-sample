@@ -80,6 +80,7 @@
  
  import { WebPartInfoGroup, } from '@mikezimm/fps-library-v2/lib/banner/propPane/WebPartInfoGroup';
  import { FPSPinMePropsGroupX } from '@mikezimm/fps-library-v2/lib/banner/features/PinMe/PinMePropGroup';
+ import { FPSFieldsPanelPropGroup } from '@mikezimm/fps-library-v2/lib/components/molecules/FieldPanel/PPCPropGroup';
  
  import { exportIgnorePropsWP, importBlockPropsWP, WebPartAnalyticsChanges, WebPartPanelChanges,  } from './IV2NpmBannerWebPartProps';
  
@@ -106,6 +107,8 @@ export default class V2NpmBannerWebPart extends FPSBaseClass<IV2NpmBannerWebPart
     this._trickyApp = 'FPS UPDATE FPSBaseClass';
     this._trickyEmailsWP = []; // These are emails that get tricky functionality for this specific web part
     this._allowPinMe = true;
+    this._allowFieldPanel = 'Manual';
+    this._FieldPanelDesignMode = 'Drilldown';
 
     return super.onInit().then(async _ => {
 
@@ -145,10 +148,6 @@ export default class V2NpmBannerWebPart extends FPSBaseClass<IV2NpmBannerWebPart
          * Specific for this web part
          * 
          */
-        lists: [{
-          webURL: this.properties.webURL ? this.properties.webURL : this.context.pageContext.web.absoluteUrl,
-          listTitle: this.properties.listTitle,
-        }],
 
         //Banner related props
         errMessage: 'any',
@@ -230,21 +229,19 @@ export default class V2NpmBannerWebPart extends FPSBaseClass<IV2NpmBannerWebPart
     let groups: IPropertyPaneGroup[] = [ WebPartInfoGroup( this._repoLink, 'Sample FPS Banner component :)', PropertyPaneWebPartInformation ) ];
     const FPSGroups: IPropertyPaneGroup[] = getAllDefaultFPSFeatureGroups ( thisAsAny );
 
-    const ListBuilderGroup: IPropertyPaneGroup = 
+    //   {groupName: 'Npm Banner Web Part Sample',
+    //   isCollapsed: false,
+    //   groupFields: [
+    //     PropertyPaneTextField('webURL', {
+    //       label: 'webURL',
+    //       description: 'Leave blank for current site',
+    //     }),
+    //     PropertyPaneTextField('listTitle', {
+    //       label: 'listTitle',
+    //       description: 'Full Title of list or library',
+    //     }),]}
 
-      {groupName: 'Npm Banner Web Part Sample',
-      isCollapsed: false,
-      groupFields: [
-        PropertyPaneTextField('webURL', {
-          label: 'webURL',
-          description: 'Leave blank for current site',
-        }),
-        PropertyPaneTextField('listTitle', {
-          label: 'listTitle',
-          description: 'Full Title of list or library',
-        }),]}
-
-    groups = [ ...groups, ...[ ListBuilderGroup ], ...FPSGroups ];
+    groups = [ ...groups, ...[ FPSFieldsPanelPropGroup( thisAsAny ) ], ...FPSGroups ];
 
 
     return {

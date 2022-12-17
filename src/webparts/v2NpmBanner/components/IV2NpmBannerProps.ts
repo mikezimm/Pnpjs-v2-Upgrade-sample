@@ -3,7 +3,7 @@ import { IFPSCoreReactComponentProps } from '@mikezimm/fps-library-v2/lib/banner
 import { IFPSCorePinMeReactComponentState } from '@mikezimm/fps-library-v2/lib/banner/mainReact/ReactComponentState';
 import { ILoadPerformance } from '../../v2NpmBanner/fpsReferences';
 
-import { IMinListProps } from './PropPaneCols/components/IPropPaneColsProps';
+import { IMinListProps } from '@mikezimm/fps-library-v2/lib/components/molecules/FieldPanel/components/IMinWPFieldPanelProps';
 
 export interface IV2NpmBannerProps  extends IFPSCoreReactComponentProps {
 
@@ -16,7 +16,7 @@ export interface IV2NpmBannerProps  extends IFPSCoreReactComponentProps {
   errMessage: string;
   performance: ILoadPerformance;
 
-  lists: IMinListProps[];
+  // lists: IMinListProps[];
 
 }
 

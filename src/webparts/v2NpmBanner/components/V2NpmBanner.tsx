@@ -15,8 +15,9 @@ import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanc
 
 import { IPinMeState } from '../fpsReferences';
 
-import FieldPanel from '@mikezimm/fps-library-v2/lib/components/molecules/PropPaneCols/PropPaneColsClass';
-import { IQuickCommandsDesign } from './PropPaneCols/components/command/IAccordion';
+import FieldPanel from '@mikezimm/fps-library-v2/lib/components/molecules/FieldPanel/PropPaneColsClass';
+// import FieldPanel from './PropPaneCols/PropPaneColsClass';
+import { IQuickCommandsDesign } from '@mikezimm/fps-library-v2/lib/components/molecules/FieldPanel/components/command/IAccordion';
 import { IViewField } from '@pnp/spfx-controls-react/lib/ListView';
 import { getWebPartHelpElement } from '../CoreFPS/PropPaneHelp';
 
@@ -226,7 +227,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
      }
 
-     if ( JSON.stringify( prevProps.lists) !== JSON.stringify( this.props.lists ) ) {
+     if ( JSON.stringify( prevProps.bannerProps.fieldPanelProps.lists) !== JSON.stringify( this.props.bannerProps.fieldPanelProps.lists ) ) {
       refresh = true;
      }
 
@@ -381,12 +382,13 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
         <div>
           <h3>Test by updating webURL and ListName in the property pane :{escape(`)`)}</h3>
           <FieldPanel 
-            displayMode={this.props.bannerProps.displayMode}
-            lists={this.props.lists}
+            displayMode={ this.props.bannerProps.displayMode }
+            lists={ this.props.bannerProps.fieldPanelProps.lists }
+            designMode={ this.props.bannerProps.fieldPanelProps.designMode }
             tryCommands={ this._tryCommands.bind( this ) }
             tryViews={ this._tryViews.bind( this ) }
-            saveCommands={ this._saveCommands.bind( this ) }
-            saveViews={ this._saveViews.bind( this ) }
+            saveCommands={ this.props.bannerProps.fieldPanelProps.saveCommands }
+            saveViews={ this.props.bannerProps.fieldPanelProps.saveViews }
           />
         </div>
         {/* <Molecule /> */}
@@ -394,24 +396,24 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
     );
   }
 
-  private _saveCommands( commands: IQuickCommandsDesign ): void {
-    console.log('_saveCommands', commands );
-    alert( `_saveCommands - ${this.props.lists[0].listTitle}` );
-  }
+  // private _saveCommands( commands: IQuickCommandsDesign ): void {
+  //   console.log('_saveCommands', commands );
+  //   alert( `_saveCommands - ${this.props.lists[0].listTitle}` );
+  // }
 
-  private _saveViews( viewFields: IViewField[] ): void {
-    console.log('_saveViews', viewFields );
-    alert( `_saveViews - ${this.props.lists[0].listTitle}` );
-  }
+  // private _saveViews( viewFields: IViewField[] ): void {
+  //   console.log('_saveViews', viewFields );
+  //   alert( `_saveViews - ${this.props.lists[0].listTitle}` );
+  // }
 
   private _tryCommands( commands: IQuickCommandsDesign ): void {
     console.log('_tryCommands', commands );
-    alert( `_tryCommands - ${this.props.lists[0].listTitle}` );
+    alert( `_tryCommands - ${this.props.bannerProps.fieldPanelProps.lists[0].listTitle}` );
   }
 
   private _tryViews( viewFields: IViewField[] ): void {
     console.log('_tryViews', viewFields );
-    alert( `_tryViews - ${this.props.lists[0].listTitle}` );
+    alert( `_tryViews - ${this.props.bannerProps.fieldPanelProps.lists[0].listTitle}` );
   }
 
   private _doSomething(): void {
