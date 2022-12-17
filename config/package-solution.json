@@ -3,7 +3,7 @@
   "solution": {
     "name": "pnpjs-v-2-upgrade-sample-client-side-solution",
     "id": "042615c4-2dbb-4d3c-a1d2-bde06736cae6",
-    "version": "1.0.0.10",
+    "version": "1.0.0.11",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
@@ -16,10 +16,10 @@
     },
     "metadata": {
       "shortDescription": {
-        "default": "pnpjs-v-2-upgrade-sample description"
+        "default": "pnpjs-v-2-upgrade FieldPanel"
       },
       "longDescription": {
-        "default": "pnpjs-v-2-upgrade-sample description"
+        "default": "pnpjs-v-2-upgrade FieldPanel"
       },
       "screenshotPaths": [],
       "videoUrl": "",
@@ -27,10 +27,10 @@
     },
     "features": [
       {
-        "title": "pnpjs-v-2-upgrade-sample Feature",
+        "title": "pnpjs-v-2-upgrade FieldPanel",
         "description": "The feature that activates elements of the pnpjs-v-2-upgrade-sample solution.",
         "id": "8d90a12e-34dd-4710-8856-11b404e381e4",
-        "version": "1.0.0.10"
+        "version": "1.0.0.11"
       }
     ]
   },

@@ -375,12 +375,6 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
       <section className={`${styles.v2NpmBanner} ${hasTeamsContext ? styles.teams : ''}`}>
         { devHeader }
         { Banner }
-        <div className={styles.welcome}>
-          <h2>Well done, {escape(userDisplayName)}!</h2>
-          <div>{environmentMessage}</div>
-        </div>
-        <div>
-          <h3>Test by updating webURL and ListName in the property pane :{escape(`)`)}</h3>
           <FieldPanel 
             displayMode={ this.props.bannerProps.displayMode }
             lists={ this.props.bannerProps.fieldPanelProps.lists }
@@ -390,7 +384,6 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
             saveCommands={ this.props.bannerProps.fieldPanelProps.saveCommands }
             saveViews={ this.props.bannerProps.fieldPanelProps.saveViews }
           />
-        </div>
         {/* <Molecule /> */}
       </section>
     );

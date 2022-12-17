@@ -1,6 +1,6 @@
 {
   "name": "pnpjs-v-2-upgrade-sample",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "private": true,
   "main": "lib/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "@microsoft/sp-property-pane": "1.15.2",
     "@microsoft/sp-webpart-base": "1.15.2",
     "@mikezimm/fps-library-v2": "^1.0.37",
-    "@mikezimm/fps-styles": "^1.0.3",
+    "@mikezimm/fps-styles": "^1.0.4",
     "@pnp/spfx-controls-react": "3.7.2",
     "@pnp/spfx-property-controls": "3.6.0",
     "office-ui-fabric-react": "7.185.7",

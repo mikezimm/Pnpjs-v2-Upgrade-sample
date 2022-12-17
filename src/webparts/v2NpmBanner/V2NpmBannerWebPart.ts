@@ -84,7 +84,7 @@
  
  import { exportIgnorePropsWP, importBlockPropsWP, WebPartAnalyticsChanges, WebPartPanelChanges,  } from './IV2NpmBannerWebPartProps';
  
- import { gitRepoDrillDown } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/LinksRepos';
+ import { gitRepoALVFinManSmall } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/LinksRepos';
  import { runFPSSuperOnInit } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runSuperOnInit';
  import { runFPSWebPartRender } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runWebPartRender';
  import { onFPSPropPaneCHanged } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runOnPropChange';
@@ -101,7 +101,7 @@ export default class V2NpmBannerWebPart extends FPSBaseClass<IV2NpmBannerWebPart
   protected async onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
 
-    this._repoLink = gitRepoDrillDown; //Set as any but will get created in FPSSuperOnOnit
+    this._repoLink = gitRepoALVFinManSmall; //Set as any but will get created in FPSSuperOnOnit
     this._exportIgnorePropsWP = exportIgnorePropsWP;
     this._importBlockPropsWP = importBlockPropsWP;
     this._trickyApp = 'FPS UPDATE FPSBaseClass';
