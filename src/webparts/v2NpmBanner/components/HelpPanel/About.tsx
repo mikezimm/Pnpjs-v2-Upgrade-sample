@@ -7,7 +7,7 @@ import { createAboutRow } from '@mikezimm/fps-library-v2/lib/banner/components/P
 import { IWebpartBannerProps } from '@mikezimm/fps-library-v2/lib/banner/mainReact/IWebpartBannerProps';
 
 
-export const panelVersionNumber = '2022-12-16 -  1.0.0.11'; //Added to show in panel
+export const panelVersionNumber = '2022-12-16 -  1.0.0.12'; //Added to show in panel
 
 export function aboutTable( bannerProps: IWebpartBannerProps ): { table: IHelpTable; } {
 
@@ -20,7 +20,7 @@ export function aboutTable( bannerProps: IWebpartBannerProps ): { table: IHelpTa
       rows: [],
   };
 
-  table.rows.push( createAboutRow('2022-12-16',"1.0.0.11","fps-library-v2", showRepoLinks === true ? repoLink : null ) );
+  table.rows.push( createAboutRow('2022-12-16',"1.0.0.12","fps-library-v2", showRepoLinks === true ? repoLink : null ) );
   table.rows.push( createAboutRow('',"","#72, #79", showRepoLinks === true ? repoLink : null ) );
 
   table.rows.push( createAboutRow('2022-11-14',"1.0.0.10","#50, #51, #70, #73, #76, #77, #78", showRepoLinks === true ? repoLink : null ) );

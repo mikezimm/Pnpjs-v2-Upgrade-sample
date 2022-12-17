@@ -79,8 +79,6 @@
  import { getAllDefaultFPSFeatureGroups } from '@mikezimm/fps-library-v2/lib/banner/propPane/AllDefaultFPSGroups';
  
  import { WebPartInfoGroup, } from '@mikezimm/fps-library-v2/lib/banner/propPane/WebPartInfoGroup';
- import { FPSPinMePropsGroupX } from '@mikezimm/fps-library-v2/lib/banner/features/PinMe/PinMePropGroup';
- import { FPSFieldsPanelPropGroup } from '@mikezimm/fps-library-v2/lib/components/molecules/FieldPanel/PPCPropGroup';
  
  import { exportIgnorePropsWP, importBlockPropsWP, WebPartAnalyticsChanges, WebPartPanelChanges,  } from './IV2NpmBannerWebPartProps';
  
