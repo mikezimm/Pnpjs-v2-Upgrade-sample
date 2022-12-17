@@ -1,34 +1,27 @@
 import * as React from 'react';
 import styles from './V2NpmBanner.module.scss';
-import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { escape } from '@microsoft/sp-lodash-subset';
 import { IV2NpmBannerProps, IV2NpmBannerState } from './IV2NpmBannerProps';
 
 import { saveViewAnalytics } from '../CoreFPS/Analytics';
 
-// import FetchBanner from '../CoreFPS/FetchBannerElement';
-import FetchBanner from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/FetchBannerElement';
-import EasyPagesHook from './EasyPages/componentSources';
+import FetchBannerX from '@mikezimm/fps-library-v2/lib/banner/bannerX/FetchBannerX';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ISpecialMessage, specialUpgrade } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/special/interface';
-
-import { getHelpfullError } from '../fpsReferences';
-import { getWebPartHelpElement } from '../CoreFPS/PropPaneHelp';
 import { getBannerPages, } from './HelpPanel/AllContent';
-import { IBannerPages } from "../fpsReferences";
+import { IBannerPages, IPerformanceOp } from "../fpsReferences";
 
 import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps } from "../fpsReferences";
 
-import { ensureUserInfo } from '@mikezimm/npmfunctions/dist/Services/Users/userServices';  //Eventually move to "../fpsReferences"?
-
 import { IPinMeState } from '../fpsReferences';
 
-import { IUser } from '../fpsReferences';
-import FieldPanel from './PropPaneCols/PropPaneColsClass';
-import { IQuickCommandsDesign } from './PropPaneCols/components/command/IAccordion';
+import FieldPanel from '@mikezimm/fps-library-v2/lib/components/molecules/FieldPanel/PropPaneColsClass';
+// import FieldPanel from './PropPaneCols/PropPaneColsClass';
+import { IQuickCommandsDesign } from '@mikezimm/fps-library-v2/lib/components/molecules/FieldPanel/components/command/IAccordion';
 import { IViewField } from '@pnp/spfx-controls-react/lib/ListView';
+import { getWebPartHelpElement } from '../CoreFPS/PropPaneHelp';
+
+// import Molecule from './Molecule/ComponentMolecule';
 
 //Use this to add more console.logs for this component
 const urlParams : URLSearchParams = new URLSearchParams( window.location.search );
@@ -41,7 +34,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
   private _performance: ILoadPerformance = null;
 
-  private _webPartHelpElement = getWebPartHelpElement( this.props.sitePresets );
+  private _webPartHelpElement = getWebPartHelpElement( );
   private _contentPages : IBannerPages = getBannerPages( this.props.bannerProps );
 
   private _newRefreshId() :string {
@@ -84,58 +77,57 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
      *                                                                                                                                          
      */
 
-     private _fetchUserId: string = '';  //Caching fetch Id and Web as soon as possible to prevent race
-     private _fetchWeb: string = this.props.webURL ? this.props.webURL : '';  //Caching fetch Id and Web as soon as possible to prevent race
-     private _sourceUser: IUser = null;
+    //  private _fetchWeb: string = this.props.webURL ? this.props.webURL : '';  //Caching fetch Id and Web as soon as possible to prevent race
+    //  private _sourceUser: IUser = null;
 
-     /**  _remoteListUserInfo
-      * 
-      * The purpose of this function is as follows:
-      * If the list's web is the same as the context web, then the user info comes from pageContext (via bannerProps object)
-      * If the list's web is on another site, then it has to get user Info (like Id) from a remote site collection.
-      * 
-      * @param webURL 
-      * @param email 
-      * @returns 
-      */
-     private async _remoteListUserInfo( webURL: string, email: string ): Promise<any> {  //Sample From Drilldown webpart:  _presetDrillListUser
-      const webURLOnCurrentCollection = !webURL || webURL.toLowerCase().indexOf(this.props.context.pageContext.site.serverRelativeUrl.toLowerCase()) > -1 ? true : false;
-      console.log('xxxxxxxxxx');
-      if ( !webURL || ( !this._sourceUser && webURLOnCurrentCollection === true ) ) {
-        //If current web is the sourceListWeb, then just use the context FPSUser
-        this._sourceUser = this.props.bannerProps.FPSUser;
-        this._fetchUserId = this._sourceUser.Id;
-        this._fetchWeb = webURL;
+    //  /**  _remoteListUserInfo
+    //   * 
+    //   * The purpose of this function is as follows:
+    //   * If the list's web is the same as the context web, then the user info comes from pageContext (via bannerProps object)
+    //   * If the list's web is on another site, then it has to get user Info (like Id) from a remote site collection.
+    //   * 
+    //   * @param webURL 
+    //   * @param email 
+    //   * @returns 
+    //   */
+    //  private async _remoteListUserInfo( webURL: string, email: string ): Promise<any> {  //Sample From Drilldown webpart:  _presetDrillListUser
+    //   const webURLOnCurrentCollection = !webURL || webURL.toLowerCase().indexOf(this.props.bannerProps.context.pageContext.site.serverRelativeUrl.toLowerCase()) > -1 ? true : false;
+    //   console.log('xxxxxxxxxx');
+    //   if ( !webURL || ( !this._sourceUser && webURLOnCurrentCollection === true ) ) {
+    //     //If current web is the sourceListWeb, then just use the context FPSUser
+    //     this._sourceUser = this.props.bannerProps.FPSUser;
+    //     this._fetchUserId = this._sourceUser.Id;
+    //     this._fetchWeb = webURL;
 
-        return this._sourceUser;
+    //     return this._sourceUser;
 
-      } else if ( webURL === this._fetchWeb && this._sourceUser ) {
-        return this._sourceUser;
+    //   } else if ( webURL === this._fetchWeb && this._sourceUser ) {
+    //     return this._sourceUser;
 
-      } else {
+    //   } else {
 
-        try {
-          this._updatePerformance( 'fetch3', 'start', 'fetch3 getRemoteUserD', null );
-          const sourceUser: IUser = await ensureUserInfo( webURL, email );
+    //     try {
+    //       this._updatePerformance( 'fetch3', 'start', 'fetch3 getRemoteUserD', null );
+    //       const sourceUser: IUser = await ensureUserInfo( webURL, email );
   
-          this._fetchUserId = sourceUser.id;
-          this._fetchWeb = webURL;
-          this._sourceUser = sourceUser;
+    //       this._fetchUserId = sourceUser.id;
+    //       this._fetchWeb = webURL;
+    //       this._sourceUser = sourceUser;
 
-          this._updatePerformance( 'fetch3', 'update', '', 1 );
+    //       this._updatePerformance( 'fetch3', 'update', '', 1 );
 
-          return this._sourceUser;
+    //       return this._sourceUser;
 
-        } catch(e){
-          const errMessage = getHelpfullError(e, false, true);
-          this._updatePerformance( 'fetch3', 'update', '', 1 );
-          this.setState({ errMessage: errMessage });
-          return null;
-        }
+    //     } catch(e){
+    //       const errMessage = getHelpfullError(e, false, true);
+    //       this._updatePerformance( 'fetch3', 'update', '', 1 );
+    //       this.setState({ errMessage: errMessage });
+    //       return null;
+    //     }
 
-      }
+    //   }
 
-    }
+    // }
 
 
 
@@ -156,14 +148,14 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
       if ( this._performance === null ) { this._performance = this.props.performance;  }
 
       this.state = {
-        pinState: this.props.fpsPinMenu.defPinState ? this.props.fpsPinMenu.defPinState : 'normal',
+        pinState: this.props.bannerProps.fpsPinMenu.defPinState ? this.props.bannerProps.fpsPinMenu.defPinState : 'normal',
         showDevHeader: false,
         lastStateChange: '', 
         analyticsWasExecuted: false,
         refreshId: this._newRefreshId(),
         debugMode: false,
         showSpinner: false,
-        showEasyPages: false,
+        errMessage: '',
       };
     }
 
@@ -203,11 +195,11 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
       if ( fpsconsole === true ) console.log( `${consolePrefix} ~ componentDidUpdate` );
 
-      let refresh = this.props.displayMode !== prevProps.displayMode ? true : false;
+      let refresh = this.props.bannerProps.displayMode !== prevProps.bannerProps.displayMode ? true : false;
 
       //refresh these privates when the prop changes warrent it
       if ( refresh === true ) {
-        this._webPartHelpElement = getWebPartHelpElement( this.props.sitePresets );
+        this._webPartHelpElement = getWebPartHelpElement( );
         this._contentPages = getBannerPages( this.props.bannerProps );
       }
 
@@ -235,20 +227,7 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
      }
 
-     if ( JSON.stringify( prevProps.lists) !== JSON.stringify( this.props.lists ) ) {
-      refresh = true;
-     }
-     //These do not seem to update component when changed
-     if ( JSON.stringify( prevProps.EasyIconsObject.GroupKeys ) !== JSON.stringify( this.props.EasyIconsObject.GroupKeys ) ) {
-      refresh = true;
-     }
-     if ( JSON.stringify( prevProps.easyPagesExtraProps.tabsC ) !== JSON.stringify( this.props.easyPagesExtraProps.tabsC ) ) {
-      refresh = true;
-     }
-     if ( JSON.stringify( prevProps.easyPagesExtraProps.tabsP ) !== JSON.stringify( this.props.easyPagesExtraProps.tabsP ) ) {
-      refresh = true;
-     }
-     if ( JSON.stringify( prevProps.easyPagesExtraProps.tabsA ) !== JSON.stringify( this.props.easyPagesExtraProps.tabsA ) ) {
+     if ( JSON.stringify( prevProps.bannerProps.fieldPanelProps.lists) !== JSON.stringify( this.props.bannerProps.fieldPanelProps.lists ) ) {
       refresh = true;
      }
 
@@ -267,11 +246,14 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
      */
     private _updatePerformance( key: ILoadPerformanceOps, phase: 'start' | 'update', note: string = '', count: number ): void {
 
-      if ( phase === 'start' ) {
-        this._performance.ops[key] = startPerformOp( `${key} ${ note ? ' - ' + note : '' }`, this.props.displayMode );
+      const ops: any = this._performance.ops;
+      let thisPart : IPerformanceOp = ops[key];
+
+      if ( phase === 'start' || !thisPart ) {
+        thisPart = startPerformOp( `${key} ${ note ? ' - ' + note : '' }`, this.props.bannerProps.displayMode );
 
       } else if ( phase === 'update' ) {
-          this._performance.ops[key] = updatePerformanceEnd( this._performance.ops[key], true , count );
+        thisPart = updatePerformanceEnd( thisPart, true , count );
 
       }
     }
@@ -366,28 +348,21 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
     // eslint-disable-next-line prefer-const
     let nearBannerElementsArray: any[] = [];
-    if ( this.props.bannerProps.beAUser !== true )  {
-      if ( this.props.easyPagesExtraProps.easyPageEnable === true || this.props.bannerProps.showTricks === true )  {
-        nearBannerElementsArray.push( [
-          <Icon key='Link12' iconName='Link12' onClick={ this._toggleEasyLinks.bind(this) } style={ this.props.bannerProps.bannerCmdReactCSS }/>
-        ] );
-      }
-    }
 
-    const Banner = <FetchBanner 
+    const Banner = <FetchBannerX 
 
       // bonusHTML1={ 'BonusHTML1 Text' }
       panelPerformance={ this._performance }
       // bonusHTML2={ <div>BonusHTML2 Div</div> }
 
-      parentProps={ this.props }
+      bannerProps={ this.props.bannerProps }
       parentState={ this.state }
 
       nearBannerElementsArray={ nearBannerElementsArray }
       farBannerElementsArray={ farBannerElementsArray }
 
       contentPages={ this._contentPages }
-      WebPartHelpElement={ this._webPartHelpElement }
+      WebPartHelpPivots={ [ this._webPartHelpElement ] }
 
       // SpecialMessage = { Special } //  Placeholder sample in case it is needed in the future.
 
@@ -396,59 +371,42 @@ export default class V2NpmBanner extends React.Component<IV2NpmBannerProps, IV2N
 
     />;
 
-    const EasyPagesElement = <EasyPagesHook 
-      easyPagesExtraProps={ { ...this.props.easyPagesExtraProps, ...{ expanded: this.state.showEasyPages, toggleExpanded: this._toggleEasyLinks.bind(this) } } }
-      easyPagesCommonProps= { this.props.easyPagesCommonProps }
-      // easyPagesCommonProps= { this.props.easyPagesCommonProps }
-      EasyIconsObject= { this.props.EasyIconsObject }
-    />;
-
     return (
       <section className={`${styles.v2NpmBanner} ${hasTeamsContext ? styles.teams : ''}`}>
         { devHeader }
         { Banner }
-        { EasyPagesElement }
-        <div className={styles.welcome}>
-          <h2>Well done, {escape(userDisplayName)}!</h2>
-          <div>{environmentMessage}</div>
-        </div>
-        <div>
-          <h3>Test by updating webURL and ListName in the property pane :{escape(`)`)}</h3>
           <FieldPanel 
-            displayMode={this.props.displayMode}
-            lists={this.props.lists}
+            displayMode={ this.props.bannerProps.displayMode }
+            lists={ this.props.bannerProps.fieldPanelProps.lists }
+            designMode={ this.props.bannerProps.fieldPanelProps.designMode }
             tryCommands={ this._tryCommands.bind( this ) }
             tryViews={ this._tryViews.bind( this ) }
-            saveCommands={ this._saveCommands.bind( this ) }
-            saveViews={ this._saveViews.bind( this ) }
+            saveCommands={ this.props.bannerProps.fieldPanelProps.saveCommands }
+            saveViews={ this.props.bannerProps.fieldPanelProps.saveViews }
           />
-        </div>
+        {/* <Molecule /> */}
       </section>
     );
   }
 
-  private _toggleEasyLinks( ): void {
-    this.setState({ showEasyPages: !this.state.showEasyPages });
-  }
+  // private _saveCommands( commands: IQuickCommandsDesign ): void {
+  //   console.log('_saveCommands', commands );
+  //   alert( `_saveCommands - ${this.props.lists[0].listTitle}` );
+  // }
 
-  private _saveCommands( commands: IQuickCommandsDesign ): void {
-    console.log('_saveCommands', commands );
-    alert( `_saveCommands - ${this.props.lists[0].listTitle}` );
-  }
-
-  private _saveViews( viewFields: IViewField[] ): void {
-    console.log('_saveViews', viewFields );
-    alert( `_saveViews - ${this.props.lists[0].listTitle}` );
-  }
+  // private _saveViews( viewFields: IViewField[] ): void {
+  //   console.log('_saveViews', viewFields );
+  //   alert( `_saveViews - ${this.props.lists[0].listTitle}` );
+  // }
 
   private _tryCommands( commands: IQuickCommandsDesign ): void {
     console.log('_tryCommands', commands );
-    alert( `_tryCommands - ${this.props.lists[0].listTitle}` );
+    alert( `_tryCommands - ${this.props.bannerProps.fieldPanelProps.lists[0].listTitle}` );
   }
 
   private _tryViews( viewFields: IViewField[] ): void {
     console.log('_tryViews', viewFields );
-    alert( `_tryViews - ${this.props.lists[0].listTitle}` );
+    alert( `_tryViews - ${this.props.bannerProps.fieldPanelProps.lists[0].listTitle}` );
   }
 
   private _doSomething(): void {

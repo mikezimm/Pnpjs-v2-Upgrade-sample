@@ -6,7 +6,7 @@ import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import { IButtonSummary, IQuickCommandsDesign } from './IAccordion';
-import { IQuickButton } from '@mikezimm/npmfunctions/dist/QuickCommands/IQuickCommands';
+import { IQuickButton } from '@mikezimm/fps-library-v2/lib/components/interfaces/QuickCommands/IQuickCommands';
 import { panelActionToggles } from '../common';
 
 export interface IPanelItemProps {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2 } from '../../../../fpsReferences';
+import { getHighlightedText , } from '@mikezimm/fps-library-v2/lib/components/atoms/Elements/HighlightedText';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -17,7 +17,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 import { IMinField } from "../IPropPaneColsProps";
 import { createThisViewField } from './functions';
 import ReactJson from 'react-json-view';
-import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
+import Accordion from '@mikezimm/fps-library-v2/lib/components/molecules/Accordion/Accordion';
 
 export interface IViewBuilderHookProps {
   selected: IMinField[];

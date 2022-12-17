@@ -14,8 +14,10 @@ import { DisplayMode, } from '@microsoft/sp-core-library';
  */
 
  import { IV2NpmBannerProps } from '../components/IV2NpmBannerProps';
- import { saveAnalytics3, IZLoadAnalytics, IZSentAnalytics,  ILoadPerformance, getMinPerformanceString } from '../fpsReferences';
- 
+ import { ILoadPerformance, } from '../fpsReferences';
+ import { saveAnalytics3, getMinPerformanceString } from '@mikezimm/fps-library-v2/lib/pnpjs/Logging/saveAnalytics';
+ import { IZLoadAnalytics, IZSentAnalytics, } from '@mikezimm/fps-library-v2/lib/pnpjs/Logging/interfaces';
+
  
  /***
   *    db       .d88b.   .o88b.  .d8b.  db      
@@ -53,7 +55,7 @@ import { DisplayMode, } from '@microsoft/sp-core-library';
  *                                                                                
  */
 
-export function saveViewAnalytics( Title: string, Result: string, thisProps: IV2NpmBannerProps, analyticsWasExecuted: boolean, performanceObj: ILoadPerformance) : boolean {
+export function saveViewAnalytics( Title: string, Result: string, parentProps: IV2NpmBannerProps, analyticsWasExecuted: boolean, performanceObj: ILoadPerformance) : boolean {
 
     if ( analyticsWasExecuted === true ) {
       console.log('saved view info already');
@@ -61,7 +63,8 @@ export function saveViewAnalytics( Title: string, Result: string, thisProps: IV2
 
     } else {
 
-    const { fpsPinMenu, context, FPSPropsObj, displayMode } = thisProps;
+      const { bannerProps } = parentProps;
+      const { fpsPinMenu, context, displayMode , analyticsProps } = bannerProps;
 
       // Do not save anlytics while in Edit Mode... only after save and page reloads
       if ( displayMode === DisplayMode.Edit ) { return; }
@@ -104,8 +107,6 @@ export function saveViewAnalytics( Title: string, Result: string, thisProps: IV2
       // console.log('zzzRichText2 length:', zzzRichText2 ? zzzRichText2.length : 0 );
       // console.log('zzzRichText3 length:', zzzRichText3 ? zzzRichText3.length : 0 );
 
-      const FPSProps = JSON.stringify( FPSPropsObj );
-
       const saveObject: IZSentAnalytics = {
         loadProperties: loadProperties,
 
@@ -138,7 +139,7 @@ export function saveViewAnalytics( Title: string, Result: string, thisProps: IV2
 
         performance: performance,
 
-        FPSProps: FPSProps,
+        FPSProps: analyticsProps,
 
       };
 

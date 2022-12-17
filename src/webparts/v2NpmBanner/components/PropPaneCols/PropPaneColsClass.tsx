@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 
-import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, } from "../../fpsReferences";
+import { ILoadPerformance, startPerformOp, updatePerformanceEnd, ILoadPerformanceOps, createBasePerformanceInit, IPerformanceOp, } from "../../fpsReferences";
 
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
@@ -22,7 +22,7 @@ import { fetchFields } from './components/fetch/funcions';
 
 import SelectedTableHook from './components/selected/TableHook';
 
-require('./components/PropPaneCols.css');
+require('@mikezimm/fps-styles/dist/PropPaneCols.css');
 
 export default class FieldPanel extends React.Component< IFieldPanelProps, IFieldPanelState > {
 
@@ -38,11 +38,14 @@ export default class FieldPanel extends React.Component< IFieldPanelProps, IFiel
    */
     private _updatePerformance( key: ILoadPerformanceOps, phase: 'start' | 'update', note: string = '', count: number ): void {
 
-    if ( phase === 'start' ) {
-      this._performance.ops[key] = startPerformOp( `${key} ${ note ? ' - ' + note : '' }`, this.props.displayMode );
+      const ops: any = this._performance.ops;
+      let thisPart : IPerformanceOp = ops[key];
+
+      if ( phase === 'start' || !thisPart ) {
+        thisPart = startPerformOp( `${key} ${ note ? ' - ' + note : '' }`, this.props.displayMode );
 
     } else if ( phase === 'update' ) {
-        this._performance.ops[key] = updatePerformanceEnd( this._performance.ops[key], true , count );
+        thisPart = updatePerformanceEnd( thisPart, true , count );
 
     }
   }

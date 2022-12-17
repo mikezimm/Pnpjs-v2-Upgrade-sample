@@ -2,9 +2,6 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2, IQuickButton, IQuickCommands } from '../../../../fpsReferences';
-import { sortObjectArrayByStringKey } from '../../../../fpsReferences';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IFieldInfo, FieldTypes } from "@pnp/sp/presets/all";
@@ -17,7 +14,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 // import styles from '../PropPaneCols.module.scss';
 
 import { IMinField, IMinFieldCmds } from "../IPropPaneColsProps";
-import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
+import Accordion from '@mikezimm/fps-library-v2/lib/components/molecules/Accordion/Accordion';
 import SelectedItemPanelHook from "../FieldPanel";
 import SampleDesignHook from "./SampleDesign";
 
@@ -50,7 +47,7 @@ export interface ICommandBuilderHookProps {
 
 }
 
-require('./command.css');
+require('@mikezimm/fps-styles/dist/AccordionStyles.css');
 
 // export function createCommandBuilder(  selected: IMinField[], onCmdFieldClick : any = null, expanded: boolean, showFieldPanel: any, onExpandRight: any = null ) : JSX.Element { //onCmdFieldClick: any
 

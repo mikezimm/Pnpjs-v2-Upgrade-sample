@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2, IQuickButton, IQuickCommands } from '../../../../fpsReferences';
+import { IQuickButton, } from '@mikezimm/fps-library-v2/lib/components/interfaces/QuickCommands/IQuickCommands';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,15 +15,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 // import styles from '../PropPaneCols.module.scss';
 
 import { IMinField, IMinFieldCmds } from "../IPropPaneColsProps";
-import Accordion from '@mikezimm/npmfunctions/dist/zComponents/Accordion/Accordion';
-import SelectedItemPanelHook from "../FieldPanel";
 
-import ReactJson from 'react-json-view';
-import { filter } from 'lodash';
-import { IActionProps } from '@pnp/spfx-controls-react';
-
-import { ChoiceFieldActionIcons, IButtonsSummary, UserFieldActionIcons, YesNoFieldActionIcons,   } from './IAccordion'
-import { DateFieldActionIcons, TextFieldActionIcons, NoteFieldActionIcons,  } from './IAccordion'
 import { AllUpdateActions,  } from './IAccordion'
 
 import { IAllActionTypes, IChoiceActionTypes, IYesNoActionTypes, IUserActionTypes,   } from './IAccordion'

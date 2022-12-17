@@ -1,6 +1,8 @@
 
 
-import { IWebpartBannerProps, IBannerPages, tricksTable } from '../../fpsReferences';
+import { tricksTable } from '@mikezimm/fps-library-v2/lib/banner/features/Tricky/ReusaableTricks';
+import { IBannerPages, } from '../../fpsReferences';
+import { IWebpartBannerProps } from '@mikezimm/fps-library-v2/lib/banner/mainReact/IWebpartBannerProps';
 
 import { aboutTable } from './About';
 import { advancedContent } from './Advanced';
@@ -19,7 +21,7 @@ export function getBannerPages ( bannerProps: IWebpartBannerProps ) : IBannerPag
 
     const result : IBannerPages = {
         whyContent:  whyContent( ),
-        aboutTable:  aboutTable( bannerProps.showRepoLinks ),
+        aboutTable:  aboutTable( bannerProps ),
         gettingStartedContent:  gettingStartedContent( ),
         errorsContent:  errorsContent( ),
         advancedContent:  advancedContent( ),

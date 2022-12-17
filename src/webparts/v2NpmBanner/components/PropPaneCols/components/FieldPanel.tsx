@@ -7,7 +7,7 @@ import { Icon, } from 'office-ui-fabric-react/lib/Icon';
 
 import ReactJson from 'react-json-view';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getHighlightedText , getHelpfullErrorV2 } from '../../../fpsReferences';
+import { getHighlightedText , } from '@mikezimm/fps-library-v2/lib/components/atoms/Elements/HighlightedText';
 
 import { IMinField } from "./IPropPaneColsProps";
 import { panelActionToggles } from './common';

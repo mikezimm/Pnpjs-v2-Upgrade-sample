@@ -11,8 +11,6 @@
 
 // import { encrptMeOriginalTest } from '../fpsReferences';
 
-import { EasyIconDefaultKeys } from '../components/EasyIcons/eiTypes';
-import { DefaultEasyPagesTabs, DefaultOverflowTab } from '../components/EasyPages/epTypes';
 import { PresetFPSBanner, IPreConfigSettings, IAllPreConfigSettings } from '../fpsReferences';
 
 
@@ -49,24 +47,6 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         webUrl: '',
         listTitle: 'Documents',
 
-      //Move these to npmFunctions when code is moved
-
-        easyPageEnable: true, //Disabled by default on Drilldown until can test in prod
-        easyPagesAudience: 'Everyone',
-        easyPageTabsC:  DefaultEasyPagesTabs.join(';'),
-        easyPageTabsP:  DefaultEasyPagesTabs.join(';'),
-        easyPageTabsA:  DefaultEasyPagesTabs.join(';'),
-        easyPageOverflowTab:  DefaultOverflowTab,
-        easyPageParent: true, //Include parent site pages
-        easyPageAltUrl: '', //Include alternate site's site pages
-        altSiteTitle:  '', //Include navigation elements from other site
-        easyPageSeparateExtras:  true, //Include navigation elements from other site
-        easyPageStyles:  '',  //Optional styles on entire page
-        easyPageContainer:  '',  //Optional styles on container element
-
-        easyIconEnable: true, // Used 
-        easyIconKeys:  EasyIconDefaultKeys.join(';'),
-        easyIconIgnore:  '',
 
     }
 };

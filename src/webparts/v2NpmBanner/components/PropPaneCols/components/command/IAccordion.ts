@@ -1,6 +1,6 @@
 import { IWeb, Web, } from "@pnp/sp/presets/all";
 import { IMinField, IMinListProps, IsEditable, IFieldPanelFetchState } from "../IPropPaneColsProps";
-import { getHighlightedText , getHelpfullErrorV2, IQuickButton, IQuickCommands } from '../../../../fpsReferences';
+import { IQuickCommands, } from '@mikezimm/fps-library-v2/lib/components/interfaces/QuickCommands/IQuickCommands';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IGrouping, IViewField } from "@pnp/spfx-controls-react/lib/ListView";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
