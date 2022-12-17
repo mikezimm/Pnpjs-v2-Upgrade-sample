@@ -7,7 +7,7 @@
  */
 import { IMinWPBannerProps } from '@mikezimm/fps-library-v2/lib/banner/interfaces/MinWP/IMinWPBannerProps';
 
-import { changesFieldPanel } from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeTypes';
+import { changesFieldPanel } from '@mikezimm/fps-library-v2/lib/components/molecules/FieldPanel/components/IMinWPFieldPanelProps';
 
 
  /**
@@ -15,7 +15,7 @@ import { changesFieldPanel } from '@mikezimm/fps-library-v2/lib/components/atoms
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const WebPartAnalyticsChanges : any = {
-  fieldPanel: changesFieldPanel,
+  FieldPanel: changesFieldPanel,
 }
 
  /**

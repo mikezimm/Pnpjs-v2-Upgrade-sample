@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {  } from 'office-ui-fabric-react/lib/Icon';
 import { escape } from '@microsoft/sp-lodash-subset';
 import ReactJson from "react-json-view";
 import {  PivotItem, } from 'office-ui-fabric-react/lib/Pivot';

@@ -241,7 +241,7 @@ export default class V2NpmBannerWebPart extends FPSBaseClass<IV2NpmBannerWebPart
     //       description: 'Full Title of list or library',
     //     }),]}
 
-    groups = [ ...groups, ...[ FPSFieldsPanelPropGroup( thisAsAny ) ], ...FPSGroups ];
+    groups = [ ...groups, ...FPSGroups ];
 
 
     return {
