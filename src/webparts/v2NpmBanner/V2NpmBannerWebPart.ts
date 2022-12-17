@@ -19,7 +19,7 @@
    IPropertyPaneGroup,
    PropertyPaneTextField
  } from '@microsoft/sp-property-pane';
- import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+//  import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
  import { IReadonlyTheme } from '@microsoft/sp-component-base';
  
  

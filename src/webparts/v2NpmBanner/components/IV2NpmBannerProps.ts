@@ -1,7 +1,7 @@
 
 import { IFPSCoreReactComponentProps } from '@mikezimm/fps-library-v2/lib/banner/mainReact/ReactComponentProps';
 import { IFPSCorePinMeReactComponentState } from '@mikezimm/fps-library-v2/lib/banner/mainReact/ReactComponentState';
-import { ILoadPerformance } from '../../v2NpmBanner/fpsReferences';
+import { ILoadPerformance } from '../fpsReferences';
 
 import { IMinListProps } from '@mikezimm/fps-library-v2/lib/components/molecules/FieldPanel/components/IMinWPFieldPanelProps';
 
